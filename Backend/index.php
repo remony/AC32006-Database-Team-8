@@ -8,6 +8,8 @@ Epi::init('route', 'api');
 
 getApi()->get('/', array('API', 'version'), EpiApi::external);
 
-// Load the routes from routes.ini then call run()
-getRoute()->load('routes.ini');
+getApi()->post('/login', array('API', 'login'), EpiApi::external);
+
+getApi()->get('/profile/(\w+)', array('API', 'profile'), EpiApi::external);
+
 getRoute()->run();
