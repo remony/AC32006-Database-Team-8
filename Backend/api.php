@@ -1,6 +1,10 @@
 <?php
 
 class API {
+    /**
+     * Returns the Information about this Assignment
+     * @return json
+     */
     static public function version () {
         return array(
             'module'    => 'AC32006',
@@ -15,6 +19,14 @@ class API {
         );
     }
 
+    /**
+     * Generates an access_token for the User, (if the login details are right)
+     * @body json -> {
+     *      "username" : the username,
+     *      "password" : the password
+     * }
+     * @return json
+     */
     static public function login () {
         $loginDetails = json_decode(file_get_contents('php://input'));
         $username = $loginDetails -> username;
@@ -28,6 +40,11 @@ class API {
         );
     }
 
+    /**
+     * Returns the User's profile data
+     * @param $username
+     * @return json
+     */
     static public function profile ($username) {
         return array(
             'status'    => 200,
