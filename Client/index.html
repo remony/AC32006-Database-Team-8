@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>Index</title>
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+    <script src="assets/js/app.js"></script>
+
+  </head>
+  <body >
+    <div class="container" ng-app="App">
+        <div ng-controller="Controller">
+          <h1>Module: {{modules}}</h1>
+          <h3>Team {{teams}}</h3>
+          <ul>
+            <li ng-repeat="member in members">
+              {{member}}
+            </li>
+          </ul>
+          <h5>Version: {{version}}</h5>
+        </div>
+    </div>
+
+  <script>
+    angular.module('App', [])
+    .controller('Controller', function($scope, $http) {
+      $http.get('https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/').success(function (data) {
+        console.log("Success\n" + data);
+        $scope.modules = data.module;
+        $scope.teams = data.team;
+        $scope.version = data.version;
+        $scope.members = data.members;
+      }).error(function(data, status) {
+        //Should pick up errors and display, not yet tested.
+        console.log("Error, " + data);
+        $scope.data = data || "Request failed";
+        $scope.status = status;
+      });
+    });
+  </script>
+
+</div>
+  </body>
+</html>
