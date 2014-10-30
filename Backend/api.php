@@ -1,12 +1,29 @@
 <?php
 
 class API {
+    static private function parseHeaders () {
+        $headers = apache_request_headers();
+        if (array_key_exists('Authorization', $headers)) {
+            $access_token = $headers["Authorization"];
+            if ($access_token) {
+                $user = getDatabase()->all("CALL sessionUser(:access_token);", array( ':access_token' => $access_token ));
+                return $user;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+
+    }
+
     /**
      * Returns the Information about this Assignment
      * @return json
      */
     static public function version () {
         header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers *');
 
         return array(
             'module'    => 'AC32006',
@@ -30,18 +47,14 @@ class API {
      * @return json
      */
     static public function login () {
-        header('Access-Control-Allow-Origin: *');
+        header('content-type: application/json; charset=utf-8');
+        header("access-control-allow-origin: *");
 
         $loginDetails = json_decode(file_get_contents('php://input'));
         $username = $loginDetails -> username;
         $password = $loginDetails -> password;
 
-        // TODO: Hash Password
-
-        $user = getDatabase()->all("
-          select users.idUSERS as id, users.Username, users.`GROUPS_idGROUPS` as groupId, groups.Name as 'group_name', groups.Read, groups.Write, groups.Delete, groups.Update from USERS as users
-          inner join GROUPS as groups on USERS.GROUPS_idGROUPS = GROUPS.idGROUPS
-          where Username = :username and password = :password", array( ':username' => $username, ':password' => $password ));
+        $user = getDatabase()->all("CALL signIn(:username, :password);", array( ':username' => $username, ':password' => sha1($password) ));
 
         if (count($user) == 1) {
             return array(
@@ -64,10 +77,17 @@ class API {
      */
     static public function profile ($username) {
         header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers *');
 
-        return array(
-            'status'    => 200,
-            'message'   => 'Welcome to '.$username.'\'s Profile'
-        );
+        $sessionUser =  self :: parseHeaders();
+
+        if (count($sessionUser) == 0) {
+            return array(
+                'status'    => 403,
+                'error'   => 'Access Denied!!'
+            );
+        } else {
+            return $sessionUser;
+        }
     }
 } 

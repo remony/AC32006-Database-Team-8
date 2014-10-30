@@ -1,319 +1,326 @@
 <?php
 $result = getDatabase()->execute("
-    SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-    SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-    SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
-    -- -----------------------------------------------------
-    -- Schema test
-    -- -----------------------------------------------------
-    CREATE SCHEMA IF NOT EXISTS `AC32006_Database_Team_10` ;
-    USE `AC32006_Database_Team_10` ;
-
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`TYPE`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`TYPE` (
-      `idType` INT NOT NULL AUTO_INCREMENT,
-      `Name` VARCHAR(20) NOT NULL,
-      PRIMARY KEY (`idType`))
-    ENGINE = InnoDB;
+    /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+    /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+    /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+    /*!40101 SET NAMES utf8 */;
+    /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+    /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+    /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`STORAGE`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`STORAGE` (
-      `idStorage` INT NOT NULL AUTO_INCREMENT,
-      `Name` VARCHAR(45) NOT NULL COMMENT 'Type\n- Compact\n- GoPro\n- DLSR\n- Bridge\n- Disposable\n- Mirror',
-      PRIMARY KEY (`idStorage`))
-    ENGINE = InnoDB;
+    # Dump of table cameras
+    # ------------------------------------------------------------
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`CAMERAS`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`CAMERAS` (
-      `idCameras` INT NOT NULL AUTO_INCREMENT,
-      `Brand` VARCHAR(20) NOT NULL,
-      `Model_name` VARCHAR(20) NOT NULL,
-      `Price` INT NOT NULL,
-      `Battery_type` VARCHAR(45) NOT NULL,
-      `MegaPixels` INT NOT NULL,
-      `canDoVideo` TINYINT(1) NOT NULL,
-      `hasFlash` TINYINT(1) NOT NULL,
-      `Resolution` INT NOT NULL,
-      `TYPE_idType` INT NOT NULL,
-      `STORAGE_idStorage` INT NOT NULL,
-      PRIMARY KEY (`idCameras`),
-      CONSTRAINT `fk_CAMERAS_TYPE1`
-        FOREIGN KEY (`TYPE_idType`)
-        REFERENCES `AC32006_Database_Team_10`.`TYPE` (`idType`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-      CONSTRAINT `fk_CAMERAS_STORAGE1`
-        FOREIGN KEY (`STORAGE_idStorage`)
-        REFERENCES `AC32006_Database_Team_10`.`STORAGE` (`idStorage`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-    CREATE INDEX `Price` USING BTREE ON `AC32006_Database_Team_10`.`CAMERAS` (`Price` ASC);
-
-    CREATE INDEX `fk_CAMERAS_TYPE1_idx` ON `AC32006_Database_Team_10`.`CAMERAS` (`TYPE_idType` ASC);
-
-    CREATE INDEX `fk_CAMERAS_STORAGE1_idx` ON `AC32006_Database_Team_10`.`CAMERAS` (`STORAGE_idStorage` ASC);
+    CREATE TABLE `cameras` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `brand` varchar(20) NOT NULL,
+      `model_name` varchar(20) NOT NULL,
+      `price` int(11) NOT NULL,
+      `battery_type` varchar(45) NOT NULL,
+      `megapixels` int(11) NOT NULL,
+      `can_do_video` tinyint(1) NOT NULL,
+      `has_flash` tinyint(1) NOT NULL,
+      `resolution` int(11) NOT NULL,
+      `type_id` int(11) NOT NULL,
+      `storage_id` int(11) NOT NULL,
+      PRIMARY KEY (`id`),
+      KEY `fk_cameras_type_idx` (`type_id`),
+      KEY `fk_cameras_storage_idx` (`storage_id`),
+      KEY `price` (`price`),
+      CONSTRAINT `fk_cameras_storage` FOREIGN KEY (`storage_id`) REFERENCES `storage` (`id`),
+      CONSTRAINT `fk_cameras_type` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`PROVINCES`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`PROVINCES` (
-      `idCounty` INT NOT NULL AUTO_INCREMENT,
-      `Name` VARCHAR(45) NOT NULL,
-      PRIMARY KEY (`idCounty`))
-    ENGINE = InnoDB;
+
+    # Dump of table countries
+    # ------------------------------------------------------------
+
+    CREATE TABLE `countries` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `name` varchar(45) NOT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`COUNTRIES`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`COUNTRIES` (
-      `idCountries` INT NOT NULL AUTO_INCREMENT,
-      `Name` VARCHAR(45) NOT NULL,
-      PRIMARY KEY (`idCountries`))
-    ENGINE = InnoDB;
+
+    # Dump of table customer_has_hobby
+    # ------------------------------------------------------------
+
+    CREATE TABLE `customer_has_hobby` (
+      `customer_id` int(10) unsigned NOT NULL,
+      `hobby_id` int(10) unsigned NOT NULL,
+      PRIMARY KEY (`customer_id`,`hobby_id`),
+      KEY `fk_customers_has_hobby_hobby_idx` (`hobby_id`),
+      KEY `fk_customers_has_hobby_customers_idx` (`customer_id`),
+      CONSTRAINT `fk_customer_has_hobby_customer` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
+      CONSTRAINT `fk_customer_has_hobby_hobby` FOREIGN KEY (`hobby_id`) REFERENCES `hobby` (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`CUSTOMERS`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`CUSTOMERS` (
-      `idUsers` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-      `FirstName` VARCHAR(20) NOT NULL,
-      `LastName` VARCHAR(20) NOT NULL,
-      `DateOfBirth` DATE NOT NULL,
-      `Gender` ENUM('male','female') NOT NULL,
-      `Counties_idCounties` INT NOT NULL,
-      `Countries_idCountries` INT NOT NULL,
-      PRIMARY KEY (`idUsers`),
-      CONSTRAINT `fk_CUSTOMERS_Counties1`
-        FOREIGN KEY (`Counties_idCounties`)
-        REFERENCES `AC32006_Database_Team_10`.`PROVINCES` (`idCounty`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-      CONSTRAINT `fk_CUSTOMERS_Countries1`
-        FOREIGN KEY (`Countries_idCountries`)
-        REFERENCES `AC32006_Database_Team_10`.`COUNTRIES` (`idCountries`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
 
-    CREATE INDEX `fk_CUSTOMERS_Counties1_idx` ON `AC32006_Database_Team_10`.`CUSTOMERS` (`Counties_idCounties` ASC);
+    # Dump of table customer_has_profession
+    # ------------------------------------------------------------
 
-    CREATE INDEX `fk_CUSTOMERS_Countries1_idx` ON `AC32006_Database_Team_10`.`CUSTOMERS` (`Countries_idCountries` ASC);
+    CREATE TABLE `customer_has_profession` (
+      `customer_id` int(10) unsigned NOT NULL,
+      `profession_id` int(10) unsigned NOT NULL,
+      PRIMARY KEY (`customer_id`,`profession_id`),
+      KEY `fk_CUSTOMERS_has_PROFESSION_PROFESSION1_idx` (`profession_id`),
+      KEY `fk_customers_has_profession_customers_idx` (`customer_id`),
+      CONSTRAINT `fk_customer_has_profession_customer` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
+      CONSTRAINT `fk_customer_has_profession_profession` FOREIGN KEY (`profession_id`) REFERENCES `profession` (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`PROFESSION`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`PROFESSION` (
-      `idProfession` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-      `Title` VARCHAR(45) NOT NULL COMMENT 'The title of the profession (Photographer)',
-      `Salary` INT NOT NULL COMMENT 'Avg of how much earning',
-      `Years` INT NOT NULL COMMENT 'How many years worked in area',
-      PRIMARY KEY (`idProfession`))
-    ENGINE = InnoDB;
+
+    # Dump of table customers
+    # ------------------------------------------------------------
+
+    CREATE TABLE `customers` (
+      `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+      `first_name` varchar(20) NOT NULL,
+      `last_name` varchar(20) NOT NULL,
+      `date_of_birth` date NOT NULL,
+      `gender` enum('male','female') NOT NULL,
+      `province_id` int(11) NOT NULL,
+      `country_id` int(11) NOT NULL,
+      PRIMARY KEY (`id`),
+      KEY `fk_customers_provinces_idx` (`province_id`),
+      KEY `fk_customers_countries_idx` (`country_id`),
+      CONSTRAINT `fk_customers_countries` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`),
+      CONSTRAINT `fk_customers_provinces` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`HOBBY`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`HOBBY` (
-      `idHobby` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-      `Title` VARCHAR(45) NOT NULL COMMENT 'The name of the customers hobby. (Swimming, photography, etc.)\n',
-      PRIMARY KEY (`idHobby`))
-    ENGINE = InnoDB;
+
+    # Dump of table groups
+    # ------------------------------------------------------------
+
+    CREATE TABLE `groups` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `name` varchar(45) NOT NULL,
+      `read` tinyint(1) NOT NULL DEFAULT '0',
+      `write` tinyint(1) NOT NULL DEFAULT '0',
+      `delete` tinyint(1) NOT NULL DEFAULT '0',
+      `update` tinyint(1) NOT NULL DEFAULT '0',
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`STORES`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`STORES` (
-      `idStore` INT NOT NULL AUTO_INCREMENT,
-      `Name` VARCHAR(45) NOT NULL COMMENT 'Name of the store.',
-      `Brand` VARCHAR(45) NOT NULL,
-      `Size` INT NOT NULL COMMENT 'The size of the store in square meeting.',
-      `Quantity` INT NOT NULL,
-      `QuantitySold` INT NOT NULL,
-      `Counties_idCounties` INT NOT NULL,
-      `Countries_idCountries` INT NOT NULL,
-      PRIMARY KEY (`idStore`),
-      CONSTRAINT `fk_STORE_Counties1`
-        FOREIGN KEY (`Counties_idCounties`)
-        REFERENCES `AC32006_Database_Team_10`.`PROVINCES` (`idCounty`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-      CONSTRAINT `fk_STORE_Countries1`
-        FOREIGN KEY (`Countries_idCountries`)
-        REFERENCES `AC32006_Database_Team_10`.`COUNTRIES` (`idCountries`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
 
-    CREATE INDEX `fk_STORE_Counties1_idx` ON `AC32006_Database_Team_10`.`STORES` (`Counties_idCounties` ASC);
+    # Dump of table hobby
+    # ------------------------------------------------------------
 
-    CREATE INDEX `fk_STORE_Countries1_idx` ON `AC32006_Database_Team_10`.`STORES` (`Countries_idCountries` ASC);
+    CREATE TABLE `hobby` (
+      `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+      `title` varchar(45) NOT NULL COMMENT 'The name of the customers hobby. (Swimming, photography, etc.)\n',
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`SALES`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`SALES` (
-      `idSales` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-      `DatePurchased` DATE NOT NULL COMMENT 'When was the camera bought',
-      `CAMERAS_idCameras` INT NOT NULL,
-      `STORE_idStore` INT NOT NULL,
-      `CUSTOMERS_idUsers` INT UNSIGNED NOT NULL,
-      PRIMARY KEY (`idSales`),
-      CONSTRAINT `fk_SALES_STORE1`
-        FOREIGN KEY (`STORE_idStore`)
-        REFERENCES `AC32006_Database_Team_10`.`STORES` (`idStore`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-      CONSTRAINT `fk_SALES_CUSTOMERS1`
-        FOREIGN KEY (`CUSTOMERS_idUsers`)
-        REFERENCES `AC32006_Database_Team_10`.`CUSTOMERS` (`idUsers`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-      CONSTRAINT `fk_SALES_CAMERAS1`
-        FOREIGN KEY (`CAMERAS_idCameras`)
-        REFERENCES `AC32006_Database_Team_10`.`CAMERAS` (`idCameras`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
 
-    CREATE INDEX `fk_SALES_STORE1_idx` ON `AC32006_Database_Team_10`.`SALES` (`STORE_idStore` ASC);
+    # Dump of table lens
+    # ------------------------------------------------------------
 
-    CREATE INDEX `fk_SALES_CUSTOMERS1_idx` ON `AC32006_Database_Team_10`.`SALES` (`CUSTOMERS_idUsers` ASC);
-
-    CREATE INDEX `fk_SALES_CAMERAS1_idx` ON `AC32006_Database_Team_10`.`SALES` (`CAMERAS_idCameras` ASC);
+    CREATE TABLE `lens` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `type` varchar(45) NOT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`LENS`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`LENS` (
-      `idLens` INT NOT NULL AUTO_INCREMENT,
-      `Type` VARCHAR(45) NOT NULL,
-      PRIMARY KEY (`idLens`))
-    ENGINE = InnoDB;
+
+    # Dump of table profession
+    # ------------------------------------------------------------
+
+    CREATE TABLE `profession` (
+      `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+      `title` varchar(45) NOT NULL COMMENT 'The title of the profession (Photographer)',
+      `salary` int(11) NOT NULL COMMENT 'Avg of how much earning',
+      `years` int(11) NOT NULL COMMENT 'How many years worked in area',
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`CUSTOMERS_has_PROFESSION`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`CUSTOMERS_has_PROFESSION` (
-      `CUSTOMERS_idUsers` INT UNSIGNED NOT NULL,
-      `PROFESSION_idProfession` INT UNSIGNED NOT NULL,
-      PRIMARY KEY (`CUSTOMERS_idUsers`, `PROFESSION_idProfession`),
-      CONSTRAINT `fk_CUSTOMERS_has_PROFESSION_CUSTOMERS1`
-        FOREIGN KEY (`CUSTOMERS_idUsers`)
-        REFERENCES `AC32006_Database_Team_10`.`CUSTOMERS` (`idUsers`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-      CONSTRAINT `fk_CUSTOMERS_has_PROFESSION_PROFESSION1`
-        FOREIGN KEY (`PROFESSION_idProfession`)
-        REFERENCES `AC32006_Database_Team_10`.`PROFESSION` (`idProfession`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
 
-    CREATE INDEX `fk_CUSTOMERS_has_PROFESSION_PROFESSION1_idx` ON `AC32006_Database_Team_10`.`CUSTOMERS_has_PROFESSION` (`PROFESSION_idProfession` ASC);
+    # Dump of table provinces
+    # ------------------------------------------------------------
 
-    CREATE INDEX `fk_CUSTOMERS_has_PROFESSION_CUSTOMERS1_idx` ON `AC32006_Database_Team_10`.`CUSTOMERS_has_PROFESSION` (`CUSTOMERS_idUsers` ASC);
+    CREATE TABLE `provinces` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `name` varchar(45) NOT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`CUSTOMERS_has_HOBBY`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`CUSTOMERS_has_HOBBY` (
-      `CUSTOMERS_idUsers` INT UNSIGNED NOT NULL,
-      `HOBBY_idHobby` INT UNSIGNED NOT NULL,
-      PRIMARY KEY (`CUSTOMERS_idUsers`, `HOBBY_idHobby`),
-      CONSTRAINT `fk_CUSTOMERS_has_HOBBY_CUSTOMERS1`
-        FOREIGN KEY (`CUSTOMERS_idUsers`)
-        REFERENCES `AC32006_Database_Team_10`.`CUSTOMERS` (`idUsers`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-      CONSTRAINT `fk_CUSTOMERS_has_HOBBY_HOBBY1`
-        FOREIGN KEY (`HOBBY_idHobby`)
-        REFERENCES `AC32006_Database_Team_10`.`HOBBY` (`idHobby`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
 
-    CREATE INDEX `fk_CUSTOMERS_has_HOBBY_HOBBY1_idx` ON `AC32006_Database_Team_10`.`CUSTOMERS_has_HOBBY` (`HOBBY_idHobby` ASC);
+    # Dump of table sales
+    # ------------------------------------------------------------
 
-    CREATE INDEX `fk_CUSTOMERS_has_HOBBY_CUSTOMERS1_idx` ON `AC32006_Database_Team_10`.`CUSTOMERS_has_HOBBY` (`CUSTOMERS_idUsers` ASC);
+    CREATE TABLE `sales` (
+      `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+      `date_purchased` date NOT NULL COMMENT 'When was the camera bought',
+      `camera_id` int(11) NOT NULL,
+      `store_id` int(11) NOT NULL,
+      `customer_id` int(10) unsigned NOT NULL,
+      PRIMARY KEY (`id`),
+      KEY `fk_sales_stores_idx` (`store_id`),
+      KEY `fk_sales_customers_idx` (`customer_id`),
+      KEY `fk_sales_cameras_idx` (`camera_id`),
+      CONSTRAINT `fk_sales_cameras` FOREIGN KEY (`camera_id`) REFERENCES `cameras` (`id`),
+      CONSTRAINT `fk_sales_customers` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
+      CONSTRAINT `fk_sales_stores` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`TYPE_has_LENS`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`TYPE_has_LENS` (
-      `TYPE_idType` INT NOT NULL,
-      `LENS_idLens` INT NOT NULL,
-      PRIMARY KEY (`TYPE_idType`, `LENS_idLens`),
-      CONSTRAINT `fk_TYPE_has_LENS_TYPE1`
-        FOREIGN KEY (`TYPE_idType`)
-        REFERENCES `AC32006_Database_Team_10`.`TYPE` (`idType`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-      CONSTRAINT `fk_TYPE_has_LENS_LENS1`
-        FOREIGN KEY (`LENS_idLens`)
-        REFERENCES `AC32006_Database_Team_10`.`LENS` (`idLens`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
 
-    CREATE INDEX `fk_TYPE_has_LENS_LENS1_idx` ON `AC32006_Database_Team_10`.`TYPE_has_LENS` (`LENS_idLens` ASC);
+    # Dump of table storage
+    # ------------------------------------------------------------
 
-    CREATE INDEX `fk_TYPE_has_LENS_TYPE1_idx` ON `AC32006_Database_Team_10`.`TYPE_has_LENS` (`TYPE_idType` ASC);
+    CREATE TABLE `storage` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `name` varchar(45) NOT NULL COMMENT 'Type\n- Compact\n- GoPro\n- DLSR\n- Bridge\n- Disposable\n- Mirror',
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`GROUPS`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`GROUPS` (
-      `idGROUPS` INT NOT NULL AUTO_INCREMENT,
-      `Name` VARCHAR(45) NOT NULL,
-      `Read` TINYINT(1) NOT NULL DEFAULT 0,
-      `Write` TINYINT(1) NOT NULL DEFAULT 0,
-      `Delete` TINYINT(1) NOT NULL DEFAULT 0,
-      `Update` TINYINT(1) NOT NULL DEFAULT 0,
-      PRIMARY KEY (`idGROUPS`))
-    ENGINE = InnoDB;
+
+    # Dump of table stores
+    # ------------------------------------------------------------
+
+    CREATE TABLE `stores` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `name` varchar(45) NOT NULL COMMENT 'Name of the store.',
+      `brand` varchar(45) NOT NULL,
+      `size` int(11) NOT NULL COMMENT 'The size of the store in square meeting.',
+      `quantity` int(11) NOT NULL,
+      `quantity_sold` int(11) NOT NULL,
+      `province_id` int(11) NOT NULL,
+      `country_id` int(11) NOT NULL,
+      PRIMARY KEY (`id`),
+      KEY `fk_store_provinces_idx` (`province_id`),
+      KEY `fk_store_countries_idx` (`country_id`),
+      CONSTRAINT `fk_store_countries` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`),
+      CONSTRAINT `fk_stores_provinces` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-    -- -----------------------------------------------------
-    -- Table `AC32006_Database_Team_10`.`USERS`
-    -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `AC32006_Database_Team_10`.`USERS` (
-      `idUSERS` INT NOT NULL AUTO_INCREMENT,
-      `Username` VARCHAR(45) NOT NULL,
-      `Password` VARCHAR(45) NOT NULL,
-      `GROUPS_idGROUPS` INT NOT NULL,
-      PRIMARY KEY (`idUSERS`),
-      CONSTRAINT `fk_USERS_GROUPS1`
-        FOREIGN KEY (`GROUPS_idGROUPS`)
-        REFERENCES `AC32006_Database_Team_10`.`GROUPS` (`idGROUPS`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
 
-    CREATE INDEX `fk_USERS_GROUPS1_idx` ON `AC32006_Database_Team_10`.`USERS` (`GROUPS_idGROUPS` ASC);
+    # Dump of table type
+    # ------------------------------------------------------------
 
-    SET SQL_MODE=@OLD_SQL_MODE;
-    SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-    SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+    CREATE TABLE `type` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `name` varchar(20) NOT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+    # Dump of table type_has_lens
+    # ------------------------------------------------------------
+
+    CREATE TABLE `type_has_lens` (
+      `type_id` int(11) NOT NULL,
+      `lens_id` int(11) NOT NULL,
+      PRIMARY KEY (`type_id`,`lens_id`),
+      KEY `fk_type_has_lens_lens_idx` (`lens_id`),
+      KEY `fk_type_has_lens_type_idx` (`type_id`),
+      CONSTRAINT `fk_type_has_lens_lens` FOREIGN KEY (`lens_id`) REFERENCES `lens` (`id`),
+      CONSTRAINT `fk_type_has_lens_type` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+    # Dump of table users
+    # ------------------------------------------------------------
+
+    CREATE TABLE `users` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `username` varchar(45) NOT NULL,
+      `password` varchar(45) NOT NULL,
+      `id_group` int(11) NOT NULL,
+      `access_token` varchar(64) DEFAULT '',
+      PRIMARY KEY (`id`),
+      KEY `fk_USERS_GROUPS1_idx` (`id_group`),
+      CONSTRAINT `fk_users_groups` FOREIGN KEY (`id_group`) REFERENCES `groups` (`id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+    /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+    /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+    /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+    /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+    /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+    /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+");
+
+$result = getDatabase()->execute("
+    /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+    /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+    /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+    /*!40101 SET NAMES utf8 */;
+    /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+    /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+    /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+    CREATE PROCEDURE `sessionUser`(access_token VARCHAR(64))
+    BEGIN
+        SELECT `users`.`id`, `users`.`username`, `users`.`access_token`, `groups`.`name` 'group_name', `groups`.`read`, `groups`.`write`, `groups`.`delete`, `groups`.`update` FROM users
+        INNER JOIN `groups` ON `users`.`id_group` = `groups`.`id`
+        WHERE `users`.`access_token` = access_token;
+    END;;
+
+    /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+    /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+    /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+    /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+    /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+    /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+");
+
+$result = getDatabase()->execute("
+    /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+    /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+    /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+    /*!40101 SET NAMES utf8 */;
+    /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+    /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+    /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+    CREATE PROCEDURE `signIn`(username VARCHAR(20), pass VARCHAR(64))
+    BEGIN
+        DECLARE user_id			BIGINT(10)	DEFAULT 0;
+        DECLARE db_pass			VARCHAR(64)	DEFAULT '';
+        DECLARE random			VARCHAR(64)	DEFAULT '';
+        DECLARE access_token	VARCHAR(64)	DEFAULT '';
+
+        SET user_id = (SELECT `users`.`id` FROM `users` WHERE `users`.`username` LIKE username);
+        SET db_pass = (SELECT `users`.`password` FROM `users` WHERE `users`.`username` LIKE username);
+
+        IF db_pass = sha1(pass) THEN
+            SELECT `users`.`access_token` FROM `users` WHERE `users`.`username` = username INTO access_token;
+
+            IF access_token = '' THEN
+                SELECT concat('AC32006 - ', username, ' - ', FLOOR((RAND() * 900000000))) INTO random;
+                SELECT sha1(random) INTO access_token;
+            END IF;
+
+            UPDATE `users` SET `users`.`access_token` = access_token WHERE `users`.`username` = username;
+        ELSE
+            select null INTO access_token;
+        END IF;
+
+        SELECT `users`.`id`, `users`.`username`, `users`.`access_token`, `groups`.`name` 'group_name', `groups`.`read`, `groups`.`write`, `groups`.`delete`, `groups`.`update` FROM users
+        INNER JOIN `groups` ON `users`.`id_group` = `groups`.`id`
+        WHERE `users`.`access_token` = access_token;
+    END;;
+
+    /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+    /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+    /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+    /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+    /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+    /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 ");
