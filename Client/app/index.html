@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" ng-app>
+<head>
+  <meta charset="utf-8">
+  <title>My HTML File</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="">
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="views.js"></script>
+</head>
+<body>
+<div ng-app="lemon">
+<div class="container">
+        <div class="row">
+        <div class="col-md-3">
+            <ul class="nav">
+                <li><a href="#AddNewOrder"> Add New Order </a></li>
+                <li><a href="#ShowOrders"> Show Order </a></li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div ng-view></div>
+        </div>
+        </div>
+</div>
+
+</body>
+</html>

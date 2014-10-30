@@ -1,0 +1,25 @@
+<p>This is the partial for view 2.</p>
+
+
+  <div class="container" ng-spp="lemon" >
+    <div ng-controller="aboutController">
+      <h1>Module: {{modules}}</h1>
+      <h3>Team {{teams}}</h3>
+      <ul>
+        <li ng-repeat="member in members">
+          {{member}}
+        </li>
+      </ul>
+      <h5>Version: {{version}}</h5>
+
+  {{status}}
+      </div>
+
+
+</div>
+
+
+<p>
+  Showing of 'interpolate' filter:
+  {{ 'Current version is v%VERSION%.' | interpolate }}
+</p>

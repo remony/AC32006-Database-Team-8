@@ -2,34 +2,50 @@
   <head>
     <title>Index</title>
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" tpe="text/css" href="assets/css/styles.css">
+    <script src="bower_components/jquery/dist/jquery.js"
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="assets/js/app.js"></script>
 
   </head>
-  <body >
-    <div class="container" ng-app="App">
-        <div ng-controller="Controller">
-          <h1>Module: {{modules}}</h1>
-          <h3>Team {{teams}}</h3>
-          <ul>
-            <li ng-repeat="member in members">
-              {{member}}
-            </li>
-          </ul>
-          <h5>Version: {{version}}</h5>
+  <body>
+    <nav>
+      <h4>Nav</h4>
+    </nav>
+    <div class="wrapper">
+      <header>
+        <h1>header</h1>
+      </header>
+
+      <div class="content">
+        <div class="container" ng-app="App">
+            <div ng-controller="Controller">
+              <h1>Module: {{modules}}</h1>
+              <h3>Team {{teams}}</h3>
+              <ul>
+                <li ng-repeat="member in members">
+                  {{member}}
+                </li>
+              </ul>
+              <h5>Version: {{version}}</h5>
+            </div>
         </div>
-    </div>
+          {{status}}
+      </div>
+  </div>
+
 
   <script>
     angular.module('App', [])
     .controller('Controller', function($scope, $http) {
       $http.get('https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/').success(function (data) {
-        console.log("Success\n" + data);
+        console.log("Succe<s></s> s\n" + data);
         $scope.modules = data.module;
         $scope.teams = data.team;
         $scope.version = data.version;
         $scope.members = data.members;
+        $scope.state = data.status;
       }).error(function(data, status) {
         //Should pick up errors and display, not yet tested.
         console.log("Error, " + data);
