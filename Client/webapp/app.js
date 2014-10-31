@@ -28,15 +28,37 @@ client.config(function($routeProvider){
 
 //Controllers
 client.controller('appController', function($scope){
-  $scope.message = 'Everyone look its home';
+
 });
 
 client.controller('aboutController', function($scope){
-  $scope.message = 'Everyone look its about';
+  $scope.message = 'About';
+  $.ajax({
+    type: "get",
+    url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/",
+    //header: {monster_cookie: $cookies.monster_cookie},
+    //beforeSend: function(xhr){xhr.setRequestHeader('monster_token',myCookie );},
+    //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
+    success: console.log("yay"),//$scope.status = data.status,
+    }).done(function(data){
+      console.log(data);
+    console.log("done");
+    }).fail(function(data){
+    //delete $window.sessionStorage.token;
+    }).success(function(data){
+      $scope.profile = data.message;
+      $scope.module = data.module;
+      $scope.team = data.team;
+      $scope.version = data.version;
+      $scope.members = data.members;
+      console.log(JSON.stringify(data, null, 5));
+    console.log("yay success " + data.status);
+    $scope.$apply();
+    });
 });
 
 client.controller('contactController', function($scope){
-  $scope.message = 'Everyone look its contact';
+  $scope.message = 'Contact';
 });
 
 client.config(['$httpProvider', function($httpProvider) {
@@ -48,8 +70,9 @@ client.config(['$httpProvider', function($httpProvider) {
 
 
 client.controller('loginController', function($scope, $cookies){
+  $scope.message = 'Login';
   $scope.login={};
-  var hash = CryptoJS.SHA1($scope.login.password);
+  var hash = CryptoJS.SHA512($scope.login.password);
   $scope.submit = function()  {
     $.ajax({
       type: "POST",
@@ -84,6 +107,7 @@ client.controller('loginController', function($scope, $cookies){
 });
 
 client.controller('profileController', function($scope, $cookies) {
+  $scope.message = 'Profile';
 var myCookie = document.cookie;
   $.ajax({
     type: "get",

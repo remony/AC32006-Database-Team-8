@@ -1,4 +1,4 @@
-<h1>Login</h1>
+<h1>{{message}}</h1>
 
 <div ng-controller="loginController as form">
 
@@ -10,11 +10,19 @@
   </div>
 </div>
 <div ng-if="status != 200">
+
+
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
 <form class="login-form" name="loginform" ng-submit="submit(loginform, data)" >
-  username: <input type="text" ng-model="login.username" placeholder="username" class="form-control"/><br />
-  password: <input type="password" ng-model="login.password" placeholder="passwords" class="form-control"/><br />
-  <input type="submit" id="submit" value="login" />
+  username: <input type="text" ng-model="login.username" placeholder="username" class="form-control" tooltip="See? Now click away..."  tooltip-trigger="focus" tooltip-placement="right"required autofocus/><br />
+  password: <input type="password" ng-model="login.password" placeholder="passwords" class="form-control" tooltip="See? Now click away..."  tooltip-trigger="focus" tooltip-placement="right"required/><br />
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
 </form>
+</div>
+</div>
 </div>
 </div>
 <div class="result"></div>
