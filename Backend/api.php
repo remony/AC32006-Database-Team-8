@@ -23,7 +23,8 @@ class API {
      */
     static public function version () {
         header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Headers *');
+        header('Access-Control-Allow-Headers: *');
+        header('Access-Control-Expose-Headers: "Access-Control-Allow-Origin"');
 
         return array(
             'module'    => 'AC32006',
