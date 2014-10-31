@@ -106,7 +106,7 @@ $result = getDatabase()->execute("
       `delete` tinyint(1) NOT NULL DEFAULT '0',
       `update` tinyint(1) NOT NULL DEFAULT '0',
       PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -242,11 +242,12 @@ $result = getDatabase()->execute("
       `username` varchar(45) NOT NULL,
       `password` varchar(45) NOT NULL,
       `id_group` int(11) NOT NULL,
-      `access_token` varchar(64) DEFAULT '',
+      `access_token` varchar(64) DEFAULT NULL,
       PRIMARY KEY (`id`),
+      UNIQUE KEY `username` (`username`),
       KEY `fk_USERS_GROUPS1_idx` (`id_group`),
       CONSTRAINT `fk_users_groups` FOREIGN KEY (`id_group`) REFERENCES `groups` (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
     /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
     /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -315,6 +316,55 @@ $result = getDatabase()->execute("
         SELECT `users`.`id`, `users`.`username`, `users`.`access_token`, `groups`.`name` 'group_name', `groups`.`read`, `groups`.`write`, `groups`.`delete`, `groups`.`update` FROM users
         INNER JOIN `groups` ON `users`.`id_group` = `groups`.`id`
         WHERE `users`.`access_token` = access_token;
+    END;;
+
+    /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+    /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+    /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+    /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+    /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+    /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+");
+
+$result = getDatabase()->execute("
+    /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+    /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+    /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+    /*!40101 SET NAMES utf8 */;
+    /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+    /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+    /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+    CREATE PROCEDURE `registerUser`(theUsername VARCHAR(20), thePassword VARCHAR(64), theGroup INT(11))
+    BEGIN
+        DECLARE db_pass			VARCHAR(64)	DEFAULT '';
+        DECLARE random			VARCHAR(64)	DEFAULT '';
+        DECLARE access_token	VARCHAR(64)	DEFAULT '';
+
+        DECLARE EXIT HANDLER FOR SQLEXCEPTION
+        BEGIN
+        ROLLBACK;
+        SELECT 'An error has occurred, operation rollbacked and the stored procedure was terminated' as 'error';
+        END;
+
+        DECLARE EXIT HANDLER FOR 1062
+        BEGIN
+        ROLLBACK;
+        SELECT 'Error, duplicate key occurred' as 'error';
+        END;
+
+        IF EXISTS (SELECT id FROM groups WHERE id = theGroup) THEN
+            SELECT concat('AC32006 - ', theUsername, ' - ', FLOOR((RAND() * 900000000))) INTO random;
+            SELECT sha1(random) INTO access_token;
+
+            INSERT INTO users (`username`, `password`, `id_group`, `access_token`) VALUES (theUsername, sha1(thePassword), theGroup, access_token);
+
+            SELECT `users`.`id`, `users`.`username`, `users`.`access_token`, `groups`.`name` 'group_name', `groups`.`read`, `groups`.`write`, `groups`.`delete`, `groups`.`update` FROM users
+            INNER JOIN `groups` ON `users`.`id_group` = `groups`.`id`
+            WHERE `users`.`access_token` = access_token;
+        ELSE
+            SELECT 'Error, invalid group selected' as 'error';
+        END IF;
     END;;
 
     /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
