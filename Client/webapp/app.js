@@ -72,35 +72,41 @@ client.config(['$httpProvider', function($httpProvider) {
 client.controller('loginController', function($scope, $cookies){
   $scope.message = 'Login';
   $scope.login={};
-  var hash = CryptoJS.SHA512($scope.login.password);
+
+
+  //$scope.login.password = CryptoJS.SHA512($scope.login.password);
   $scope.submit = function()  {
+    var pass = $scope.login.password;
+    console.log(pass);
+    var hash = CryptoJS.SHA512(pass).toString();
+    console.log(hash);
     $.ajax({
       type: "POST",
       url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=/login",
-      data: JSON.stringify({username: $scope.login.username, password: hash.toString()}),
+      data: JSON.stringify({username: $scope.login.username, password: hash}),
       //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
-      success: console.log("yay "),//$scope.status = data.status,
+      success: console.log(JSON.stringify({username: $scope.login.username, password: hash})),//$scope.status = data.status,
       dataType: "JSON"
       }).done(function(data){
 
       $scope.status=data.status;
       $scope.message=data.message;
       $scope.access_token = data.access_token;
-      console.log(JSON.stringify(data, null, 5));
+      //console.log(JSON.stringify(data, null, 5));
       //alert(JSON.stringify(data, null, 4));
-      }).fail(function(data){
+    }).error(function(data){
       console.log("oh it failed " + data.status);
-      //$.cookie('token', null);
-      //delete $window.sessionStorage.token;
+      $scope.loginStatus = data.status;
+        //should delete cookie
       }).success(function(data){
-      //$window.sessionStorage.token = data.access_token;
-      //document.cookie="monster_cookie = data.access_token";
-      //var json = jQuery.parseJSON(data);
-      //console.out(data.user);
+      if(data.status == "200"){
       $cookies.monster_cookie = data.user[0].access_token;
-      console.log(data.user[0].access_token);
-      console.log("yay success " + data.status);
-      });
+        $scope.loginSuccess = data.status;
+      } else if(data.status == "403") {
+        $scope.loginError = data.status;
+      }
+      $scope.$apply();
+    });
 
       }
 
@@ -127,5 +133,6 @@ var myCookie = document.cookie;
       console.log(JSON.stringify(data, null, 5));
     console.log("yay success " + data.status);
     $scope.$apply();
+    //$window.location.href = 'http://www.google.com';
     });
 });

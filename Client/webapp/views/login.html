@@ -1,28 +1,24 @@
 <h1>{{message}}</h1>
 
 <div ng-controller="loginController as form">
-
-<div ng-if="status == 200">
-  <div class="alert alert-success" role="alert">
-    {{status}}<br/>
-    {{message}}<br/>
-    {{access_token}}
+  <h3 ng-show="loginError">
+    <div class="alert alert-danger" role="alert">
+      <p>Incorrect username or password...</p>
+    </div>
+  </h3>
+  <h3 ng-show="loginSuccess">
+    <div class="alert alert-success" role="alert">
+      <p>Success! You're logged in</p>
+    </div>
+  </h3>
+  
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <form class="login-form" name="loginform" ng-submit="submit()" >
+        username: <input type="text" ng-model="login.username" placeholder="username" class="form-control" tooltip="See? Now click away..."  tooltip-trigger="focus" tooltip-placement="right"required autofocus/><br />
+        password: <input type="password" ng-model="login.password" placeholder="password" class="form-control" tooltip="See? Now click away..."  tooltip-trigger="focus" tooltip-placement="right"required/><br />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+      </form>
+    </div>
   </div>
 </div>
-<div ng-if="status != 200">
-
-
-
-
-<div class="panel panel-default">
-  <div class="panel-body">
-<form class="login-form" name="loginform" ng-submit="submit(loginform, data)" >
-  username: <input type="text" ng-model="login.username" placeholder="username" class="form-control" tooltip="See? Now click away..."  tooltip-trigger="focus" tooltip-placement="right"required autofocus/><br />
-  password: <input type="password" ng-model="login.password" placeholder="passwords" class="form-control" tooltip="See? Now click away..."  tooltip-trigger="focus" tooltip-placement="right"required/><br />
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-</form>
-</div>
-</div>
-</div>
-</div>
-<div class="result"></div>
