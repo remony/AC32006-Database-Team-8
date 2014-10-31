@@ -1,0 +1,20 @@
+<h1>Login</h1>
+
+<div ng-controller="loginController as form">
+
+<div ng-if="status == 200">
+  <div class="alert alert-success" role="alert">
+    {{status}}<br/>
+    {{message}}<br/>
+    {{access_token}}
+  </div>
+</div>
+<div ng-if="status != 200">
+<form class="login-form" name="loginform" ng-submit="submit(loginform, data)" >
+  username: <input type="text" ng-model="login.username" placeholder="username" class="form-control"/><br />
+  password: <input type="password" ng-model="login.password" placeholder="passwords" class="form-control"/><br />
+  <input type="submit" id="submit" value="login" />
+</form>
+</div>
+</div>
+<div class="result"></div>
