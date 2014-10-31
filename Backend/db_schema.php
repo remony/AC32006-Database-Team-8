@@ -341,18 +341,30 @@ $result = getDatabase()->execute("
         DECLARE random			VARCHAR(64)	DEFAULT '';
         DECLARE access_token	VARCHAR(64)	DEFAULT '';
 
-        DECLARE CONTINUE HANDLER FOR 1062 SELECT 'Error, duplicate key occurred';
-        DECLARE CONTINUE HANDLER FOR 1452 SELECT 'Error, invalid group selected';
-        DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SELECT 'Error, unknown error detected';
+        DECLARE EXIT HANDLER FOR SQLEXCEPTION
+        BEGIN
+        ROLLBACK;
+        SELECT 'An error has occurred, operation rollbacked and the stored procedure was terminated' as 'error';
+        END;
 
-        SELECT concat('AC32006 - ', theUsername, ' - ', FLOOR((RAND() * 900000000))) INTO random;
-        SELECT sha1(random) INTO access_token;
+        DECLARE EXIT HANDLER FOR 1062
+        BEGIN
+        ROLLBACK;
+        SELECT 'Error, duplicate key occurred' as 'error';
+        END;
 
-        INSERT INTO users (`username`, `password`, `id_group`, `access_token`) VALUES (theUsername, sha1(thePassword), theGroup, access_token);
+        IF EXISTS (SELECT id FROM groups WHERE id = theGroup) THEN
+            SELECT concat('AC32006 - ', theUsername, ' - ', FLOOR((RAND() * 900000000))) INTO random;
+            SELECT sha1(random) INTO access_token;
 
-        SELECT `users`.`id`, `users`.`username`, `users`.`access_token`, `groups`.`name` 'group_name', `groups`.`read`, `groups`.`write`, `groups`.`delete`, `groups`.`update` FROM users
-        INNER JOIN `groups` ON `users`.`id_group` = `groups`.`id`
-        WHERE `users`.`access_token` = access_token;
+            INSERT INTO users (`username`, `password`, `id_group`, `access_token`) VALUES (theUsername, sha1(thePassword), theGroup, access_token);
+
+            SELECT `users`.`id`, `users`.`username`, `users`.`access_token`, `groups`.`name` 'group_name', `groups`.`read`, `groups`.`write`, `groups`.`delete`, `groups`.`update` FROM users
+            INNER JOIN `groups` ON `users`.`id_group` = `groups`.`id`
+            WHERE `users`.`access_token` = access_token;
+        ELSE
+            SELECT 'Error, invalid group selected' as 'error';
+        END IF;
     END;;
 
     /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

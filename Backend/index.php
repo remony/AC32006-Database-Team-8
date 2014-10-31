@@ -18,6 +18,8 @@ getApi()->get('/', array('API', 'version'), EpiApi::external);
 
 getApi()->post('/login', array('API', 'login'), EpiApi::external);
 
+getApi()->post('/register', array('API', 'register'), EpiApi::external);
+
 getApi()->get('/profile/(\w+)', array('API', 'profile'), EpiApi::external);
 
 getRoute()->run();

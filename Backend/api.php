@@ -91,4 +91,44 @@ class API {
             return $sessionUser;
         }
     }
+
+    /**
+     * Generates an access_token for the User, (if the login details are right)
+     * @body json -> {
+     *      "username" : the username,
+     *      "password" : the password
+     * }
+     * @return json
+     */
+    static public function register () {
+        header('content-type: application/json; charset=utf-8');
+        header("access-control-allow-origin: *");
+
+        $loginDetails = json_decode(file_get_contents('php://input'));
+        $username = $loginDetails -> username;
+        $password = $loginDetails -> password;
+        $group = $loginDetails -> group;
+
+        $user = getDatabase()->all("CALL registerUser(:username, :password, :group);", array( ':username' => $username, ':password' => sha1($password), ':group' => $group ));
+
+        if (count($user) === 1) {
+            if (array_key_exists("error", $user[0])) {
+                return array(
+                    'status' => 403,
+                    'error' => $user[0]["error"]
+                );
+            } else {
+                return array(
+                    'status' => 200,
+                    'message' => 'You\'ve registered in successfully',
+                    'user' => $user
+                );
+            }
+        } else {
+            return array(
+                'status'    => 403,
+                'error'   => 'Access Denied!!'
+            );
+        }
+    }
 } 
