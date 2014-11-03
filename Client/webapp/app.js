@@ -1,5 +1,5 @@
 //Create the module
-var client = angular.module('clientApp', ['ngRoute', 'ngCookies']);
+var client = angular.module('clientApp', ['ngRoute', 'ngCookies', 'ui.bootstrap']);
 
 //Configure routes
 client.config(function($routeProvider, $httpProvider){
@@ -44,6 +44,14 @@ client.config(function($routeProvider, $httpProvider){
       controller: 'registerController',
       requiresLogin: true
     })
+    .when('/countries', {
+      templateUrl: 'views/countries.html',
+      controller: 'countriesController'
+    })
+    .when('/logout', {
+      templateUrl: 'views/home.html',
+      controller: 'logoutController'
+    })
     .otherwise({
       redirectTo: '/'
     });
@@ -76,11 +84,44 @@ client.factory('authInterceptor', function ($rootScope, $q, $window) {
 
 
 
+//Directives
+
 
 
 //Controllers
 
+client.controller('logoutController', function($cookies, $scope)  {
+  var cookie = $cookies.monster_cookie;
+  if(cookie != null) {
+    console.log("attempted logout");
+    document.cookie = 'monster_cookie' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    //$cookies.remove('monster_cookie');
+  } else {
+    console.log("already logged out");
+  }
+});
 
+client.controller('countriesController', function($scope){
+  $scope.message = 'Countries!';
+  $.ajax({
+    type: "get",
+    url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=/countries",
+    //header: {monster_cookie: $cookies.monster_cookie},
+    //beforeSend: function(xhr){xhr.setRequestHeader('monster_token',myCookie );},
+    //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
+    success: console.log("yay"),//$scope.status = data.status,
+    }).done(function(data){
+      //console.log(data);
+        console.log("done");
+    }).fail(function(data){
+    //delete $window.sessionStorage.token;
+    }).success(function(data){
+      $scope.countries = data.countries;
+      //console.log(JSON.stringify(data, null, 5));
+    console.log("yay success " + data.status);
+    $scope.$apply();
+    });
+});
 client.controller('cpController', function($scope){
 
 });
@@ -202,25 +243,46 @@ client.controller('registerController', function($scope, $cookies){
 
 client.controller('profileController', function($scope, $cookies) {
   $scope.message = 'Profile';
-  var myCookie = document.cookie;
-  $.ajax({
-    type: "get",
-    url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=/profile/johndoe",
-    beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
-    //header: {monster_cookie: $cookies.monster_cookie},
-    //beforeSend: function(xhr){xhr.setRequestHeader('monster_token',myCookie );},
-    //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
-    success: console.log("yay "),//$scope.status = data.status,
-    }).done(function(data){
-      console.log(data);
-    console.log("done");
-    }).fail(function(data){
-    //delete $window.sessionStorage.token;
-    }).success(function(data){
-      $scope.profile = data.message;
-      console.log(JSON.stringify(data, null, 5));
-    console.log("yay success " + data.status);
-    $scope.$apply();
-    //$window.location.href = 'http://www.google.com';
-    });
+
+  var cookie = $cookies.monster_cookie;
+  $scope.$$phase || $scope.$apply();
+  if(cookie != null) {
+    $.ajax({
+      type: "get",
+      url: "/Backend/index.php/?__route__=/profile/johndoe",
+      beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+      //header: {monster_cookie: $cookies.monster_cookie},
+      //beforeSend: function(xhr){xhr.setRequestHeader('monster_token',myCookie );},
+      //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
+      success: console.log("yay "),//$scope.status = data.status,
+      }).done(function(data){
+        console.log(data);
+      console.log("done");
+      }).fail(function(data){
+      //delete $window.sessionStorage.token;
+      }).success(function(data){
+        $scope.profile = data.message;
+        console.log(JSON.stringify(data, null, 5));
+      console.log("yay success " + data.status);
+      $scope.$apply();
+      //$window.location.href = 'http://www.google.com';
+      });
+  } else {
+
+
+  $scope.$apply(function() {
+    try {
+      $location.path("/login");
+    } finally {
+      $digest();
+    }
+  });
+
+  }
+});
+
+
+client.controller('TypeaheadCtrl', function($scope) {
+
+  $scope.selected = undefined;
 });

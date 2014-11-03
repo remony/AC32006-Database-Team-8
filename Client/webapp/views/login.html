@@ -11,12 +11,12 @@
       <p>Success! You're logged in</p>
     </div>
   </h3>
-  
+
   <div class="panel panel-default">
     <div class="panel-body">
       <form class="login-form" name="loginform" ng-submit="submit()" >
-        username: <input type="text" ng-model="login.username" placeholder="username" class="form-control" tooltip="See? Now click away..."  tooltip-trigger="focus" tooltip-placement="right"required autofocus/><br />
-        password: <input type="password" ng-model="login.password" placeholder="password" class="form-control" tooltip="See? Now click away..."  tooltip-trigger="focus" tooltip-placement="right"required/><br />
+        username: <input type="text" ng-model="login.username" placeholder="username" class="form-control" tooltip="Please enter your username"  tooltip-trigger="focus" tooltip-placement="top" required autofocus/><br />
+        password: <input type="password" ng-model="login.password" placeholder="password" class="form-control" tooltip="Please enter your password"  tooltip-trigger="focus" tooltip-placement="top" required/><br />
         <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
       </form>
     </div>
