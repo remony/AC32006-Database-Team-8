@@ -1,24 +1,24 @@
 <h1>{{message}}</h1>
 
 <div ng-controller="registerController as form">
-  <h3 ng-show="registerError">
-    <div class="alert alert-danger" role="alert">
-      <p>Something went wrong</p>
-    </div>
-  </h3>
-  <h3 ng-show="registerSuccess">
-    <div class="alert alert-success" role="alert">
-      <p>Success! You're registered!</p>
-    </div>
-  </h3>
+    <h3 ng-show="formError">
+        <div class="alert alert-danger" role="alert">
+            <p>{{formError}}</p>
+        </div>
+    </h3>
+    <h3 ng-show="formSuccess">
+        <div class="alert alert-success" role="alert">
+            <p>Success! You're logged in</p>
+        </div>
+    </h3>
 
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <form class="register-form" name="registerForm" ng-submit="submit()" >
-        username: <input type="text" ng-model="register.username" placeholder="username" class="form-control" tooltip="See? Now click away..."  tooltip-trigger="focus" tooltip-placement="right"required autofocus/><br />
-        password: <input type="password" ng-model="register.password" placeholder="password" class="form-control" tooltip="See? Now click away..."  tooltip-trigger="focus" tooltip-placement="right"required/><br />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-      </form>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form class="form-form" name="formform" ng-submit="submit()" >
+                username: <input type="text" ng-model="form.username" placeholder="username" class="form-control" tooltip="Please enter your username"  tooltip-trigger="focus" tooltip-placement="top" required autofocus/><br />
+                password: <input type="password" ng-model="form.password" placeholder="password" class="form-control" tooltip="Please enter your password"  tooltip-trigger="focus" tooltip-placement="top" required/><br />
+                <button class="btn btn-lg btn-primary btn-block" type="submit">form</button>
+            </form>
+        </div>
     </div>
-  </div>
 </div>
