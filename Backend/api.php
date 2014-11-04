@@ -93,7 +93,7 @@ class API {
     }
 
     /**
-     * Generates an access_token for the User, (if the login details are right)
+     * Registers the User in the Database
      * @body json -> {
      *      "username" : the username,
      *      "password" : the password
@@ -130,5 +130,21 @@ class API {
                 'error'   => 'Access Denied!!'
             );
         }
+    }
+
+    /**
+     * Gets the list of available countries
+     * @return json
+     */
+    static public function countries () {
+        header('content-type: application/json; charset=utf-8');
+        header("access-control-allow-origin: *");
+
+        $countries = getDatabase()->all("SELECT * FROM countries;");
+
+        return array(
+            'status' => 200,
+            'countries' => $countries
+        );
     }
 } 
