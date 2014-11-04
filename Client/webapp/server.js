@@ -8,6 +8,6 @@
 var connect = require('connect');
 var serveStatic = require('serve-static');
 //You can change this to any port
-var port = 80;
+var port = 8080;
 connect().use(serveStatic(__dirname)).listen(port);
 console.log("listening on http://localhost:" + port);

@@ -270,13 +270,7 @@ client.controller('profileController', function($scope, $cookies) {
   } else {
 
 
-  $scope.$apply(function() {
-    try {
-      $location.path("/login");
-    } finally {
-      $digest();
-    }
-  });
+  $scope.message = "not authed";
 
   }
 });
