@@ -1,0 +1,16 @@
+<!-- about.html -->
+    <div class="jumbotron text-center">
+        <h1>{{message}}</h1>
+        <h2>Module: {{ module }}</h2>
+        <h3>Team: {{team}}</h3>
+
+
+        <h4>Members</h4>
+        <ul>
+          <li ng-repeat="member	in members">
+            {{member}}
+          </li>
+        </ul>
+        <br><br>
+        <b>Version: {{version}}</b>
+    </div>
