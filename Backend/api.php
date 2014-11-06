@@ -159,21 +159,21 @@ class API {
         $queryArgs = json_decode(file_get_contents('php://input'));
         $featureName = $queryArgs -> feature;
 
-//        $sessionUser =  self :: parseHeaders();
-//
-//        if (count($sessionUser) == 0) {
-//            return array(
-//                'status'    => 403,
-//                'error'   => 'Access Denied!!'
-//            );
-//        } else {
-//            if ($sessionUser -> read !== 1) {
-//                return array(
-//                    'status'    => 403,
-//                    'error'   => 'Access Denied!!, you don\'t have read access.'
-//                );
-//
-//            } else
+        $sessionUser =  self :: parseHeaders();
+
+        if (count($sessionUser) == 0) {
+            return array(
+                'status'    => 403,
+                'error'   => 'Access Denied!!'
+            );
+        } else {
+            if ($sessionUser[0]['read'] !== "1") {
+                return array(
+                    'status'    => 403,
+                    'error'   => 'Access Denied!!, you don\'t have read access.'
+                );
+
+            } else
             if ($featureName === null) {
                 return array(
                     'status'    => 409,
@@ -182,17 +182,17 @@ class API {
 
             } else {
                 $cameras = getDatabase()->all("
-                    SELECT `cameras`.`id`, `cameras`.`brand`, `cameras`.`model_name` FROM `cameras`
+                    SELECT `cameras`.`id`, `cameras`.`brand`, `cameras`.`model_name`, `storage`.`name` as 'storage', `type`.`name` as 'type', `cameras`.`battery_type`, `cameras`.`megapixels`, `cameras`.`resolution` FROM `cameras`
                     INNER JOIN `type` ON `cameras`.`type_id` = `type`.`id`
                     INNER JOIN `storage` ON `cameras`.`storage_id` = `storage`.`id`
-                    WHERE `cameras`.`battery_type` LIKE '%:feature%' OR `cameras`.`megapixels` LIKE '%:feature%' OR `cameras`.`resolution` LIKE '%:feature%' OR `type`.`name` LIKE '%:feature%' OR `storage`.`name` LIKE '%:feature%';
-                ", array( ':feature' => $featureName));
+                    WHERE `cameras`.`battery_type` LIKE :feature OR `cameras`.`megapixels` LIKE :feature OR `cameras`.`resolution` LIKE :feature OR `type`.`name` LIKE '%:feature%' OR `storage`.`name` LIKE '%:feature%';
+                ", array( ':feature' => '%'.$featureName.'%'));
 
                 return array(
                     'status'    => 200,
                     'cameras'   => $cameras
                 );
             }
-//        }
+        }
     }
 } 
