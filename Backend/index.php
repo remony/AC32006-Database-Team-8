@@ -24,4 +24,6 @@ getApi()->get('/profile/(\w+)', array('API', 'profile'), EpiApi::external);
 
 getApi()->get('/countries', array('API', 'countries'), EpiApi::external);
 
+getApi()->post('/cameras/feature', array('API', 'queryFeatures'), EpiApi::external);
+
 getRoute()->run();
