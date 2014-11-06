@@ -153,7 +153,7 @@ client.controller('aboutController', function($scope){
   $scope.message = 'About';
   $.ajax({
     type: "get",
-    url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/",
+    url: "http://localhost/Backend/",
     //header: {monster_cookie: $cookies.monster_cookie},
     //beforeSend: function(xhr){xhr.setRequestHeader('monster_token',myCookie );},
     //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
@@ -198,7 +198,7 @@ client.controller('loginController', function($scope, $cookies, $location){
       console.log(hash);
       $.ajax({
         type: "POST",
-        url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=/login",
+        url: "http://localhost/Backend/login",
         data: JSON.stringify({username: $scope.login.username, password: hash}),
         //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
         success: console.log(JSON.stringify({username: $scope.login.username, password: hash})),//$scope.status = data.status,
@@ -239,7 +239,7 @@ client.controller('registerController', function($scope, $cookies, $location){
    var hash = CryptoJS.SHA512(password).toString();
    $.ajax({
      type:"POST",
-     url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=/register",
+     url: "http://localhost/Backend/register",
      //beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
      data: JSON.stringify({username: $scope.form.username, password: hash}),
      success: console.log(JSON.stringify({username: $scope.form.username, password: hash})),//$scope.status = data.status,
@@ -278,22 +278,21 @@ client.controller('profileController', function($scope, $cookies) {
   if(checkAuth($cookies.monster_cookie)) {
     $.ajax({
       type: "get",
-      url: "/Backend/index.php/?__route__=/profile/johndoe",
+      url: "http:/Backend/profile/userid",
       beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
-      //header: {monster_cookie: $cookies.monster_cookie},
-      //beforeSend: function(xhr){xhr.setRequestHeader('monster_token',myCookie );},
-      //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
-      success: console.log("yay "),//$scope.status = data.status,
       }).done(function(data){
         console.log(data);
       console.log("done");
       }).fail(function(data){
-      //delete $window.sessionStorage.token;
+        console.log("Error fetching profile info");
       }).success(function(data){
-        $scope.profile = data.message;
+        //$scope.profile = data.message;
+        $scope.profileUsername = data[0].username;
+        $scope.profileGroup = data[0].group_name;
         console.log(JSON.stringify(data, null, 5));
-      console.log("yay success " + data.status);
-      $scope.$apply();
+        console.log("yay success " + data.status);
+        console.log(data[0].username);
+        $scope.$apply();
       });
   } else {
 
