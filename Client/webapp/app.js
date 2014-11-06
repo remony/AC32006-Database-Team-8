@@ -52,6 +52,10 @@ client.config(function($routeProvider, $httpProvider){
       templateUrl: 'views/home.html',
       controller: 'logoutController'
     })
+    .when('/query', {
+      templateUrl: 'views/query.html',
+      controller: 'queryController'
+    })
     .otherwise({
       redirectTo: '/'
     });
@@ -90,6 +94,13 @@ client.factory('authInterceptor', function ($rootScope, $q, $window) {
 
 //Controllers
 
+client.controller('queryController', function($cookies, $scope) {
+  if (checkAuth($cookies.monster_cookie){
+    
+  })
+});
+
+
 client.controller('logoutController', function($cookies, $scope)  {
   var cookie = $cookies.monster_cookie;
   if(cookie != null) {
@@ -126,8 +137,10 @@ client.controller('cpController', function($scope){
 
 });
 
-client.controller('appController', function($scope){
-
+client.controller('appController', function($scope, $cookies, $location){
+    if ($cookies.monster_cookie == null)    {
+        $location.path("/login");
+    }
 });
 
 client.controller('aboutController', function($scope){
@@ -161,51 +174,54 @@ client.controller('contactController', function($scope){
 });
 
 client.controller('loginController', function($scope, $cookies, $location){
-  $scope.message = 'Login';
-  $scope.login={};
 
 
-  //$scope.login.password = CryptoJS.SHA512($scope.login.password);
-  $scope.submit = function()  {
+  if (!checkAuth($cookies.monster_cookie)){
+    $scope.message = 'Login';
+    $scope.login={};
+    //$scope.login.password = CryptoJS.SHA512($scope.login.password);
+    $scope.submit = function()  {
 
 
-    //auth.login($scope.login);
+      //auth.login($scope.login);
 
 
-    var pass = $scope.login.password;
-    console.log(pass);
-    var hash = CryptoJS.SHA512(pass).toString();
-    console.log(hash);
-    $.ajax({
-      type: "POST",
-      url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=/login",
-      data: JSON.stringify({username: $scope.login.username, password: hash}),
-      //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
-      success: console.log(JSON.stringify({username: $scope.login.username, password: hash})),//$scope.status = data.status,
-      dataType: "JSON"
-      }).done(function(data){
+      var pass = $scope.login.password;
+      console.log(pass);
+      var hash = CryptoJS.SHA512(pass).toString();
+      console.log(hash);
+      $.ajax({
+        type: "POST",
+        url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=/login",
+        data: JSON.stringify({username: $scope.login.username, password: hash}),
+        //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
+        success: console.log(JSON.stringify({username: $scope.login.username, password: hash})),//$scope.status = data.status,
+        dataType: "JSON"
+        }).done(function(data){
 
-      $scope.status=data.status;
-      $scope.message=data.message;
-      $scope.access_token = data.access_token;
-      //console.log(JSON.stringify(data, null, 5));
-      //alert(JSON.stringify(data, null, 4));
-    }).error(function(data){
-      console.log("oh it failed " + data.status);
-      $scope.loginStatus = data.status;
-        //should delete cookie
-      }).success(function(data){
-      if(data.status == "200"){
-      $cookies.monster_cookie = data.user[0].access_token;
-        $scope.loginSuccess = data.status;
-        $scope.$apply(function() { $location.path("/"); });
-      } else if(data.status == "403") {
-        $scope.loginError = data.status;
-      }
-      $scope.$apply();
-    });
+        $scope.status=data.status;
+        $scope.message=data.message;
+        $scope.access_token = data.access_token;
+        //console.log(JSON.stringify(data, null, 5));
+        //alert(JSON.stringify(data, null, 4));
+      }).error(function(data){
+        console.log("oh it failed " + data.status);
+        $scope.loginStatus = data.status;
+          //should delete cookie
+        }).success(function(data){
+        if(data.status == "200"){
+        $cookies.monster_cookie = data.user[0].access_token;
+          $scope.loginSuccess = data.status;
+          $scope.$apply(function() { $location.path("/"); });
+        } else if(data.status == "403") {
+          $scope.loginError = data.status;
+        }
+        $scope.$apply();
+      });
+    }
+  } else {
+    $scope.message='You are already logged in';
   }
-
 });
 
 client.controller('registerController', function($scope, $cookies, $location){
@@ -252,9 +268,8 @@ client.controller('registerController', function($scope, $cookies, $location){
 client.controller('profileController', function($scope, $cookies) {
   $scope.message = 'Profile';
 
-  var cookie = $cookies.monster_cookie;
   $scope.$$phase || $scope.$apply();
-  if(cookie != null) {
+  if(checkAuth($cookies.monster_cookie)) {
     $.ajax({
       type: "get",
       url: "/Backend/index.php/?__route__=/profile/johndoe",
@@ -273,7 +288,6 @@ client.controller('profileController', function($scope, $cookies) {
         console.log(JSON.stringify(data, null, 5));
       console.log("yay success " + data.status);
       $scope.$apply();
-      //$window.location.href = 'http://www.google.com';
       });
   } else {
 
@@ -288,3 +302,13 @@ client.controller('TypeaheadCtrl', function($scope) {
 
   $scope.selected = undefined;
 });
+
+
+
+//Handles the user auth
+function checkAuth(cookie)  {
+  if (cookie != null){
+    return true;
+  }
+  return false;
+}
