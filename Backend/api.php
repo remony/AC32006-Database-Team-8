@@ -107,14 +107,13 @@ class API {
         $loginDetails = json_decode(file_get_contents('php://input'));
         $username = $loginDetails -> username;
         $password = $loginDetails -> password;
-        $group = $loginDetails -> group;
 
-        $user = getDatabase()->all("CALL registerUser(:username, :password, :group);", array( ':username' => $username, ':password' => sha1($password), ':group' => $group ));
+        $user = getDatabase()->all("CALL registerUser(:username, :password);", array( ':username' => $username, ':password' => sha1($password) ));
 
         if (count($user) === 1) {
             if (array_key_exists("error", $user[0])) {
                 return array(
-                    'status' => 403,
+                    'status' => 409,
                     'error' => $user[0]["error"]
                 );
             } else {

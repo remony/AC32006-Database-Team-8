@@ -8,10 +8,6 @@ $result = getDatabase()->execute("
     /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
     /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
-    # Dump of table cameras
-    # ------------------------------------------------------------
-
     CREATE TABLE `cameras` (
       `id` int(11) NOT NULL AUTO_INCREMENT,
       `brand` varchar(20) NOT NULL,
@@ -82,15 +78,12 @@ $result = getDatabase()->execute("
       `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
       `first_name` varchar(20) NOT NULL,
       `last_name` varchar(20) NOT NULL,
-      `date_of_birth` date NOT NULL,
+      `date_of_birth` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       `gender` enum('male','female') NOT NULL,
-      `province_id` int(11) NOT NULL,
       `country_id` int(11) NOT NULL,
       PRIMARY KEY (`id`),
-      KEY `fk_customers_provinces_idx` (`province_id`),
       KEY `fk_customers_countries_idx` (`country_id`),
-      CONSTRAINT `fk_customers_countries` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`),
-      CONSTRAINT `fk_customers_provinces` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`)
+      CONSTRAINT `fk_customers_countries` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -145,23 +138,12 @@ $result = getDatabase()->execute("
 
 
 
-    # Dump of table provinces
-    # ------------------------------------------------------------
-
-    CREATE TABLE `provinces` (
-      `id` int(11) NOT NULL AUTO_INCREMENT,
-      `name` varchar(45) NOT NULL,
-      PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
     # Dump of table sales
     # ------------------------------------------------------------
 
     CREATE TABLE `sales` (
       `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-      `date_purchased` date NOT NULL COMMENT 'When was the camera bought',
+      `date_purchased` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'When was the camera bought',
       `camera_id` int(11) NOT NULL,
       `store_id` int(11) NOT NULL,
       `customer_id` int(10) unsigned NOT NULL,
@@ -197,13 +179,10 @@ $result = getDatabase()->execute("
       `size` int(11) NOT NULL COMMENT 'The size of the store in square meeting.',
       `quantity` int(11) NOT NULL,
       `quantity_sold` int(11) NOT NULL,
-      `province_id` int(11) NOT NULL,
       `country_id` int(11) NOT NULL,
       PRIMARY KEY (`id`),
-      KEY `fk_store_provinces_idx` (`province_id`),
       KEY `fk_store_countries_idx` (`country_id`),
-      CONSTRAINT `fk_store_countries` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`),
-      CONSTRAINT `fk_stores_provinces` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`)
+      CONSTRAINT `fk_store_countries` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -335,36 +314,25 @@ $result = getDatabase()->execute("
     /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
     /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-    CREATE PROCEDURE `registerUser`(theUsername VARCHAR(20), thePassword VARCHAR(64), theGroup INT(11))
+    CREATE PROCEDURE `registerUser`(theUsername VARCHAR(20), thePassword VARCHAR(64))
     BEGIN
         DECLARE db_pass			VARCHAR(64)	DEFAULT '';
         DECLARE random			VARCHAR(64)	DEFAULT '';
         DECLARE access_token	VARCHAR(64)	DEFAULT '';
+        DECLARE group_id		INT(11)	DEFAULT 0;
 
-        DECLARE EXIT HANDLER FOR SQLEXCEPTION
-        BEGIN
-        ROLLBACK;
-        SELECT 'An error has occurred, operation rollbacked and the stored procedure was terminated' as 'error';
-        END;
+        DECLARE CONTINUE HANDLER FOR 1062 SELECT 'duplicate key occurred' AS 'error';
+        DECLARE CONTINUE HANDLER FOR 1452 SELECT 'invalid group selected' AS 'error';
+        DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SELECT 'unknown error detected' AS 'error';
 
-        DECLARE EXIT HANDLER FOR 1062
-        BEGIN
-        ROLLBACK;
-        SELECT 'Error, duplicate key occurred' as 'error';
-        END;
+        SELECT concat('AC32006 - ', theUsername, ' - ', FLOOR((RAND() * 900000000))) INTO random;
+        SELECT sha1(random) INTO access_token;
 
-        IF EXISTS (SELECT id FROM groups WHERE id = theGroup) THEN
-            SELECT concat('AC32006 - ', theUsername, ' - ', FLOOR((RAND() * 900000000))) INTO random;
-            SELECT sha1(random) INTO access_token;
+        INSERT INTO users (`username`, `password`, `id_group`, `access_token`) VALUES (theUsername, sha1(thePassword), group_id, access_token);
 
-            INSERT INTO users (`username`, `password`, `id_group`, `access_token`) VALUES (theUsername, sha1(thePassword), theGroup, access_token);
-
-            SELECT `users`.`id`, `users`.`username`, `users`.`access_token`, `groups`.`name` 'group_name', `groups`.`read`, `groups`.`write`, `groups`.`delete`, `groups`.`update` FROM users
-            INNER JOIN `groups` ON `users`.`id_group` = `groups`.`id`
-            WHERE `users`.`access_token` = access_token;
-        ELSE
-            SELECT 'Error, invalid group selected' as 'error';
-        END IF;
+        SELECT `users`.`id`, `users`.`username`, `users`.`access_token`, `groups`.`name` 'group_name', `groups`.`read`, `groups`.`write`, `groups`.`delete`, `groups`.`update` FROM users
+        INNER JOIN `groups` ON `users`.`id_group` = `groups`.`id`
+        WHERE `users`.`access_token` = access_token;
     END;;
 
     /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
@@ -374,3 +342,300 @@ $result = getDatabase()->execute("
     /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
     /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 ");
+
+$result = getDatabase()->execute("
+    /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+    /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+    /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+    /*!40101 SET NAMES utf8 */;
+    /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+    /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+    /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+    INSERT INTO `groups` (`id`, `name`, `read`, `write`, `delete`, `update`)
+    VALUES
+    (0, 'client', 1, 0, 0, 0),
+    (1, 'admins', 1, 1, 1, 1),
+    (2, 'manager', 1, 1, 0, 1),
+    (3, 'employee', 1, 1, 0, 0);
+
+    /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+    /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+    /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+    /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+    /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+    /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+");
+
+$result = getDatabase()->execute("
+    /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+    /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+    /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+    /*!40101 SET NAMES utf8 */;
+    /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+    /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+    /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+    INSERT INTO `countries` (`id`, `name`)
+    VALUES
+	(1, 'Andorra'),
+	(2, 'United Arab Emirates'),
+	(3, 'Afghanistan'),
+	(4, 'Antigua and Barbuda'),
+	(5, 'Anguilla'),
+	(6, 'Albania'),
+	(7, 'Armenia'),
+	(8, 'Angola'),
+	(9, 'Antarctica'),
+	(10, 'Argentina'),
+	(11, 'American Samoa'),
+	(12, 'Austria'),
+	(13, 'Australia'),
+	(14, 'Aruba'),
+	(15, 'Aland Islands'),
+	(16, 'Azerbaijan'),
+	(17, 'Bosnia and Herzegovina'),
+	(18, 'Barbados'),
+	(19, 'Bangladesh'),
+	(20, 'Belgium'),
+	(21, 'Burkina Faso'),
+	(22, 'Bulgaria'),
+	(23, 'Bahrain'),
+	(24, 'Burundi'),
+	(25, 'Benin'),
+	(26, 'Saint Barthelemy'),
+	(27, 'Bermuda'),
+	(28, 'Brunei'),
+	(29, 'Bolivia'),
+	(30, 'Bonaire, Saint Eustatius and Saba '),
+	(31, 'Brazil'),
+	(32, 'Bahamas'),
+	(33, 'Bhutan'),
+	(34, 'Bouvet Island'),
+	(35, 'Botswana'),
+	(36, 'Belarus'),
+	(37, 'Belize'),
+	(38, 'Canada'),
+	(39, 'Cocos Islands'),
+	(40, 'Democratic Republic of the Congo'),
+	(41, 'Central African Republic'),
+	(42, 'Republic of the Congo'),
+	(43, 'Switzerland'),
+	(44, 'Ivory Coast'),
+	(45, 'Cook Islands'),
+	(46, 'Chile'),
+	(47, 'Cameroon'),
+	(48, 'China'),
+	(49, 'Colombia'),
+	(50, 'Costa Rica'),
+	(51, 'Cuba'),
+	(52, 'Cape Verde'),
+	(53, 'Curacao'),
+	(54, 'Christmas Island'),
+	(55, 'Cyprus'),
+	(56, 'Czech Republic'),
+	(57, 'Germany'),
+	(58, 'Djibouti'),
+	(59, 'Denmark'),
+	(60, 'Dominica'),
+	(61, 'Dominican Republic'),
+	(62, 'Algeria'),
+	(63, 'Ecuador'),
+	(64, 'Estonia'),
+	(65, 'Egypt'),
+	(66, 'Western Sahara'),
+	(67, 'Eritrea'),
+	(68, 'Spain'),
+	(69, 'Ethiopia'),
+	(70, 'Finland'),
+	(71, 'Fiji'),
+	(72, 'Falkland Islands'),
+	(73, 'Micronesia'),
+	(74, 'Faroe Islands'),
+	(75, 'France'),
+	(76, 'Gabon'),
+	(77, 'United Kingdom'),
+	(78, 'Grenada'),
+	(79, 'Georgia'),
+	(80, 'French Guiana'),
+	(81, 'Guernsey'),
+	(82, 'Ghana'),
+	(83, 'Gibraltar'),
+	(84, 'Greenland'),
+	(85, 'Gambia'),
+	(86, 'Guinea'),
+	(87, 'Guadeloupe'),
+	(88, 'Equatorial Guinea'),
+	(89, 'Greece'),
+	(90, 'South Georgia and the South Sandwich Islands'),
+	(91, 'Guatemala'),
+	(92, 'Guam'),
+	(93, 'Guinea-Bissau'),
+	(94, 'Guyana'),
+	(95, 'Hong Kong'),
+	(96, 'Heard Island and McDonald Islands'),
+	(97, 'Honduras'),
+	(98, 'Croatia'),
+	(99, 'Haiti'),
+	(100, 'Hungary'),
+	(101, 'Indonesia'),
+	(102, 'Ireland'),
+	(103, 'Israel'),
+	(104, 'Isle of Man'),
+	(105, 'India'),
+	(106, 'British Indian Ocean Territory'),
+	(107, 'Iraq'),
+	(108, 'Iran'),
+	(109, 'Iceland'),
+	(110, 'Italy'),
+	(111, 'Jersey'),
+	(112, 'Jamaica'),
+	(113, 'Jordan'),
+	(114, 'Japan'),
+	(115, 'Kenya'),
+	(116, 'Kyrgyzstan'),
+	(117, 'Cambodia'),
+	(118, 'Kiribati'),
+	(119, 'Comoros'),
+	(120, 'Saint Kitts and Nevis'),
+	(121, 'North Korea'),
+	(122, 'South Korea'),
+	(123, 'Kosovo'),
+	(124, 'Kuwait'),
+	(125, 'Cayman Islands'),
+	(126, 'Kazakhstan'),
+	(127, 'Laos'),
+	(128, 'Lebanon'),
+	(129, 'Saint Lucia'),
+	(130, 'Liechtenstein'),
+	(131, 'Sri Lanka'),
+	(132, 'Liberia'),
+	(133, 'Lesotho'),
+	(134, 'Lithuania'),
+	(135, 'Luxembourg'),
+	(136, 'Latvia'),
+	(137, 'Libya'),
+	(138, 'Morocco'),
+	(139, 'Monaco'),
+	(140, 'Moldova'),
+	(141, 'Montenegro'),
+	(142, 'Saint Martin'),
+	(143, 'Madagascar'),
+	(144, 'Marshall Islands'),
+	(145, 'Macedonia'),
+	(146, 'Mali'),
+	(147, 'Myanmar'),
+	(148, 'Mongolia'),
+	(149, 'Macao'),
+	(150, 'Northern Mariana Islands'),
+	(151, 'Martinique'),
+	(152, 'Mauritania'),
+	(153, 'Montserrat'),
+	(154, 'Malta'),
+	(155, 'Mauritius'),
+	(156, 'Maldives'),
+	(157, 'Malawi'),
+	(158, 'Mexico'),
+	(159, 'Malaysia'),
+	(160, 'Mozambique'),
+	(161, 'Namibia'),
+	(162, 'New Caledonia'),
+	(163, 'Niger'),
+	(164, 'Norfolk Island'),
+	(165, 'Nigeria'),
+	(166, 'Nicaragua'),
+	(167, 'Netherlands'),
+	(168, 'Norway'),
+	(169, 'Nepal'),
+	(170, 'Nauru'),
+	(171, 'Niue'),
+	(172, 'New Zealand'),
+	(173, 'Oman'),
+	(174, 'Panama'),
+	(175, 'Peru'),
+	(176, 'French Polynesia'),
+	(177, 'Papua New Guinea'),
+	(178, 'Philippines'),
+	(179, 'Pakistan'),
+	(180, 'Poland'),
+	(181, 'Saint Pierre and Miquelon'),
+	(182, 'Pitcairn'),
+	(183, 'Puerto Rico'),
+	(184, 'Palestinian Territory'),
+	(185, 'Portugal'),
+	(186, 'Palau'),
+	(187, 'Paraguay'),
+	(188, 'Qatar'),
+	(189, 'Reunion'),
+	(190, 'Romania'),
+	(191, 'Serbia'),
+	(192, 'Russia'),
+	(193, 'Rwanda'),
+	(194, 'Saudi Arabia'),
+	(195, 'Solomon Islands'),
+	(196, 'Seychelles'),
+	(197, 'Sudan'),
+	(198, 'South Sudan'),
+	(199, 'Sweden'),
+	(200, 'Singapore'),
+	(201, 'Saint Helena'),
+	(202, 'Slovenia'),
+	(203, 'Svalbard and Jan Mayen'),
+	(204, 'Slovakia'),
+	(205, 'Sierra Leone'),
+	(206, 'San Marino'),
+	(207, 'Senegal'),
+	(208, 'Somalia'),
+	(209, 'Suriname'),
+	(210, 'Sao Tome and Principe'),
+	(211, 'El Salvador'),
+	(212, 'Sint Maarten'),
+	(213, 'Syria'),
+	(214, 'Swaziland'),
+	(215, 'Turks and Caicos Islands'),
+	(216, 'Chad'),
+	(217, 'French Southern Territories'),
+	(218, 'Togo'),
+	(219, 'Thailand'),
+	(220, 'Tajikistan'),
+	(221, 'Tokelau'),
+	(222, 'East Timor'),
+	(223, 'Turkmenistan'),
+	(224, 'Tunisia'),
+	(225, 'Tonga'),
+	(226, 'Turkey'),
+	(227, 'Trinidad and Tobago'),
+	(228, 'Tuvalu'),
+	(229, 'Taiwan'),
+	(230, 'Tanzania'),
+	(231, 'Ukraine'),
+	(232, 'Uganda'),
+	(233, 'United States Minor Outlying Islands'),
+	(234, 'United States'),
+	(235, 'Uruguay'),
+	(236, 'Uzbekistan'),
+	(237, 'Vatican'),
+	(238, 'Saint Vincent and the Grenadines'),
+	(239, 'Venezuela'),
+	(240, 'British Virgin Islands'),
+	(241, 'U.S. Virgin Islands'),
+	(242, 'Vietnam'),
+	(243, 'Vanuatu'),
+	(244, 'Wallis and Futuna'),
+	(245, 'Samoa'),
+	(246, 'Yemen'),
+	(247, 'Mayotte'),
+	(248, 'South Africa'),
+	(249, 'Zambia'),
+	(250, 'Zimbabwe'),
+	(251, 'Serbia and Montenegro'),
+	(252, 'Netherlands Antilles');
+
+    /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+    /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+    /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+    /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+    /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+    /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+");
+
