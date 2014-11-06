@@ -95,9 +95,21 @@ client.factory('authInterceptor', function ($rootScope, $q, $window) {
 //Controllers
 
 client.controller('queryController', function($cookies, $scope) {
-  if (checkAuth($cookies.monster_cookie){
-    
-  })
+  if (checkAuth($cookies.monster_cookie)){
+      $scope.message='Query';
+      $.ajax({
+        type: "get",
+        url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=/countries",
+        }).done(function(data){
+          //console.log(data);
+            console.log("done");
+        }).fail(function(data){
+        //delete $window.sessionStorage.token;
+        }).success(function(data){
+          $scope.countries = data.countries;
+          //console.log(JSON.stringify(data, null, 5));
+        });
+  }
 });
 
 
@@ -117,10 +129,6 @@ client.controller('countriesController', function($scope){
   $.ajax({
     type: "get",
     url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=/countries",
-    //header: {monster_cookie: $cookies.monster_cookie},
-    //beforeSend: function(xhr){xhr.setRequestHeader('monster_token',myCookie );},
-    //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
-    success: console.log("yay"),//$scope.status = data.status,
     }).done(function(data){
       //console.log(data);
         console.log("done");
@@ -129,8 +137,6 @@ client.controller('countriesController', function($scope){
     }).success(function(data){
       $scope.countries = data.countries;
       //console.log(JSON.stringify(data, null, 5));
-    console.log("yay success " + data.status);
-    $scope.$apply();
     });
 });
 client.controller('cpController', function($scope){
@@ -311,4 +317,25 @@ function checkAuth(cookie)  {
     return true;
   }
   return false;
+}
+
+//returns a list of countries
+function getCountries() {
+  $.ajax({
+    type: "get",
+    url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=/countries",
+    //header: {monster_cookie: $cookies.monster_cookie},
+    //beforeSend: function(xhr){xhr.setRequestHeader('monster_token',myCookie );},
+    //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
+    success: console.log("yay"),//$scope.status = data.status,
+    }).done(function(data){
+      //console.log(data);
+        console.log("done");
+    }).fail(function(data){
+    //delete $window.sessionStorage.token;
+    }).success(function(data){
+      $scope.countries = data.countries;
+      //console.log(JSON.stringify(data, null, 5));
+    });
+    //return $scope.countries;
 }

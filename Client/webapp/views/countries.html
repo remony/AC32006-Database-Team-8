@@ -6,12 +6,7 @@
   </li>
 </ul>
 -->
-<script >
-  <a>
-      <img ng-src="http://upload.wikimedia.org/wikipedia/commons/thumb/{{match.model.name.flag}}" width="16">
-      <span bind-html-unsafe="match.label.name | typeaheadHighlight:query"></span>
-  </a>
-</script>
+
 <div class='container-fluid' ng-controller="TypeaheadCtrl">
     <input type="text" ng-model="selected" typeahead="country.name for country in countries | filter:$viewValue | limitTo:8" class="form-control">
 </div>
