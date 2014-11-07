@@ -1,5 +1,5 @@
 //Create the module
-var client = angular.module('clientApp', ['ngRoute', 'ngCookies', 'ui.bootstrap']);
+var client = angular.module('clientApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'ngMaterial', 'clientApp.query', 'clientApp.register']);
 
 //Configure routes
 client.config(function($routeProvider, $httpProvider){
@@ -52,13 +52,8 @@ client.config(function($routeProvider, $httpProvider){
       templateUrl: 'views/home.html',
       controller: 'logoutController'
     })
-    .when('/query', {
-      templateUrl: 'views/query.html',
-      controller: 'queryController'
-    })
-    .otherwise({
-      redirectTo: '/'
-    });
+
+
 });
 
 
@@ -94,23 +89,7 @@ client.factory('authInterceptor', function ($rootScope, $q, $window) {
 
 //Controllers
 
-client.controller('queryController', function($cookies, $scope) {
-  if (checkAuth($cookies.monster_cookie)){
-      $scope.message='Query';
-      $.ajax({
-        type: "get",
-        url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=/countries",
-        }).done(function(data){
-          //console.log(data);
-            console.log("done");
-        }).fail(function(data){
-        //delete $window.sessionStorage.token;
-        }).success(function(data){
-          $scope.countries = data.countries;
-          //console.log(JSON.stringify(data, null, 5));
-        });
-  }
-});
+
 
 
 client.controller('logoutController', function($cookies, $scope)  {
@@ -143,10 +122,12 @@ client.controller('cpController', function($scope){
 
 });
 
-client.controller('appController', function($scope, $cookies, $location){
-    if ($cookies.monster_cookie == null)    {
-        $location.path("/login");
-    }
+client.controller('appController', function($scope, $cookies, $location, $timeout, $mdSidenav){
+
+
+      $scope.toggleLeft = function() {
+        $mdSidenav('left').toggle();
+      };
 });
 
 client.controller('aboutController', function($scope){
@@ -162,7 +143,8 @@ client.controller('aboutController', function($scope){
       console.log(data);
     console.log("done");
     }).fail(function(data){
-    //delete $window.sessionStorage.token;
+      //delete $window.sessionStorage.token;
+      console.log("failed to get about data");
     }).success(function(data){
       $scope.profile = data.message;
       $scope.module = data.module;
@@ -170,7 +152,6 @@ client.controller('aboutController', function($scope){
       $scope.version = data.version;
       $scope.members = data.members;
       console.log(JSON.stringify(data, null, 5));
-    console.log("yay success " + data.status);
     $scope.$apply();
     });
 });
@@ -179,10 +160,30 @@ client.controller('contactController', function($scope){
   $scope.message = 'Contact';
 });
 
-client.controller('loginController', function($scope, $cookies, $location){
+client.controller('loginController', function($scope, $cookies, $location, $mdToast){
+function toastIt() {
+$mdToast.show({
+  template: '<md-toast>' + $scope.toast + '</md-toast>',
+  hideDelay: 2000,
+  position: getToastPosition()
+});
+function getToastPosition() {
+return Object.keys($scope.toastPosition)
+  .filter(function(pos) { return $scope.toastPosition[pos]; })
+  .join(' ');
+};
 
 
-  if (!checkAuth($cookies.monster_cookie)){
+};
+
+$scope.toastPosition = {
+  bottom: false,
+  top: true,
+  left: false,
+  right: true
+};
+
+
     $scope.message = 'Login';
     $scope.login={};
     //$scope.login.password = CryptoJS.SHA512($scope.login.password);
@@ -201,77 +202,45 @@ client.controller('loginController', function($scope, $cookies, $location){
         url: "http://localhost/Backend/login",
         data: JSON.stringify({username: $scope.login.username, password: hash}),
         //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
-        success: console.log(JSON.stringify({username: $scope.login.username, password: hash})),//$scope.status = data.status,
         dataType: "JSON"
         }).done(function(data){
 
         $scope.status=data.status;
-        $scope.message=data.message;
         $scope.access_token = data.access_token;
         //console.log(JSON.stringify(data, null, 5));
         //alert(JSON.stringify(data, null, 4));
       }).error(function(data){
-        console.log("oh it failed " + data.status);
+        $scope.toast = "Something went wrong";
         $scope.loginStatus = data.status;
           //should delete cookie
         }).success(function(data){
         if(data.status == "200"){
-        $cookies.monster_cookie = data.user[0].access_token;
-          $scope.loginSuccess = data.status;
-          $scope.$apply(function() { $location.path("/"); });
+          $cookies.monster_cookie = data.user[0].access_token;
+          $scope.toast = "You have logged in!";
         } else if(data.status == "403") {
-          $scope.loginError = data.status;
+          $scope.toast = "Incorrect username or password";
         }
+        toastIt();
         $scope.$apply();
       });
     }
-  } else {
-    $scope.message='You are already logged in';
-  }
-});
 
-client.controller('registerController', function($scope, $cookies, $location){
- $scope.message="Register";
- $scope.submit = function(){
-     console.log($scope.form);
-     var password = $scope.form.password;
-
-   var hash = CryptoJS.SHA512(password).toString();
-   $.ajax({
-     type:"POST",
-     url: "http://localhost/Backend/register",
-     //beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
-     data: JSON.stringify({username: $scope.form.username, password: hash}),
-     success: console.log(JSON.stringify({username: $scope.form.username, password: hash})),//$scope.status = data.status,
-     dataType: "JSON"
-
-   }).done(function(data){
-        console.log("done");
-     //$scope.status=data.status;
-     //$scope.message=data.message;
-
-   }).error(function(data){
-     //console.log("oh it failed " + data.status);
-     $scope.registerStatus = data.status;
-       console.log("error");
-     }).success(function(data){
-     if(data.status == "200"){
-       $scope.registerSuccess = data.status;
-         $scope.$apply(function() { $location.path("/login"); });
-     } else if(data.status == "403") {
-       $scope.registerError = data.status;
-     }  else if (data.status == "409"){
-        $scope.formError = data.status + " - Username already exists.";
-     }
-     $scope.$apply();
-    console.log(data.status);
-   });
- }
 });
 
 
 
-client.controller('profileController', function($scope, $cookies) {
+
+
+client.controller('ToastCtrl', function($scope, $mdToast) {
+  $scope.closeToast = function() {
+    $mdToast.hide();
+  };
+});
+
+
+
+
+client.controller('profileController', function($scope, $cookies, $mdToast, $location) {
   $scope.message = 'Profile';
 
   $scope.$$phase || $scope.$apply();
@@ -286,7 +255,6 @@ client.controller('profileController', function($scope, $cookies) {
       }).fail(function(data){
         console.log("Error fetching profile info");
       }).success(function(data){
-        //$scope.profile = data.message;
         $scope.profileUsername = data[0].username;
         $scope.profileGroup = data[0].group_name;
         console.log(JSON.stringify(data, null, 5));
@@ -297,7 +265,12 @@ client.controller('profileController', function($scope, $cookies) {
   } else {
 
 
-  $scope.message = "not authed";
+  $mdToast.show({
+    template: '<md-toast>You must be logged in to access this</md-toast>',
+    hideDelay: 3000,
+    position: 'top right'
+  });
+  $location.path("/");
 
   }
 });
@@ -310,31 +283,33 @@ client.controller('TypeaheadCtrl', function($scope) {
 
 
 
+client.controller('AppCtrl', function($scope, $timeout, $mdSidenav) {
+  $scope.toggleLeft = function() {
+    $mdSidenav('left').toggle();
+  };
+  $scope.toggleRight = function() {
+    $mdSidenav('right').toggle();
+  };
+})
+
+client.controller('LeftCtrl', function($scope, $timeout, $mdSidenav) {
+  $scope.close = function() {
+    $mdSidenav('left').close();
+  };
+})
+
+client.controller('RightCtrl', function($scope, $timeout, $mdSidenav) {
+  $scope.close = function() {
+    $mdSidenav('right').close();
+  };
+});
+
+
+
 //Handles the user auth
 function checkAuth(cookie)  {
   if (cookie != null){
     return true;
   }
   return false;
-}
-
-//returns a list of countries
-function getCountries() {
-  $.ajax({
-    type: "get",
-    url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=/countries",
-    //header: {monster_cookie: $cookies.monster_cookie},
-    //beforeSend: function(xhr){xhr.setRequestHeader('monster_token',myCookie );},
-    //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
-    success: console.log("yay"),//$scope.status = data.status,
-    }).done(function(data){
-      //console.log(data);
-        console.log("done");
-    }).fail(function(data){
-    //delete $window.sessionStorage.token;
-    }).success(function(data){
-      $scope.countries = data.countries;
-      //console.log(JSON.stringify(data, null, 5));
-    });
-    //return $scope.countries;
 }

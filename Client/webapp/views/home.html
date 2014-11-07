@@ -1,5 +1,9 @@
-<div class="jumbotron text-center">
-        <h1>Home Page</h1>
-
-        <p>{{ message }}</p>
+<md-toolbar md-theme="indigo">
+    <div class="md-toolbar-tools">
+      <div ng-include="'back.html'"></div>
+      <span class="md-flex"><h1>{{message}}</h1></span>
     </div>
+  </md-toolbar>
+<md-content class="md-padding" style="height: 600px;">
+  <h1>Homepage</h1>
+</md-content>

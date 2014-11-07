@@ -1,3 +1,22 @@
+<md-toolbar md-theme="indigo">
+    <div class="md-toolbar-tools">
+      <div ng-include="'back.html'"></div>
+      <span class="md-flex"><h1>{{message}}</h1></span>
+    </div>
+  </md-toolbar>
+  <md-content class="md-padding" style="width: 100%;">
+    <section layout="horizontal" layout-sm="horizontal" layout-align="center center">
+        <md-content md-theme="pink">
+        <form class="form-form" name="formform" ng-submit="submit()" >
+          <md-text-float label="username" ng-model="form.username" required autofocus></md-text-float>
+          <md-text-float label="password" ng-model="form.password" type="password" required></md-text-float>
+          <md-button class="md-raised md-primary" type="submit">Register</md-button>
+        </form>
+      </section>
+  </md-content>
+
+<!--
+<md-card>
 <h1>{{message}}</h1>
 
 <div ng-controller="registerController as form">
@@ -22,3 +41,6 @@
         </div>
     </div>
 </div>
+</md-card>
+
+-->

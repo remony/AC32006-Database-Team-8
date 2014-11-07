@@ -1,4 +1,4 @@
-<h1>{{message}}</h1>
+
 <!--
 <ul>
   <li ng-repeat="country in countries">
@@ -6,7 +6,12 @@
   </li>
 </ul>
 -->
-
-<div class='container-fluid' ng-controller="TypeaheadCtrl">
+<md-toolbar md-theme="">
+    <div class="md-toolbar-tools">
+      <div ng-include="'back.html'"></div>
+      <span class="md-flex"><h1>{{message}}</h1></span>
+    </div>
+  </md-toolbar>
+<md-content class="md-padding" style="height: 600px;">
     <input type="text" ng-model="selected" typeahead="country.name for country in countries | filter:$viewValue | limitTo:8" class="form-control">
-</div>
+</md-toolbar>

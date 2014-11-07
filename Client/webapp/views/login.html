@@ -1,37 +1,17 @@
 
-
-<div ng-controller="loginController as form">
-  <h3 ng-show="loginError">
-    <div class="alert alert-danger" role="alert">
-      <p>Incorrect username or password...</p>
-    </div>
-  </h3>
-  <h3 ng-show="loginSuccess">
-    <div class="alert alert-success" role="alert">
-      <p>Success! You're logged in</p>
-    </div>
-  </h3>
-
-  <div ng-show="message != 'Login'">
-    <h1>{{LoginLoggedIn}}</h1>
-  </div>
-
-
-<div ng-switch="message">
-  <div ng-switch-when="Login">
-    <h1>{{message}}</h1>
-    <div class="panel panel-default" >
-      <div class="panel-body">
-        <form class="login-form" name="loginform" ng-submit="submit()" >
-          username: <input type="text" ng-model="login.username" placeholder="username" class="form-control" tooltip="Please enter your username"  tooltip-trigger="focus" tooltip-placement="top" required autofocus/><br />
-          password: <input type="password" ng-model="login.password" placeholder="password" class="form-control" tooltip="Please enter your password"  tooltip-trigger="focus" tooltip-placement="top" required/><br />
-          <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-        </form>
-      </div>
-    </div>
-  </div>
-  <div ng-switch-default>
-  <h1>{{message}}</h1>
-  </div>
-</div>
-</div>
+    <md-toolbar md-theme="indigo">
+        <div class="md-toolbar-tools">
+          <div ng-include="'back.html'"></div>
+          <span class="md-flex"><h1>{{message}}</h1></span>
+        </div>
+      </md-toolbar>
+      <md-content class="md-padding" style="width: 100%;">
+        <section layout="horizontal" layout-sm="horizontal" layout-align="center center">
+            <md-content md-theme="pink">
+            <form class="login-form" name="loginform" ng-submit="submit()" >
+              <md-text-float label="username" ng-model="login.username" placeholder="username" required autofocus></md-text-float>
+              <md-text-float label="password" ng-model="login.password" type="password" placeholder="password" required></md-text-float>
+              <md-button class="md-raised md-primary" type="submit">Login</md-button>
+            </form>
+          </section>
+      </md-content>
