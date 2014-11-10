@@ -1,28 +1,17 @@
+angular.module('clientApp.toast', ['ngRoute', 'ngCookies', 'ngMaterial'])
 
-
-.factory('toastService', function($http){
+.factory('toastService', function($http, $mdToast){
   return {
-    displayToast: function(callback){
+    getCountries: function(callback){
+      return $http.get('http://localhost/Backend/countries').success(callback);
+    },
 
-
-      $mdToast.show({
-        template: '<md-toast>' + $scope.toast + '</md-toast>',
-        hideDelay: 2000,
-        position: getToastPosition()
-      })
-      function getToastPosition() {
-      return Object.keys($scope.toastPosition)
-        .filter(function(pos) { return $scope.toastPosition[pos]; })
-        .join(' ');
-      };
-
-      $scope.toastPosition = {
-        bottom: false,
-        top: true,
-        left: false,
-        right: true
-      };
-
+     displayToast: function(message) {
+       $mdToast.show({
+         template: '<md-toast>' + message + '</md-toast>',
+         hideDelay: 5000,
+         position: 'top right'
+       });
      }
    }
-})
+});

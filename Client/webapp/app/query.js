@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('clientApp.query', ['ngRoute', 'ngCookies', 'ngMaterial'])
+angular.module('clientApp.query', ['ngRoute', 'ngCookies', 'ngMaterial', 'clientApp.toast'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/query', {
@@ -10,29 +10,20 @@ angular.module('clientApp.query', ['ngRoute', 'ngCookies', 'ngMaterial'])
 }])
 
 
-//http://localhost/Backend/countries
-.factory('queryService', function($http){
-  return {
-    getCountries: function(callback){
-      return $http.get('http://localhost/Backend/countries').success(callback);
-     }
-   }
-})
 
-.controller('queryController', function($scope, $cookies, queryService, $mdToast, $location) {
-  if (checkAuth($cookies.monster_cookie)){
+
+.controller('queryController', function($scope, $cookies, $mdToast, $location, toastService) {
+  var cookie = $cookies.monster_cookie;
+  if (checkAuth(cookie)){
   console.log("hey query");
     $scope.message="Query";
-    queryService.getCountries(function(data)  {
+    toastService.getCountries(function(data)  {
       $scope.countries = data.countries;
     })
   } else {
-    $mdToast.show({
-      template: '<md-toast>You must be logged in to access this</md-toast>',
-      hideDelay: 3000,
-      position: 'top right'
-    });
+    toastService.displayToast("You must be logged in to access this!");
     $location.path("/");
+    $rootScope.errorReply = "Not authorized";
   };
 
 });

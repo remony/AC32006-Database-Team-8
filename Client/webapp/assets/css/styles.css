@@ -18,10 +18,10 @@ md-toolbar {
 }
 
 
-
+aria-label{}
 
    md-button {
-     height:50px;
+     height:40px;
      margin:0;
      width:100%;
      display: block;
@@ -84,3 +84,46 @@ md-toolbar {
   background: none;
   border: none;
 }
+
+
+
+/*    Admin page */
+.tabsdemoDynamicTabs .remove-tab {
+  margin-bottom: 40px; }
+.tabsdemoDynamicTabs md-tabs .md-view {
+  background: #EEE; }
+.tabsdemoDynamicTabs .tab-text {
+  padding-top: 32px;
+  margin-bottom: 32px; }
+.tabsdemoDynamicTabs .md-button {
+  display: block; }
+.tabsdemoDynamicTabs .tab1 {
+  background-color: #abd6e4;
+  height: 300px; }
+.tabsdemoDynamicTabs .tab2 {
+  background-color: #94caa6;
+  height: 300px; }
+.tabsdemoDynamicTabs .tab3 {
+  background-color: #c4b5a2;
+  height: 300px; }
+.tabsdemoDynamicTabs .tab4 {
+  background-color: #e3cde8;
+  height: 300px; }
+.tabsdemoDynamicTabs .title {
+  padding-top: 8px;
+  padding-right: 8px;
+  text-align: left;
+  text-transform: uppercase;
+  color: #888;
+  margin-top: 24px; }
+.tabsdemoDynamicTabs [layout-align] > * {
+  margin-left: 8px; }
+.tabsdemoDynamicTabs form > [layout] > * {
+  margin-left: 8px; }
+.tabsdemoDynamicTabs .long > input {
+  width: 264px; }
+.tabsdemoDynamicTabs .md-button {
+  max-height: 30px; }
+.tabsdemoDynamicTabs .md-button.add-tab {
+  margin-top: 20px;
+  max-height: 30px !important; }

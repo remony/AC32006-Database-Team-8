@@ -1,18 +1,33 @@
 //Create the module
-var client = angular.module('clientApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'ngMaterial', 'clientApp.query', 'clientApp.register']);
+var client = angular.module('clientApp', [
+  'ngRoute',
+  'ngCookies',
+  'ngAnimate',
+  'ui.bootstrap',
+  'ngMaterial',
+  'clientApp.query',
+  'clientApp.register',
+  'clientApp.admin',
+  'ngRouteAnimationManager',
+  'clientApp.toast',
+  'clientApp.userAuth'
+  ]);
 
+
+var cookie = null;
 //Configure routes
-client.config(function($routeProvider, $httpProvider){
+client.config(function($routeProvider, $httpProvider, RouteAnimationManagerProvider){
 
- $httpProvider.defaults.useXDomain = true;
- $httpProvider.defaults.withCredentials = true;
+ //$httpProvider.defaults.useXDomain = true;
+ //$httpProvider.defaults.withCredentials = true;
+RouteAnimationManagerProvider.setDefaultAnimation('fade');
 
-  $httpProvider.interceptors.push('authInterceptor');
+  //$httpProvider.interceptors.push('authInterceptor');
   $routeProvider
     .when('/', {
       templateUrl: 'views/home.html',
       controller: 'appController',
-      requiresLogin: true
+
     })
     .when('/about', {
       templateUrl: 'views/about.html',
@@ -22,17 +37,17 @@ client.config(function($routeProvider, $httpProvider){
     .when('/contact', {
       templateUrl: 'views/contact.html',
       controller: 'contactController',
-      requiresLogin: true
+
     })
     .when('/login', {
       templateUrl: 'views/login.html',
       controller: 'loginController',
-      requiresLogin: true
+
     })
     .when('/profile', {
       templateUrl: 'views/profile.html',
       controller: 'profileController',
-      requiresLogin: true
+
     })
     .when('/controlpanel', {
       templateUrl: 'views/controlpanel.html',
@@ -42,7 +57,7 @@ client.config(function($routeProvider, $httpProvider){
     .when('/register', {
       templateUrl: 'views/register.html',
       controller: 'registerController',
-      requiresLogin: true
+
     })
     .when('/countries', {
       templateUrl: 'views/countries.html',
@@ -52,7 +67,7 @@ client.config(function($routeProvider, $httpProvider){
       templateUrl: 'views/home.html',
       controller: 'logoutController'
     })
-
+    .otherwise('/');
 
 });
 
@@ -92,19 +107,33 @@ client.factory('authInterceptor', function ($rootScope, $q, $window) {
 
 
 
-client.controller('logoutController', function($cookies, $scope)  {
+client.controller('logoutController', function($cookies, $scope, $mdToast, $location)  {
   var cookie = $cookies.monster_cookie;
+
   if(cookie != null) {
     console.log("attempted logout");
     document.cookie = 'monster_cookie' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    cookie = null;
+    $mdToast.show({
+      template: '<md-toast>You have logged out!</md-toast>',
+      hideDelay: 5000,
+      position: 'top right'
+    });
+    $location.path("/login");
     //$cookies.remove('monster_cookie');
   } else {
+    $mdToast.show({
+      template: '<md-toast>You are already logged out</md-toast>',
+      hideDelay: 5000,
+      position: 'top right'
+    });
     console.log("already logged out");
   }
 });
 
 client.controller('countriesController', function($scope){
   $scope.message = 'Countries!';
+
   $.ajax({
     type: "get",
     url: "https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=/countries",
@@ -122,26 +151,50 @@ client.controller('cpController', function($scope){
 
 });
 
-client.controller('appController', function($scope, $cookies, $location, $timeout, $mdSidenav){
+function DialogController($scope, $mdDialog) {
+  $scope.hide = function() {
+    $mdDialog.hide();
+  };
 
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
+
+  $scope.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+}
+
+
+
+client.controller('appController', function($scope, $cookies, $location, $timeout, $mdSidenav, $mdDialog){
+      checkAuth();
 
       $scope.toggleLeft = function() {
         $mdSidenav('left').toggle();
       };
+
+      $scope.dialogBasic = function(ev) {
+      $mdDialog.show({
+        templateUrl: 'app/partials/loginTemplate.html',
+        targetEvent: ev,
+        controller: DialogController
+      }).then(function() {
+        $scope.alert = 'You said "Okay".';
+      }, function() {
+        $scope.alert = 'You cancelled the dialog.';
+      });
+    };
 });
 
 client.controller('aboutController', function($scope){
+  checkAuth();
   $scope.message = 'About';
   $.ajax({
     type: "get",
-    url: "http://localhost/Backend/",
-    //header: {monster_cookie: $cookies.monster_cookie},
-    //beforeSend: function(xhr){xhr.setRequestHeader('monster_token',myCookie );},
-    //5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
-    success: console.log("yay"),//$scope.status = data.status,
+    url: "http://localhost/Backend/"
     }).done(function(data){
-      console.log(data);
-    console.log("done");
+
     }).fail(function(data){
       //delete $window.sessionStorage.token;
       console.log("failed to get about data");
@@ -151,12 +204,12 @@ client.controller('aboutController', function($scope){
       $scope.team = data.team;
       $scope.version = data.version;
       $scope.members = data.members;
-      console.log(JSON.stringify(data, null, 5));
     $scope.$apply();
     });
 });
 
 client.controller('contactController', function($scope){
+  checkAuth();
   $scope.message = 'Contact';
 });
 
@@ -215,8 +268,10 @@ $scope.toastPosition = {
           //should delete cookie
         }).success(function(data){
         if(data.status == "200"){
+          cookie = data.user[0].access_token;
           $cookies.monster_cookie = data.user[0].access_token;
           $scope.toast = "You have logged in!";
+          $location.path("/query");
         } else if(data.status == "403") {
           $scope.toast = "Incorrect username or password";
         }
@@ -230,12 +285,6 @@ $scope.toastPosition = {
 
 
 
-
-client.controller('ToastCtrl', function($scope, $mdToast) {
-  $scope.closeToast = function() {
-    $mdToast.hide();
-  };
-});
 
 
 
@@ -270,7 +319,7 @@ client.controller('profileController', function($scope, $cookies, $mdToast, $loc
     hideDelay: 3000,
     position: 'top right'
   });
-  $location.path("/");
+  $location.path("/login");
 
   }
 });
@@ -298,18 +347,15 @@ client.controller('LeftCtrl', function($scope, $timeout, $mdSidenav) {
   };
 })
 
-client.controller('RightCtrl', function($scope, $timeout, $mdSidenav) {
-  $scope.close = function() {
-    $mdSidenav('right').close();
-  };
-});
+
 
 
 
 //Handles the user auth
-function checkAuth(cookie)  {
+function checkAuth()  {
   if (cookie != null){
+    $scope.isLoggedIn = true;
     return true;
   }
-  return false;
+  return null;
 }

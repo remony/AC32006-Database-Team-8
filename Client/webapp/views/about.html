@@ -1,8 +1,8 @@
 <!-- about.html -->
 
-      <md-toolbar md-theme="">
+      <md-toolbar md-theme="" >
           <div class="md-toolbar-tools">
-            <div ng-include="'back.html'"></div>
+            <div ng-include="'back.html'" aria-label="Super flashy"></div>
             <span class="md-flex"><h1>{{message}}</h1></span>
           </div>
         </md-toolbar>
@@ -12,11 +12,19 @@
 
 
         <h4>Members</h4>
-        <ul>
-          <li ng-repeat="member	in members">
-            {{member}}
-          </li>
-        </ul>
+
+        <md-list>
+
+          <md-item ng-repeat="member in members">
+            <md-item-content>
+              <div class="md-tile-content">
+                {{member}}
+              </div>
+            </md-item-content>
+          </md-item>
+
+        </md-list>
+
         <br><br>
         <b>Version: {{version}}</b>
 
