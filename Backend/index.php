@@ -1,5 +1,7 @@
 <?php
 include_once 'api.php';
+include_once 'storage_types_crud.php';
+include_once 'camera_types_crud.php';
 
 include_once 'epiphany/Epi.php';
 Epi::setPath('base', 'epiphany');
@@ -25,5 +27,17 @@ getApi()->get('/profile/(\w+)', array('API', 'profile'), EpiApi::external);
 getApi()->get('/countries', array('API', 'countries'), EpiApi::external);
 
 getApi()->post('/cameras/feature', array('API', 'queryFeatures'), EpiApi::external);
+
+// Storage
+getApi()->post('/storage',          array('StorageTypesCrud', 'create_storage'), EpiApi::external); // Create
+getApi()->post('/storage/(\w+)',    array('StorageTypesCrud', 'update_storage'), EpiApi::external); // Update
+getApi()->get('/storage',           array('StorageTypesCrud', 'read_storage'),   EpiApi::external); // Read
+getApi()->delete('/storage/(\w+)',  array('StorageTypesCrud', 'delete_storage'), EpiApi::external); // Delete
+
+// Type
+getApi()->post('/type',             array('CameraTypesCrud', 'create_type'), EpiApi::external); // Create
+getApi()->post('/type/(\w+)',       array('CameraTypesCrud', 'update_type'), EpiApi::external); // Update
+getApi()->get('/type',              array('CameraTypesCrud', 'read_type'),   EpiApi::external); // Read
+getApi()->delete('/type/(\w+)',     array('CameraTypesCrud', 'delete_type'), EpiApi::external); // Delete
 
 getRoute()->run();

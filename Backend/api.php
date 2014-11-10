@@ -1,7 +1,7 @@
 <?php
 
 class API {
-    static private function parseHeaders () {
+    static public function parseHeaders () {
         $headers = apache_request_headers();
         if (array_key_exists('Authorization', $headers)) {
             $access_token = $headers["Authorization"];
@@ -17,14 +17,38 @@ class API {
 
     }
 
+    static public function CheckAuth ($permission) {
+        $sessionUser =  self :: parseHeaders();
+
+        if (count($sessionUser) == 0) {
+            return array(
+                'status'    => 403,
+                'error'   => 'Access Denied!!'
+            );
+        } else {
+            if ($sessionUser[0][$permission] !== "1") {
+                return array(
+                    'status' => 403,
+                    'error' => 'Access Denied!!, you don\'t have '.$permission.' access.'
+                );
+            } else {
+                return null;
+            }
+        }
+    }
+
+    static public function AddCORSHeaders () {
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: *');
+        header('Access-Control-Expose-Headers: "Access-Control-Allow-Origin"');
+    }
+
     /**
      * Returns the Information about this Assignment
      * @return json
      */
     static public function version () {
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Headers: *');
-        header('Access-Control-Expose-Headers: "Access-Control-Allow-Origin"');
+        self :: AddCORSHeaders();
 
         return array(
             'module'    => 'AC32006',
@@ -48,8 +72,7 @@ class API {
      * @return json
      */
     static public function login () {
-        header('content-type: application/json; charset=utf-8');
-        header("access-control-allow-origin: *");
+        self :: AddCORSHeaders();
 
         $loginDetails = json_decode(file_get_contents('php://input'));
         $username = $loginDetails -> username;
@@ -77,16 +100,14 @@ class API {
      * @return json
      */
     static public function profile ($username) {
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Headers *');
+        self :: AddCORSHeaders();
 
         $sessionUser =  self :: parseHeaders();
 
-        if (count($sessionUser) == 0) {
-            return array(
-                'status'    => 403,
-                'error'   => 'Access Denied!!'
-            );
+        $error = self :: CheckAuth("read");
+
+        if ($error !== null) {
+            return $error;
         } else {
             return $sessionUser;
         }
@@ -101,8 +122,7 @@ class API {
      * @return json
      */
     static public function register () {
-        header('content-type: application/json; charset=utf-8');
-        header("access-control-allow-origin: *");
+        self :: AddCORSHeaders();
 
         $loginDetails = json_decode(file_get_contents('php://input'));
         $username = $loginDetails -> username;
@@ -136,8 +156,7 @@ class API {
      * @return json
      */
     static public function countries () {
-        header('content-type: application/json; charset=utf-8');
-        header("access-control-allow-origin: *");
+        self :: AddCORSHeaders();
 
         $countries = getDatabase()->all("SELECT * FROM countries;");
 
@@ -153,46 +172,27 @@ class API {
      * @return json
      */
     static public function queryFeatures () {
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Headers *');
+        self :: AddCORSHeaders();
 
         $queryArgs = json_decode(file_get_contents('php://input'));
         $featureName = $queryArgs -> feature;
 
-        $sessionUser =  self :: parseHeaders();
+        $error = self :: CheckAuth("read");
 
-        if (count($sessionUser) == 0) {
-            return array(
-                'status'    => 403,
-                'error'   => 'Access Denied!!'
-            );
+        if ($error !== null) {
+            return $error;
         } else {
-            if ($sessionUser[0]['read'] !== "1") {
-                return array(
-                    'status'    => 403,
-                    'error'   => 'Access Denied!!, you don\'t have read access.'
-                );
-
-            } else
-            if ($featureName === null) {
-                return array(
-                    'status'    => 409,
-                    'error'   => 'Invalid Feature name'
-                );
-
-            } else {
-                $cameras = getDatabase()->all("
+            $cameras = getDatabase()->all("
                     SELECT `cameras`.`id`, `cameras`.`brand`, `cameras`.`model_name`, `storage`.`name` as 'storage', `type`.`name` as 'type', `cameras`.`battery_type`, `cameras`.`megapixels`, `cameras`.`resolution` FROM `cameras`
                     INNER JOIN `type` ON `cameras`.`type_id` = `type`.`id`
                     INNER JOIN `storage` ON `cameras`.`storage_id` = `storage`.`id`
                     WHERE `cameras`.`battery_type` LIKE :feature OR `cameras`.`megapixels` LIKE :feature OR `cameras`.`resolution` LIKE :feature OR `type`.`name` LIKE '%:feature%' OR `storage`.`name` LIKE '%:feature%';
                 ", array( ':feature' => '%'.$featureName.'%'));
 
-                return array(
-                    'status'    => 200,
-                    'cameras'   => $cameras
-                );
-            }
+            return array(
+                'status'    => 200,
+                'cameras'   => $cameras
+            );
         }
     }
 } 
