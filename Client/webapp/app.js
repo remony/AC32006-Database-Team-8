@@ -75,7 +75,7 @@ RouteAnimationManagerProvider.setDefaultAnimation('fade');
 //Auth
 
 
-
+//*
 client.factory('authInterceptor', function ($rootScope, $q, $window) {
   return {
     request: function (config) {
