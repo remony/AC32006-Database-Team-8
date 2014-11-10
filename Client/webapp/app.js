@@ -10,7 +10,8 @@ var client = angular.module('clientApp', [
   'clientApp.admin',
   'ngRouteAnimationManager',
   'clientApp.toast',
-  'clientApp.userAuth'
+  'clientApp.userAuth',
+  'clientApp.list'
   ]);
 
 
@@ -75,7 +76,7 @@ RouteAnimationManagerProvider.setDefaultAnimation('fade');
 //Auth
 
 
-
+//*
 client.factory('authInterceptor', function ($rootScope, $q, $window) {
   return {
     request: function (config) {

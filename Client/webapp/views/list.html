@@ -1,0 +1,53 @@
+<!-- list.html -->
+
+<md-toolbar md-theme="" >
+  <div class="md-toolbar-tools">
+    <div ng-include="'back.html'"></div>
+    <span class="md-flex"><h1>{{message}}</h1></span>
+  </div>
+</md-toolbar>
+
+<style>
+ h1 {
+   color:#fff;
+ }
+</style>
+
+<div ng-hide="listError">
+  <md-content md-theme="light-blue-dark" class="md-padding">
+    <h1>Results</h1>
+      <form style="padding: 20px;">
+        <div class="row">
+          <md-text-float label="Filter" ng-model="query" type="text"
+            placeholder="Filter by" autofocus></md-text-float>
+
+        </div>
+      </form>
+    </md-content>
+
+  <md-content class="md-padding">
+  <md-list>
+
+    <md-item ng-repeat="out in output | filter:query  ">
+      <md-item-content>
+        <div class="md-tile-content">
+          <md-card>
+            <h2>{{out.id}}</h2>
+            {{out.name}}
+          </md-card>
+        </div>
+      </md-item-content>
+    </md-item>
+
+  </md-list>
+
+
+  </md-content>
+</div>
+<md-content class="md-padding">
+  <div ng-show="listError">
+    <md-card>
+      <h2>Invalid URL</h2>
+    </md-card>
+  </div>
+</md-content>

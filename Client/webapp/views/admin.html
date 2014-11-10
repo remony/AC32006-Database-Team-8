@@ -25,8 +25,22 @@
                   </section>
                 </ANY>
                 <ANY ng-switch-when="Database">
-                  <section layout="horizontal" layout-sm="horizontal" layout-align="center center">
-                    <h3>Edit database stuff</h3>
+                  <section layout="horizontal" layout-sm="horizontal" layout-align="center center" md-theme="indigo">
+                    <!-- Displays database editing stuff -->
+                    <md-whiteframe class="md-whiteframe-z1" layout layout-align="center center" width="80%">
+                      <md-content class="md-padding" style="width: 100%;">
+                        <div layout="vertical" layout-sm="horizontal" layout-align="center">
+                          <md-button class="md-primary" ng-click="dialogStorage($event)">
+                            Add new Camera Storage
+                          </md-button>
+
+                        </div>
+                        <md-button class="md-primary" ng-click="dialogType($event)">
+                          Add new Camera Type
+                        </md-button>
+
+                      </md-content>
+                    </md-whiteframe>
                   </section>
                 </ANY>
                 <ANY ng-switch-when="Account">
