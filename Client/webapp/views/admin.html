@@ -29,26 +29,18 @@
                     <!-- Displays database editing stuff -->
                     <md-whiteframe class="md-whiteframe-z1" layout layout-align="center center" width="80%">
                       <md-content class="md-padding" style="width: 100%;">
-                        <h3>Add Storage Type</h3>
-                        <p ng-show="storageAlert">{{storageAlert}}</p>
-                        <form class="storage-form" name="storageForm" ng-submit="submitNewStorage()" >
-                          <md-text-float label="Storage Name" ng-model="storage.type" required></md-text-float>
-                          <md-button class="md-raised md-primary" aria-label = "submit" type="submit">Submit</md-button>
-                        </form>
+                        <div layout="vertical" layout-sm="horizontal" layout-align="center">
+                          <md-button class="md-primary" ng-click="dialogStorage($event)">
+                            Add new Camera Storage
+                          </md-button>
+
+                        </div>
+                        <md-button class="md-primary" ng-click="dialogType($event)">
+                          Add new Camera Type
+                        </md-button>
+
                       </md-content>
                     </md-whiteframe>
-                    <br>
-                    <md-whiteframe class="md-whiteframe-z1" layout layout-align="center center">
-                      <md-content class="md-padding" style="width: 100%;">
-                        <h3>Add Camera Type</h3>
-
-                        <form class="login-form" name="loginform" ng-submit="submit()" >
-                          <md-text-float label="Camera Type" ng-model="camera.type" required></md-text-float>
-                          <md-button class="md-raised md-primary" aria-label = "submit" type="submit">Submit</md-button>
-                        </form>
-                      </md-content>
-                    </md-whiteframe>
-
                   </section>
                 </ANY>
                 <ANY ng-switch-when="Account">

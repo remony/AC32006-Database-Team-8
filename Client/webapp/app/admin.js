@@ -53,44 +53,85 @@ angular.module('clientApp.admin', ['ngRoute', 'ngCookies', 'ngMaterial'])
 
 
   $scope.storage = {};
-    $scope.submitNewStorage = function()  {
-      console.log("entering new storage");
-      console.log($scope.storage);
-      console.log($scope.storage.type);
+  $scope.submitNewStorage = function()  {
+    console.log("entering new storage");
+    console.log($scope.storage);
+    console.log($scope.storage.type);
+    $.ajax({
+      type:"POST",
+      url: "http://localhost/Backend/storage",
+      beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+      data: JSON.stringify({name: $scope.storage.type}),
+      success: console.log("yay"),
+      dataType: "JSON"
+      }).done(function(data){
+           console.log(data.status);
+      }).error(function(data){
+        $scope.registerStatus = data.status;
+          console.log("error");
+        }).success(function(data){
+        if(data.status == "200"){
+          $scope.storageAlert = "Added " + $scope.storage.type + " Successfully";
+          $scope.storage = null;
+        }
+
+        $scope.$apply();
+
+      });
+    }
+
+    $scope.submitNewType = function()  {
       $.ajax({
         type:"POST",
-        url: "http://localhost/Backend/storage",
+        url: "http://localhost/Backend/type",
         beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
-        //beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
-        data: JSON.stringify({name: $scope.storage.type}),
-        success: console.log("yay"),//$scope.status = data.status,
+        data: JSON.stringify({name: $scope.type.name}),
+        success: console.log("yay"),
         dataType: "JSON"
-
         }).done(function(data){
-             console.log("done");
-          //$scope.status=data.status;
-          //$scope.message=data.message;
-
+             console.log(data.status);
         }).error(function(data){
-          //console.log("oh it failed " + data.status);
           $scope.registerStatus = data.status;
             console.log("error");
           }).success(function(data){
           if(data.status == "200"){
-            $scope.storageAlert = "Added " + $scope.storage.type + " Successfully";
+            $scope.storageAlert = "Added " + $scope.type.name + " Successfully";
             $scope.storage = null;
-          } else if(data.status == "403") {
-            $scope.registerError = data.status;
-          }  else if (data.status == "409"){
-             $scope.formError = data.status + " - Username already exists.";
           }
           $scope.$apply();
-         console.log(data.status);
         });
-    }
+      }
 
 
+    $scope.dialogStorage = function(ev) {
+      $mdDialog.show({
+        templateUrl: 'app/partials/databaseAddNewStorage.html',
+        targetEvent: ev,
+        controller: DialogController
+      })
+    };
 
+    $scope.dialogType = function(ev) {
+      $mdDialog.show({
+        templateUrl: 'app/partials/databaseAddNewCameraType.html',
+        targetEvent: ev,
+        controller: DialogController
+      })
+    };
+
+    function DialogController($scope, $mdDialog) {
+    $scope.hide = function() {
+      $mdDialog.hide();
+    };
+
+    $scope.cancel = function() {
+      $mdDialog.cancel();
+    };
+
+    $scope.answer = function(answer) {
+      $mdDialog.hide(answer);
+    };
+  }
 
 
 
