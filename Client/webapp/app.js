@@ -10,7 +10,8 @@ var client = angular.module('clientApp', [
   'clientApp.admin',
   'ngRouteAnimationManager',
   'clientApp.toast',
-  'clientApp.userAuth'
+  'clientApp.userAuth',
+  'clientApp.list'
   ]);
 
 
