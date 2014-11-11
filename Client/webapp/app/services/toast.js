@@ -1,6 +1,6 @@
 angular.module('clientApp.toast', ['ngRoute', 'ngCookies', 'ngMaterial'])
 
-.factory('toastService', function($http, $mdToast, $cookies){
+.factory('toastService', function($http, $mdToast, $cookies, $location){
   return {
     getCountries: function(callback){
       return $http.get('http://localhost/Backend/countries').success(callback);
