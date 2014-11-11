@@ -169,7 +169,7 @@ function DialogController($scope, $mdDialog) {
 
 
 client.controller('appController', function($scope, $cookies, $location, $timeout, $mdSidenav, $mdDialog){
-      checkAuth();
+      checkAuth($cookies.monster_cookie);
 
       $scope.toggleLeft = function() {
         $mdSidenav('left').toggle();
@@ -188,8 +188,8 @@ client.controller('appController', function($scope, $cookies, $location, $timeou
     };
 });
 
-client.controller('aboutController', function($scope){
-  checkAuth();
+client.controller('aboutController', function($scope, $cookies){
+  checkAuth($cookies.monster_cookie);
   $scope.message = 'About';
   $.ajax({
     type: "get",
@@ -209,8 +209,8 @@ client.controller('aboutController', function($scope){
     });
 });
 
-client.controller('contactController', function($scope){
-  checkAuth();
+client.controller('contactController', function($scope, $cookies){
+  checkAuth($cookies.monster_cookie);
   $scope.message = 'Contact';
 });
 
@@ -353,9 +353,9 @@ client.controller('LeftCtrl', function($scope, $timeout, $mdSidenav) {
 
 
 //Handles the user auth
-function checkAuth()  {
+function checkAuth(cookie)  {
   if (cookie != null){
-    $scope.isLoggedIn = true;
+    //$scope.isLoggedIn = true;
     return true;
   }
   return null;

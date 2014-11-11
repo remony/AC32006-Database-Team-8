@@ -34,6 +34,10 @@
           <md-card>
             <h2>{{out.id}}</h2>
             {{out.name}}
+            <form class="delete-form" name="deleteform" ng-submit="delete(out)" >
+              <input type="hidden" ng-model="delete.id" value="{{out.id}}" />
+              <md-button class="md-warn" ng-click="isDisabled = !isDisabled" type="submit" >Delete</md-button>
+            </form>
           </md-card>
         </div>
       </md-item-content>

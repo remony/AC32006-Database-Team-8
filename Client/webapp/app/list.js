@@ -26,6 +26,11 @@ angular.module('clientApp.list', ['ngRoute', 'ngCookies', 'ngMaterial', 'clientA
     toastService.getCameraTypes(function(data)  {
       $scope.output = data.camera_type;
     })
+
+    $scope.delete = function(id)  {
+    toastService.deleteCameraType(id, function () {});
+    }
+
   } else if ($routeParams.query == "storage") {
     toastService.getStorageTypes(function(data)  {
       $scope.output = data.storage_types;
