@@ -1,7 +1,7 @@
 <?php
 include_once 'api.php';
-include_once 'storage_types_crud.php';
-include_once 'camera_types_crud.php';
+include_once 'crud/storage_types_crud.php';
+include_once 'crud/camera_types_crud.php';
 
 include_once 'epiphany/Epi.php';
 Epi::setPath('base', 'epiphany');
