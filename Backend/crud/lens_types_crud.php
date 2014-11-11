@@ -20,7 +20,7 @@ class LensTypesCrud {
             $lensId = getDatabase()->execute( 'INSERT INTO `lens`(name) VALUES(:name)', array( ':name' => $name ) );
 
             return array(
-                'status' => 200,
+                'status' => 201,
                 'lens_id' => $lensId
             );
         }
@@ -91,8 +91,9 @@ class LensTypesCrud {
         } else {
             $affectedRows = getDatabase()->execute("DELETE FROM `lens` WHERE `id` IN (:id)", array(':id' => $id));
 
+            header("HTTP/1.0 202 Accepted");
             return array(
-                'status' => 200,
+                'status' => 202,
                 'deleted' => $affectedRows
             );
         }

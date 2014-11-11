@@ -20,7 +20,7 @@ class CameraTypesCrud {
             $typeId = getDatabase()->execute( 'INSERT INTO `type`(name) VALUES(:name)', array( ':name' => $name ) );
 
             return array(
-                'status' => 200,
+                'status' => 201,
                 'type_id' => $typeId
             );
         }
@@ -90,12 +90,12 @@ class CameraTypesCrud {
         if ($error !== null) {
             return $error;
         } else {
-            getDatabase()->execute("DELETE FROM `type` WHERE `id` IN (:id)", array(':id' => $id));
+            $affectedRows = getDatabase()->execute("DELETE FROM `type` WHERE `id` IN (:id)", array(':id' => $id));
 
-            header("HTTP/1.0 204 No Content");
+            header("HTTP/1.0 202 Accepted");
             return array(
-                'status' => 204,
-                'message' => 'Successfully deleted.'
+                'status' => 202,
+                'deleted' => $affectedRows
             );
         }
     }

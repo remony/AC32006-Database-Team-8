@@ -20,7 +20,7 @@ class HobbyTypesCrud {
             $hobbyId = getDatabase()->execute( 'INSERT INTO `hobby`(name) VALUES(:name)', array( ':name' => $name ) );
 
             return array(
-                'status' => 200,
+                'status' => 201,
                 'hobby_id' => $hobbyId
             );
         }
@@ -91,8 +91,9 @@ class HobbyTypesCrud {
         } else {
             $affectedRows = getDatabase()->execute("DELETE FROM `hobby` WHERE `id` IN (:id)", array(':id' => $id));
 
+            header("HTTP/1.0 202 Accepted");
             return array(
-                'status' => 200,
+                'status' => 202,
                 'deleted' => $affectedRows
             );
         }
