@@ -3,6 +3,7 @@ include_once 'api.php';
 include_once 'crud/storage_types_crud.php';
 include_once 'crud/camera_types_crud.php';
 include_once 'crud/lens_types_crud.php';
+include_once 'crud/hobby_types_crud.php';
 
 include_once 'epiphany/Epi.php';
 Epi::setPath('base', 'epiphany');
@@ -42,10 +43,17 @@ getApi()->post('/type/(\w+)',       array('CameraTypesCrud', 'update_type'), Epi
 getApi()->get('/type',              array('CameraTypesCrud', 'read_type'),   EpiApi::external); // Read
 getApi()->delete('/type/(\w+)',     array('CameraTypesCrud', 'delete_type'), EpiApi::external); // Delete
 
-// Storage
+// Lens
 getApi()->post('/lens',          array('LensTypesCrud', 'create_lens'), EpiApi::external); // Create
 getApi()->post('/lens/(\w+)',    array('LensTypesCrud', 'update_lens'), EpiApi::external); // Update
 getApi()->get('/lens',           array('LensTypesCrud', 'read_lens'),   EpiApi::external); // Read
 getApi()->delete('/lens/(\w+)',  array('LensTypesCrud', 'delete_lens'), EpiApi::external); // Delete
+
+// Hobby
+getApi()->post('/hobby',          array('HobbyTypesCrud', 'create_hobby'), EpiApi::external); // Create
+getApi()->post('/hobby/(\w+)',    array('HobbyTypesCrud', 'update_hobby'), EpiApi::external); // Update
+getApi()->get('/hobby',           array('HobbyTypesCrud', 'read_hobby'),   EpiApi::external); // Read
+getApi()->delete('/hobby/(\w+)',  array('HobbyTypesCrud', 'delete_hobby'), EpiApi::external); // Delete
+
 
 getRoute()->run();
