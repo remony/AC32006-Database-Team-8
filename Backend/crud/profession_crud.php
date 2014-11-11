@@ -41,7 +41,7 @@ class ProfessionCrud {
             return $error;
         } else {
             $affectedRows = getDatabase()->execute('UPDATE `profession` SET `title`=:title, `salary`=:salary, `years`=:years WHERE `id` IN (:id)',
-                array(':title' => $title, ':salary' => $salary, ':years' => $years)
+                array(':title' => $title, ':salary' => $salary, ':years' => $years, ':id' => $id)
             );
 
             if ($affectedRows === 1) {
