@@ -44,10 +44,19 @@ class CameraTypesCrud {
         } else {
             $affectedRows = getDatabase()->execute('UPDATE `type` SET `name`=:name WHERE `id` IN (:id)', array( ':name' => $name, ':id' => intval($id)));
 
-            return array(
-                'status' => 200,
-                'updated' => $affectedRows
-            );
+            if ($affectedRows === 0) {
+                header("HTTP/1.0 205 Successfully updated");
+                return array(
+                    'status' => 205,
+                    'message' => 'Successfully updated. (update local content)'
+                );
+            } else {
+                header("HTTP/1.0 204 Successfully updated");
+                return array(
+                    'status' => 204,
+                    'message' => 'Successfully updated.'
+                );
+            }
         }
     }
 
@@ -77,14 +86,16 @@ class CameraTypesCrud {
 
         $error = API :: CheckAuth("delete");
 
+
         if ($error !== null) {
             return $error;
         } else {
-            $affectedRows = getDatabase()->execute("DELETE FROM `type` WHERE `id` IN (:id)", array(':id' => $id));
+            getDatabase()->execute("DELETE FROM `type` WHERE `id` IN (:id)", array(':id' => $id));
 
+            header("HTTP/1.0 204 No Content");
             return array(
-                'status' => 200,
-                'deleted' => $affectedRows
+                'status' => 204,
+                'message' => 'Successfully deleted.'
             );
         }
     }
