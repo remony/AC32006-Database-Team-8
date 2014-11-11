@@ -6,6 +6,7 @@ include_once 'crud/lens_types_crud.php';
 include_once 'crud/hobby_types_crud.php';
 include_once 'crud/camera_crud.php';
 include_once 'crud/customer_crud.php';
+include_once 'crud/profession_crud.php';
 
 include_once 'epiphany/Epi.php';
 Epi::setPath('base', 'epiphany');
@@ -56,6 +57,12 @@ getApi()->post('/hobby',          array('HobbyTypesCrud', 'create_hobby'), EpiAp
 getApi()->post('/hobby/(\w+)',    array('HobbyTypesCrud', 'update_hobby'), EpiApi::external); // Update
 getApi()->get('/hobby',           array('HobbyTypesCrud', 'read_hobby'),   EpiApi::external); // Read
 getApi()->delete('/hobby/(\w+)',  array('HobbyTypesCrud', 'delete_hobby'), EpiApi::external); // Delete
+
+// Profession
+getApi()->post('/profession',          array('ProfessionCrud', 'create_profession'), EpiApi::external); // Create
+getApi()->post('/profession/(\w+)',    array('ProfessionCrud', 'update_profession'), EpiApi::external); // Update
+getApi()->get('/profession',           array('ProfessionCrud', 'read_profession'),   EpiApi::external); // Read
+getApi()->delete('/profession/(\w+)',  array('ProfessionCrud', 'delete_profession'), EpiApi::external); // Delete
 
 // Camera
 getApi()->post('/camera',          array('CameraCrud', 'create_camera'), EpiApi::external); // Create
