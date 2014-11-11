@@ -5,6 +5,7 @@ include_once 'crud/camera_types_crud.php';
 include_once 'crud/lens_types_crud.php';
 include_once 'crud/hobby_types_crud.php';
 include_once 'crud/camera_crud.php';
+include_once 'crud/customer_crud.php';
 
 include_once 'epiphany/Epi.php';
 Epi::setPath('base', 'epiphany');
@@ -61,5 +62,11 @@ getApi()->post('/camera',          array('CameraCrud', 'create_camera'), EpiApi:
 getApi()->post('/camera/(\w+)',    array('CameraCrud', 'update_camera'), EpiApi::external); // Update
 getApi()->get('/camera',           array('CameraCrud', 'read_camera'),   EpiApi::external); // Read
 getApi()->delete('/camera/(\w+)',  array('CameraCrud', 'delete_camera'), EpiApi::external); // Delete
+
+// Customer
+getApi()->post('/customer',          array('CustomerCrud', 'create_customer'), EpiApi::external); // Create
+getApi()->post('/customer/(\w+)',    array('CustomerCrud', 'update_customer'), EpiApi::external); // Update
+getApi()->get('/customer',           array('CustomerCrud', 'read_customer'),   EpiApi::external); // Read
+getApi()->delete('/customer/(\w+)',  array('CustomerCrud', 'delete_customer'), EpiApi::external); // Delete
 
 getRoute()->run();
