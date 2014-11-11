@@ -44,7 +44,7 @@ class StorageTypesCrud {
         } else {
             $affectedRows = getDatabase()->execute('UPDATE `storage` SET `name`=:name WHERE `id` IN (:id)', array( ':name' => $name, ':id' => intval($id)));
 
-            if ($affectedRows === 0) {
+            if ($affectedRows === 1) {
                 header("HTTP/1.0 205 Successfully updated");
                 return array(
                     'status' => 205,

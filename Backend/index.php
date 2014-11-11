@@ -4,6 +4,7 @@ include_once 'crud/storage_types_crud.php';
 include_once 'crud/camera_types_crud.php';
 include_once 'crud/lens_types_crud.php';
 include_once 'crud/hobby_types_crud.php';
+include_once 'crud/camera_crud.php';
 
 include_once 'epiphany/Epi.php';
 Epi::setPath('base', 'epiphany');
@@ -55,5 +56,10 @@ getApi()->post('/hobby/(\w+)',    array('HobbyTypesCrud', 'update_hobby'), EpiAp
 getApi()->get('/hobby',           array('HobbyTypesCrud', 'read_hobby'),   EpiApi::external); // Read
 getApi()->delete('/hobby/(\w+)',  array('HobbyTypesCrud', 'delete_hobby'), EpiApi::external); // Delete
 
+// Camera
+getApi()->post('/camera',          array('CameraCrud', 'create_camera'), EpiApi::external); // Create
+getApi()->post('/camera/(\w+)',    array('CameraCrud', 'update_camera'), EpiApi::external); // Update
+getApi()->get('/camera',           array('CameraCrud', 'read_camera'),   EpiApi::external); // Read
+getApi()->delete('/camera/(\w+)',  array('CameraCrud', 'delete_camera'), EpiApi::external); // Delete
 
 getRoute()->run();
