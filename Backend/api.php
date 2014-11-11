@@ -6,7 +6,7 @@ class API {
         if (array_key_exists('Authorization', $headers)) {
             $access_token = $headers["Authorization"];
             if ($access_token) {
-                $user = getDatabase()->all("CALL sessionUser(:access_token);", array( ':access_token' => $access_token ));
+                $user = getDatabase()->one("CALL sessionUser(:access_token);", array( ':access_token' => $access_token ));
                 return $user;
             } else {
                 return null;
@@ -20,13 +20,13 @@ class API {
     static public function CheckAuth ($permission) {
         $sessionUser =  self :: parseHeaders();
 
-        if (count($sessionUser) == 0) {
+        if (!is_null($sessionUser)) {
             return array(
                 'status'    => 403,
                 'error'   => 'Access Denied!!'
             );
         } else {
-            if ($sessionUser[0][$permission] !== "1") {
+            if ($sessionUser[$permission] !== "1") {
                 return array(
                     'status' => 403,
                     'error' => 'Access Denied!!, you don\'t have '.$permission.' access.'
@@ -78,9 +78,9 @@ class API {
         $username = $loginDetails -> username;
         $password = $loginDetails -> password;
 
-        $user = getDatabase()->all("CALL signIn(:username, :password);", array( ':username' => $username, ':password' => sha1($password) ));
+        $user = getDatabase()->one("CALL signIn(:username, :password);", array( ':username' => $username, ':password' => sha1($password) ));
 
-        if (count($user) == 1) {
+        if (!is_null($user)) {
             return array(
                 'status'    => 200,
                 'message'   => 'You\'ve logged in successfully',
@@ -128,13 +128,13 @@ class API {
         $username = $loginDetails -> username;
         $password = $loginDetails -> password;
 
-        $user = getDatabase()->all("CALL registerUser(:username, :password);", array( ':username' => $username, ':password' => sha1($password) ));
+        $user = getDatabase()->one("CALL registerUser(:username, :password);", array( ':username' => $username, ':password' => sha1($password) ));
 
-        if (count($user) === 1) {
-            if (array_key_exists("error", $user[0])) {
+        if (!is_null($user)) {
+            if (array_key_exists("error", $user)) {
                 return array(
                     'status' => 409,
-                    'error' => $user[0]["error"]
+                    'error' => $user["error"]
                 );
             } else {
                 return array(
