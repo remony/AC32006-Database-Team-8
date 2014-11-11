@@ -49,7 +49,7 @@ class CustomerCrud {
             $affectedRows = getDatabase()->execute('UPDATE `customers` SET `first_name`=:first_name, `last_name`=:last_name, `date_of_birth`=:date_of_birth, `gender`=:gender, `country_id`=:country_id WHERE `id` IN (:id)',
                 array(
                     ':first_name' => $first_name, ':last_name' => $last_name, ':date_of_birth' => $date_of_birth,
-                    ':gender' => $gender, ':country_id' => $country_id, ':id' => id )
+                    ':gender' => $gender, ':country_id' => $country_id, ':id' => $id )
             );
 
             if ($affectedRows === 1) {
