@@ -76,4 +76,14 @@ getApi()->post('/customer/(\w+)',    array('CustomerCrud', 'update_customer'), E
 getApi()->get('/customer',           array('CustomerCrud', 'read_customer'),   EpiApi::external); // Read
 getApi()->delete('/customer/(\w+)',  array('CustomerCrud', 'delete_customer'), EpiApi::external); // Delete
 
+// Customer Hobbies
+getApi()->post('/customer/(\w+)/hobby/(\w+)',           array('CustomerCrud', 'add_hobby_to_customer'),      EpiApi::external); // Create
+getApi()->get('/customer/(\w+)/hobby',                  array('CustomerCrud', 'hobby_from_customer'),        EpiApi::external); // Read
+getApi()->delete('/customer/(\w+)/hobby/(\w+)',         array('CustomerCrud', 'remove_hobby_from_customer'), EpiApi::external); // Delete
+
+// Customer Professions
+getApi()->post('/customer/(\w+)/profession/(\w+)',           array('CustomerCrud', 'add_profession_to_customer'),      EpiApi::external); // Create
+getApi()->get('/customer/(\w+)/profession',                  array('CustomerCrud', 'profession_from_customer'),        EpiApi::external); // Read
+getApi()->delete('/customer/(\w+)/profession/(\w+)',         array('CustomerCrud', 'remove_profession_from_customer'), EpiApi::external); // Delete
+
 getRoute()->run();

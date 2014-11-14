@@ -20,7 +20,7 @@ class API {
     static public function CheckAuth ($permission) {
         $sessionUser =  self :: parseHeaders();
 
-        if (!is_null($sessionUser)) {
+        if (is_null($sessionUser)) {
             return array(
                 'status'    => 403,
                 'error'   => 'Access Denied!!'
