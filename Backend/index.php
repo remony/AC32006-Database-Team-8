@@ -86,4 +86,10 @@ getApi()->post('/customer/(\w+)/profession/(\w+)',           array('CustomerCrud
 getApi()->get('/customer/(\w+)/profession',                  array('CustomerCrud', 'profession_from_customer'),        EpiApi::external); // Read
 getApi()->delete('/customer/(\w+)/profession/(\w+)',         array('CustomerCrud', 'remove_profession_from_customer'), EpiApi::external); // Delete
 
+// Type Lenses
+getApi()->post('/type/(\w+)/lens/(\w+)',           array('LensTypesCrud', 'add_lens_to_type'),      EpiApi::external); // Create
+getApi()->get('/type/(\w+)/lens',                  array('LensTypesCrud', 'lens_from_type'),        EpiApi::external); // Read
+getApi()->delete('/type/(\w+)/lens/(\w+)',         array('LensTypesCrud', 'remove_lens_from_type'), EpiApi::external); // Delete
+
+
 getRoute()->run();

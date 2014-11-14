@@ -297,7 +297,7 @@ class CustomerCrud {
 
             return array(
                 'status' => 200,
-                'hobbies' => $professions
+                'professions' => $professions
             );
         }
     }
