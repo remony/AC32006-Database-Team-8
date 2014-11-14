@@ -7,6 +7,7 @@ include_once 'crud/hobby_types_crud.php';
 include_once 'crud/camera_crud.php';
 include_once 'crud/customer_crud.php';
 include_once 'crud/profession_crud.php';
+include_once 'crud/sales_crud.php';
 
 include_once 'epiphany/Epi.php';
 Epi::setPath('base', 'epiphany');
@@ -75,6 +76,14 @@ getApi()->post('/customer',          array('CustomerCrud', 'create_customer'), E
 getApi()->post('/customer/(\w+)',    array('CustomerCrud', 'update_customer'), EpiApi::external); // Update
 getApi()->get('/customer',           array('CustomerCrud', 'read_customer'),   EpiApi::external); // Read
 getApi()->delete('/customer/(\w+)',  array('CustomerCrud', 'delete_customer'), EpiApi::external); // Delete
+
+// Sale
+getApi()->post('/sale',          array('SalesCrud', 'create_sale'), EpiApi::external); // Create
+getApi()->post('/sale/(\w+)',    array('SalesCrud', 'update_sale'), EpiApi::external); // Update
+getApi()->get('/sale',           array('SalesCrud', 'read_sale'),   EpiApi::external); // Read
+getApi()->delete('/sale/(\w+)',  array('SalesCrud', 'delete_sale'), EpiApi::external); // Delete
+
+getApi()->get('/customer/(\w+)/sales', array('SalesCrud', 'read_sales_user'),   EpiApi::external); // Read
 
 // Customer Hobbies
 getApi()->post('/customer/(\w+)/hobby/(\w+)',           array('CustomerCrud', 'add_hobby_to_customer'),      EpiApi::external); // Create
