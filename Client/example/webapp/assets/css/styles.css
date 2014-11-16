@@ -1,0 +1,129 @@
+* {
+  margin:0;
+  padding:0;
+}
+.wrapper {
+  width:100%;
+}
+
+md-card {
+  width:100%;
+
+}
+
+md-toolbar {
+  margin:0;
+  padding:0;
+  width:100%;
+}
+
+
+aria-label{}
+
+   md-button {
+     height:40px;
+     margin:0;
+     width:100%;
+     display: block;
+    }
+
+
+    .menu-item {
+  background: none;
+  border-width: 0;
+  cursor: pointer;
+  display: block;
+  color: #333;
+  font-size: inherit;
+  line-height: 40px;
+  max-height: 40px;
+  opacity: 1;
+  margin: 0;
+  outline: none;
+  padding: 0px 28px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  width: 100%;
+  z-index: 1;
+  -webkit-transition: 0.2s ease-in-out;
+  -webkit-transition-property: max-height, background-color, opacity;
+  -moz-transition: 0.2s ease-in-out;
+  -moz-transition-property: max-height, background-color, opacity;
+  transition: 0.2s ease-in-out;
+  transition-property: max-height, background-color, opacity;
+}
+.menu-item.ng-hide {
+  max-height: 0;
+  opacity: 0;
+}
+.menu-item:hover, .menu-item:focus {
+  color: #999;
+}
+.menu-item.menu-sub-item.active {
+  background-color: #eeeeee;
+  font-weight: bold;
+  color: #4285f4;
+}
+.menu-item.menu-title {
+  color: #888;
+  font-size: 16px;
+  padding-left: 16px;
+  text-align: left;
+  text-transform: uppercase;
+}
+.menu-item.menu-title.active {
+  font-weight: bold;
+}
+.menu-item.menu-title:hover,
+.menu-item.menu-title:focus {
+  color: #AAA;
+}
+
+.menu-icon {
+  background: none;
+  border: none;
+}
+
+
+
+/*    Admin page */
+.tabsdemoDynamicTabs .remove-tab {
+  margin-bottom: 40px; }
+.tabsdemoDynamicTabs md-tabs .md-view {
+  background: #EEE; }
+.tabsdemoDynamicTabs .tab-text {
+  padding-top: 32px;
+  margin-bottom: 32px; }
+.tabsdemoDynamicTabs .md-button {
+  display: block; }
+.tabsdemoDynamicTabs .tab1 {
+  background-color: #abd6e4;
+  height: 300px; }
+.tabsdemoDynamicTabs .tab2 {
+  background-color: #94caa6;
+  height: 300px; }
+.tabsdemoDynamicTabs .tab3 {
+  background-color: #c4b5a2;
+  height: 300px; }
+.tabsdemoDynamicTabs .tab4 {
+  background-color: #e3cde8;
+  height: 300px; }
+.tabsdemoDynamicTabs .title {
+  padding-top: 8px;
+  padding-right: 8px;
+  text-align: left;
+  text-transform: uppercase;
+  color: #888;
+  margin-top: 24px; }
+.tabsdemoDynamicTabs [layout-align] > * {
+  margin-left: 8px; }
+.tabsdemoDynamicTabs form > [layout] > * {
+  margin-left: 8px; }
+.tabsdemoDynamicTabs .long > input {
+  width: 264px; }
+.tabsdemoDynamicTabs .md-button {
+  max-height: 30px; }
+.tabsdemoDynamicTabs .md-button.add-tab {
+  margin-top: 20px;
+  max-height: 30px !important; }

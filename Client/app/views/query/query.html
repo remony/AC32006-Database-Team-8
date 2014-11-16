@@ -1,0 +1,94 @@
+<md-toolbar md-theme="green">
+    <div class="md-toolbar-tools">
+      <div ng-include="'back.html'"></div>
+      <span class="md-flex"><h1>{{title}}</h1></span>
+    </div>
+  </md-toolbar>
+
+<div class="tabsdemoDynamicTabs">
+<md-tabs selected="data.selectedIndex" center md-theme="green">
+      <md-tab id="tab1" aria-controls="tab1-content">
+        Options
+      </md-tab>
+      <md-tab id="tab2" aria-controls="tab2-content">
+        Quantities
+      </md-tab>
+      <md-tab id="tab3" aria-controls="tab3-content">
+        Item Three
+      </md-tab>
+
+    </md-tabs>
+</div>
+    <ng-switch on="data.selectedIndex" class="tabpanel-container">
+      <md-content class="md-padding">
+
+        <div role="tabpanel" id="tab1-content" aria-labelledby="tab1" ng-switch-when="0" md-swipe-left="next()" md-swipe-right="previous()">
+            View for Item #1<br/>
+            data.selectedIndex = 0
+        </div>
+        <div role="tabpanel" id="tab2-content" aria-labelledby="tab2" ng-switch-when="1" md-swipe-left="next()" md-swipe-right="previous()">
+            <md-button class="md-raised md-warn" ng-click="getAll()">Load query results - WARNING: large data transfer may take a while</md-button>
+
+            <md-toolbar>
+              <h2 class="md-toolbar-tools">
+                <span>Results</span>
+              </h2>
+            </md-toolbar>
+
+            <br>
+
+            <md-toolbar md-theme="indigo">
+              <h2 class="md-toolbar-tools">
+                <span>There are {{countries.length}} countries.</span>
+              </h2>
+              <md-switch ng-model="countriesSwitch" aria-label="Switch 1">
+                Display results: {{ countriesSwitch }}
+            </md-toolbar>
+            <md-list>
+              <div class="check-element" ng-show="countriesSwitch" >
+                  <md-item ng-repeat="country in countries">
+                    <md-item-content>
+                      <div class="md-tile-content">
+                        <h4>
+                          {{country.name}}
+                        </h4>
+                      </div>
+                    </md-item-content>
+                  </md-item>
+
+                </md-list>
+              </div>
+            </md-switch>
+
+            <br>
+
+            <md-toolbar md-theme="green" class="md-tall">
+              <h2 class="md-toolbar-tools">
+                <span>{{types.length}} types of cameras recorded.</span>
+              </h2>
+            </md-toolbar>
+
+            <br>
+
+            <md-toolbar md-theme="teal" class="md-tall">
+              <span flex></span>
+              <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
+                <span class="md-flex">{{storage.length}} storage types recorded</span>
+              </h2>
+            </md-toolbar>
+
+            <br>
+
+            <md-toolbar md-theme="pink" class="md-tall">
+              <h2 class="md-toolbar-tools">
+                <span>{{camera.length}} cameras have been recorded.</span>
+              </h2>
+            </md-toolbar>
+
+        </div>
+        <div role="tabpanel" id="tab3-content" aria-labelledby="tab3" ng-switch-when="2" md-swipe-left="next()" md-swipe-right="previous()">
+            View for Item #3<br/>
+            data.selectedIndex = 2
+        </div>
+      </md-content>
+    </ng-switch>

@@ -1,0 +1,58 @@
+<!-- list.html -->
+
+<md-toolbar md-theme="indigo" >
+  <div class="md-toolbar-tools">
+    <div ng-include="'back.html'"></div>
+    <span class="md-flex"><h1>{{message}}</h1></span>
+  </div>
+</md-toolbar>
+
+<style>
+ h1 {
+   color:#fff;
+ }
+</style>
+
+<div ng-hide="listError">
+  <md-content md-theme="light-blue-dark" class="md-padding">
+    <h1>{{output.length}} Results</h1>
+      <form style="padding: 20px;">
+        <div class="row">
+          <md-text-float  md-theme="pink" label="Filter" ng-model="query" type="text"
+            placeholder="Filter by" autofocus></md-text-float>
+
+        </div>
+      </form>
+      <md-button class="md-fab md-primary" md-theme="green"  ng-click="dialogAdd($event)" aria-label="Profile">
+            <md-icon icon="" style="width: 24px; height: 24px;" ></md-icon>
+        </md-button>
+    </md-content>
+
+  <md-content class="md-padding">
+  <md-list>
+
+    <md-item ng-repeat="out in output | filter:query  ">
+      <md-item-content>
+        <div class="md-tile-content" style="htext-align:center">
+          <md-card>
+            <h2>{{out.name}}</h2>
+
+              <md-button class="md-raised md-warn" ng-click="dialogBasic($event, out)" >Delete</md-button>
+
+          </md-card>
+        </div>
+      </md-item-content>
+    </md-item>
+
+  </md-list>
+
+
+  </md-content>
+</div>
+<md-content class="md-padding">
+  <div ng-show="listError">
+    <md-card>
+      <h2>Invalid URL</h2>
+    </md-card>
+  </div>
+</md-content>

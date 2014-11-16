@@ -1,0 +1,24 @@
+<md-toolbar md-theme="indigo">
+    <div class="md-toolbar-tools">
+      <div ng-include="'back.html'"></div>
+      <span class="md-flex"><h1>{{title}}</h1></span>
+    </div>
+  </md-toolbar>
+<md-card>
+  <md-content class="md-padding">
+    <h2>Module: {{ module }}</h2>
+    <h3>Team: {{team}}</h3>
+    <h4>Members</h4>
+    <md-list>
+      <md-item ng-repeat="member in members">
+        <md-item-content>
+          <div class="md-tile-content">
+            {{member}}
+          </div>
+        </md-item-content>
+      </md-item>
+    </md-list>
+    <br><br>
+    <b>Version: {{version}}</b>
+  </md-content>
+</md-card>

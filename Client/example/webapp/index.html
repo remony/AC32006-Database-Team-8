@@ -1,0 +1,91 @@
+<html ng-app="clientApp">
+  <head>
+    <title>Index</title>
+    <!-- Libraries -->
+    <script src="bower_components\angular\angular.js"></script>
+    <script src="bower_components\angular-route\angular-route.js"></script>
+    <script src="bower_components\angular-cookies\angular-cookies.js"></script>
+    <script src="bower_components\jquery\dist\jquery.js"></script>
+    <script src="bower_components\cryptojslib\rollups\sha512.js"></script>
+    <script src="bower_components\angular-bootstrap\ui-bootstrap.js"></script>
+    <script src="bower_components\angular-bootstrap\ui-bootstrap-tpls.js"></script>
+    <script src="bower_components\bootstrap\dist\js\bootstrap.js"></script>
+    <script src="bower_components\angular-animate\angular-animate.js"></script>
+    <script src="bower_components\authenticateJS\build\authenticate.js"></script>
+    <script src="bower_components\hammerjs\hammer.js"></script>
+    <script src="bower_components\angular-aria\angular-aria.js"></script>
+    <script src="bower_components\angular-material\angular-material.js"></script>
+    <script src="bower_components\angular-route-animation-manager\angular-route-animation-manager.js"></script>
+
+    <!-- include files -->
+    <script src="app.js"></script>
+
+    <!-- services -->
+    <script src="app\services\toast.js"></script>
+    <script src="app\services\userAuthService.js"></script>
+
+    <script src="app\register.js"></script>
+    <script src="app\query.js"></script>
+    <script src="app\admin.js"></script>
+    <script src="app\list.js"></script>
+
+    <!-- library stylesheets -->
+    <link rel="stylesheet" type="text/css" href="bower_components\bootstrap\dist\css\bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="bower_components\angular-material\angular-material.css">
+    <link rel="stylesheet" type="text/css" href="bower_components\angular-material\themes\default-theme.css">
+    <link rel="stylesheet" type="text/css" href="bower_components\angular-material\themes\light-blue-dark-theme.css">
+    <link rel="stylesheet" type="text/css" href="bower_components\angular-material\themes\pink-theme.css">
+    <link rel="stylesheet" type="text/css" href="bower_components\angular-material\themes\amber-theme.css">
+    <link rel="stylesheet" type="text/css" href="bower_components\angular-material\themes\grey-theme.css">
+    <link rel="stylesheet" type="text/css" href="bower_components\angular-material\themes\red-theme.css">
+    <link rel="stylesheet" type="text/css" href="bower_components\angular-material\themes\teal-theme.css">
+    <link rel="stylesheet" type="text/css" href="bower_components\angular-material\themes\indigo-theme.css">
+    <link rel="stylesheet" type="text/css" href="bower_components\angular-material\themes\green-theme.css">
+
+
+    <link rel="stylesheet" type="text/css" href="assets\css\login.css">
+    <link rel="stylesheet" type="text/css" href="assets\css\styles.css">
+  </head>
+  <body ng-controller="appController">
+
+  <section layout="horizontal" flex >
+
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" component-id="left" is-locked-open="$media('md')" md-theme="light-blue-dark">
+
+      <md-toolbar class="md-theme-indigo" >
+        <h1 class="md-toolbar-tools">Camera DB</h1>
+      </md-toolbar>
+      <md-content  ng-controller="LeftCtrl" md-theme="green">
+
+          <button class="menu-item menu-title" onClick="parent.location='#'" ink-ripple >Home</button>
+          <!-- ng-hide="isLoggedIn" -->
+          <button class="menu-item menu-title" ng-click="dialogBasic($event)"  ink-ripple>Login</button>
+          <button class="menu-item menu-title" onClick="parent.location='#/logout'"   ink-ripple>Logout</button>
+          <button class="menu-item menu-title" onClick="parent.location='#/register'"  ink-ripple>Register</button>
+          <button class="menu-item menu-title" onClick="parent.location='#/about'" ink-ripple>About</button>
+          <button class="menu-item menu-title" onClick="parent.location='#/profile'"  ink-ripple>Profile</button>
+          <button class="menu-item menu-title" onClick="parent.location='#/query'"  ink-ripple>Query</button>
+          <button class="menu-item menu-title" onClick="parent.location='#/admin'"  ink-ripple>Admin</button>
+
+
+
+      </md-content>
+
+    </md-sidenav>
+
+  <md-content ng-view class="view-animate" flex></md-content>
+
+
+
+
+
+  </div>
+
+  </section>
+
+
+
+
+
+  </body>
+</html>
