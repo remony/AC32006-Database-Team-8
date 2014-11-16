@@ -1,0 +1,78 @@
+<md-toolbar md-theme="green">
+    <div class="md-toolbar-tools">
+      <div ng-include="'back.html'"></div>
+      <span class="md-flex"><h1>{{title}}</h1></span>
+    </div>
+
+  </md-toolbar>
+<md-button ng-click="toggleRight()" aria-label="oh" class="md-primary" md-theme="pink">
+  Choose options
+</md-button>
+  <md-content class="md-padding">
+    <md-card  ng-hide="subject">
+      Please select an option from the menu.
+      <md-button ng-click="toggleRight()" aria-label="oh" class="md-primary" md-theme="pink">
+        Choose options
+      </md-button>
+    </md-card>
+  </md-content>
+
+
+
+
+
+<md-content md-hide="subject == 'undefined'" class="md-padding" >
+  <md-content md-theme="indigo" >
+    <h1>{{output.length}} Results for {{subject}}</h1>
+    <form style="padding: 20px;">
+      <div class="row">
+        <md-text-float label="Filter" ng-model="query" type="text"
+          placeholder="Filter by" autofocus></md-text-float>
+
+      </div>
+    </form>
+    <md-button class="md-fab md-primary" ng-hide="subject == 'countries'" md-theme="green" ng-controller="listDialog"  ng-click="dialogAdd($event, subject)" aria-label="Profile">
+      <md-icon icon="" style="width: 24px; height: 24px;" ></md-icon>
+    </md-button>
+  </md-content>
+
+  <md-content class="md-padding">
+    <md-list>
+      <md-item ng-repeat="out in output | filter:query">
+        <md-item-content>
+          <div class="md-tile-content" style="htext-align:center">
+            <md-card>
+              <div ng-show="subject == 'camera'">
+                {{out.brand}} {{out.model_name}} {{out.price}} {{out.battery_type}} {{out.megapixels}} {{out.can_do_video}} {{out.has_flash}} {{out.resolution}} {{out.type_id}} {{out.storage_id}}
+              </div>
+              <div ng-show="subject == 'profession'  || subject == 'hobby'">
+                Profession: {{out.title}}
+              </div>
+              <div ng-show="subject == 'lens'">
+                Profession: {{out.type}}
+              </div>
+              <div ng-show="subject == 'sale'">
+                Date purchased: {{out.date_purchased}}<br>
+                Camera: {{out.camera_id}}<br>
+                Store: {{out.store_id}}<br>
+                Customer: {{out.customer_id}}
+              </div>
+              <div ng-show="subject == 'customer'">
+                Full name: {{out.first_name}} {{out.second_name}}<br>
+                Date of birth: {{out.date_of_birth}}<br>
+                Gender: {{out.gender}}<br>
+                Country: {{out.country_id}}
+              </div>
+
+
+              <div ng-show="subject == 'type' || subject == 'countries' || subject == 'storage'">
+                <h2>{{out.name}}</h2>
+              </div>
+              <md-button ng-hide="subject" class="md-raised md-warn" aria-label="oh" ng-click="dialogBasic($event, out)">Delete</md-button>
+            </md-card>
+          </div>
+        </md-item-content>
+      </md-item>
+    </md-list>
+  </md-content>
+</md-content>
