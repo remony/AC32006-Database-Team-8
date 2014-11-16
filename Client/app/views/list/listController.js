@@ -18,17 +18,17 @@ angular.module('app.listController', ['app.listService'])
     break;
     case "customer":
       listService.getCustomers(function(data)  {
-        $scope.output = data.customer;
+        $scope.output = data.customer_customer;
       })
     break;
     case "hobby":
       listService.getHobbies(function(data)  {
-        $scope.output = data.hobby;
+        $scope.output = data.hobby_type;
       })
     break;
     case "lens":
       listService.getLens(function(data)  {
-        $scope.output = data.lens;
+        $scope.output = data.lens_type;
       })
     break;
     case "profession":
@@ -38,7 +38,7 @@ angular.module('app.listController', ['app.listService'])
     break;
     case "sale":
       listService.getSales(function(data)  {
-        $scope.output = data.sale;
+        $scope.output = data.sales;
       })
     break;
     case "storage":
@@ -62,7 +62,10 @@ angular.module('app.listController', ['app.listService'])
 }
 
 
-
-
+$scope.announceSelected = announceSelected;
+function announceSelected(tab) {
+  //console.log("hey " + tab);
+//$location.path("/list/" + tab);
+}
 
 });
