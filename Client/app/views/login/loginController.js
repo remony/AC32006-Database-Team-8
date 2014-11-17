@@ -16,7 +16,7 @@ angular.module('app.loginController', [])
         data: JSON.stringify({username: $scope.login.username, password: hash}),
         dataType: "JSON"
         }).done(function(data){
-          authService.checkLoggedIn();
+          
         $scope.status=data.status;
         $scope.access_token = data.access_token;
         console.log(JSON.stringify(data, null, 5));
@@ -27,6 +27,7 @@ angular.module('app.loginController', [])
           //should delete cookie
         }).success(function(data){
         if(data.status == "200"){
+          authService.checkLoggedIn();
          cookie = data.user.access_token;
           $cookies.monster_cookie = cookie;
           $rootScope.isLoggedIn = true;
