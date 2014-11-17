@@ -16,7 +16,7 @@ angular
   'ngMaterial',
   'ui.bootstrap',
   'app.listDialog',
-  'angularCharts',
+  'googlechart',
 
   //Controllers
   'app.indexController',
