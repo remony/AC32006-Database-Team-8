@@ -1,67 +1,67 @@
 angular.module('app.listDialog', ['app.listService'])
 
 .controller('listDialog', function($routeParams, $scope, $cookies, $location, $mdDialog, listService, listService) {
-
-  $scope.dialogAdd = function(ev) {
-    switch($routeParams.query){
-        case "camera":
-          $mdDialog.show({
-            templateUrl: 'app/views/list/input/camera.html',
-            targetEvent: ev,
-            controller: DialogController
-          });
-        break;
-        case "customer":
-          $mdDialog.show({
-            templateUrl: 'app/views/list/input/customer.html',
-            targetEvent: ev,
-            controller: DialogController
-          });
-        break;
-        case "hobby":
-          $mdDialog.show({
-            templateUrl: 'app/views/list/input/hobbies.html',
-            targetEvent: ev,
-            controller: DialogController
-          });
-        break;
-        case "lens":
-          $mdDialog.show({
-            templateUrl: 'app/views/list/input/lens.html',
-            targetEvent: ev,
-            controller: DialogController
-          });
-        break;
-        case "profession":
-          $mdDialog.show({
-            templateUrl: 'app/views/list/input/profession.html',
-            targetEvent: ev,
-            controller: DialogController
-          });
-        break;
-        case "sale":
-          $mdDialog.show({
-            templateUrl: 'app/views/list/input/sale.html',
-            targetEvent: ev,
-            controller: DialogController
-          });
-        break;
-        case "storage":
-          $mdDialog.show({
-            templateUrl: 'app/views/list/input/storage.html',
-            targetEvent: ev,
-            controller: DialogController
-          });
-        break;
-        case "type":
-          $mdDialog.show({
-            templateUrl: 'app/views/list/input/type.html',
-            targetEvent: ev,
-            controller: DialogController
-          });
-          //window.location.reload(true);
-        break;
-      }
+  if ($scope.isLoggedin)  {
+    $scope.dialogAdd = function(ev) {
+      switch($routeParams.query){
+          case "camera":
+            $mdDialog.show({
+              templateUrl: 'app/views/list/input/camera.html',
+              targetEvent: ev,
+              controller: DialogController
+            });
+          break;
+          case "customer":
+            $mdDialog.show({
+              templateUrl: 'app/views/list/input/customer.html',
+              targetEvent: ev,
+              controller: DialogController
+            });
+          break;
+          case "hobby":
+            $mdDialog.show({
+              templateUrl: 'app/views/list/input/hobbies.html',
+              targetEvent: ev,
+              controller: DialogController
+            });
+          break;
+          case "lens":
+            $mdDialog.show({
+              templateUrl: 'app/views/list/input/lens.html',
+              targetEvent: ev,
+              controller: DialogController
+            });
+          break;
+          case "profession":
+            $mdDialog.show({
+              templateUrl: 'app/views/list/input/profession.html',
+              targetEvent: ev,
+              controller: DialogController
+            });
+          break;
+          case "sale":
+            $mdDialog.show({
+              templateUrl: 'app/views/list/input/sale.html',
+              targetEvent: ev,
+              controller: DialogController
+            });
+          break;
+          case "storage":
+            $mdDialog.show({
+              templateUrl: 'app/views/list/input/storage.html',
+              targetEvent: ev,
+              controller: DialogController
+            });
+          break;
+          case "type":
+            $mdDialog.show({
+              templateUrl: 'app/views/list/input/type.html',
+              targetEvent: ev,
+              controller: DialogController
+            });
+            //window.location.reload(true);
+          break;
+        }
   };
 
 
@@ -118,6 +118,12 @@ angular.module('app.listDialog', ['app.listService'])
       }
       //window.location.reload(true);
     }
+  }
+} else {
+    $scope.title="You must be logged in";
+    toastService.displayToast("You must be logged in to access in");
+    $location.path("/login");
+    $rootScope.$Apply();
   }
 })
 
