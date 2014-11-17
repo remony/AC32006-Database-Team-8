@@ -641,3 +641,50 @@ $result = getDatabase()->execute("
     /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=1 */;
 ");
 
+$result = getDatabase() -> execute ("
+    /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+    /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+    /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+    /*!40101 SET NAMES utf8 */;
+    /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+    /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+    /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+    create or replace view `detailed_sales` as select
+       `sales`.`id` AS `id`,
+       `sales`.`date_purchased` AS `date_purchased`,
+       `cameras`.`brand` AS `brand`,
+       `cameras`.`model_name` AS `model_name`,
+       `cameras`.`price` AS `price`,
+       `cameras`.`battery_type` AS `battery_type`,
+       `cameras`.`megapixels` AS `megapixels`,
+       `cameras`.`can_do_video` AS `can_do_video`,
+       `cameras`.`has_flash` AS `has_flash`,
+       `cameras`.`resolution` AS `resolution`,
+       `stores`.`name` AS `name`,
+       `stores`.`brand` AS `store_brand`,
+       `stores`.`size` AS `size`,
+       `stores`.`quantity` AS `quantity`,
+       `stores`.`quantity_sold` AS `quantity_sold`,
+       `customers`.`id` AS `customer_id`,
+       `customers`.`first_name` AS `first_name`,
+       `customers`.`last_name` AS `last_name`,
+       `customers`.`date_of_birth` AS `date_of_birth`,
+       `customers`.`gender` AS `gender`,
+       `countries`.`name` AS `country`
+    FROM `sales`
+    left outer join `cameras` on `cameras`.`id` = `sales`.`camera_id`
+    left outer join `stores` on `stores`.`id` = `sales`.`store_id`
+    left outer join  `customers` on `customers`.`id` = `sales`.`customer_id`
+    left outer join `countries` on `countries`.`id` = `customers`.`country_id`;
+
+    /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+    /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+    /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+    /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+    /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+    /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+    /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=1 */;
+");
+

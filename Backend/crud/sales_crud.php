@@ -92,13 +92,13 @@ class SalesCrud {
         if ($error !== null) {
             return $error;
         } else {
-            $sales = getDatabase()->all("
-                SELECT sales.id, date_purchased, camera_id, store_id, customer_id, cameras.brand 'camera_brand', cameras.model_name 'camera_model', stores.name 'store_name', customers.first_name 'customer_first_name', customers.last_name 'customer_last_name' FROM `sales`
-                LEFT OUTER JOIN `cameras` ON `cameras`.`id` = `sales`.`camera_id`
-                LEFT OUTER JOIN `stores` ON `stores`.`id` = `sales`.`store_id`
-                LEFT OUTER JOIN `customers` ON `customers`.`id` = `sales`.`customer_id`
-                WHERE sales.customer_id IN (:customer_id)
-            ", array( ':customer_id' => $customer ));
+            $sales = getDatabase()->all("select * from `detailed_sales` where customer_id = :customer_id", array( ':customer_id' => $customer ));
+//                SELECT sales.id, date_purchased, camera_id, store_id, customer_id, cameras.brand 'camera_brand', cameras.model_name 'camera_model', stores.name 'store_name', customers.first_name 'customer_first_name', customers.last_name 'customer_last_name' FROM `sales`
+//                LEFT OUTER JOIN `cameras` ON `cameras`.`id` = `sales`.`camera_id`
+//                LEFT OUTER JOIN `stores` ON `stores`.`id` = `sales`.`store_id`
+//                LEFT OUTER JOIN `customers` ON `customers`.`id` = `sales`.`customer_id`
+//                WHERE sales.customer_id IN (:customer_id)
+//            ", array( ':customer_id' => $customer ));
 
             return array(
                 'status' => 200,
