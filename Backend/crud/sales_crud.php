@@ -108,10 +108,11 @@ class SalesCrud {
     }
 
 
-    static public function numberOfSales ($filter) {
-        API :: AddCORSHeaders();
+    static public function numberOfSales ($filter)
+    {
+        API:: AddCORSHeaders();
 
-        $error = API :: CheckAuth("read");
+        $error = API:: CheckAuth("read");
 
         if ($error !== null) {
             return $error;
@@ -136,13 +137,13 @@ class SalesCrud {
             } else {
 //                $query = getDatabase()->all("select DATE_FORMAT(`date`, '%Y-%m-%d') 'date', `TotalAmount` 'quantity', `NumberOfSales 'sales' from `sales_statistics_dates` order by date;");
 
-                $query = getDatabase() -> all ("select DATE_FORMAT(`date`, '%Y-%m-%d') as 'date', `total_amount` as 'quantity', `number_of_sales` as 'sales' from `sales_statistics_dates` order by date;");
+                $query = getDatabase()->all("select DATE_FORMAT(`date`, '%Y-%m-%d') as 'date', `total_amount` as 'quantity', `number_of_sales` as 'sales' from `sales_statistics_dates` order by date;");
 //                $quantity = getDatabase()->all("select DATE_FORMAT(`date`, '%Y-%m-%d') 'label', `TotalAmount` 'value' from `sales_statistics_dates` order by date;");
 //                $price = getDatabase()->all("select DATE_FORMAT(`date`, '%Y-%m-%d') 'label', `NumberOfSales` 'value' from `sales_statistics_dates` order by date;");
 
                 $quantity = [];
                 $price = [];
-                for ($i=0;$i<count($query);$i++) {
+                for ($i = 0; $i < count($query); $i++) {
                     $quantity[$i] = [
                         $query[$i]['date'],
                         intVal($query[$i]['quantity'])
@@ -159,16 +160,16 @@ class SalesCrud {
                     'status' => 200,
                     'data' => array(
                         array(
-                            'key'       => 'Quantity',
-                            'bar'       => false,
-                            'color'     => '#333',
-                            'values'    => $quantity
+                            'key' => 'Quantity',
+                            'bar' => false,
+                            'color' => '#333',
+                            'values' => $quantity
                         ),
                         array(
-                            'key'       => 'Price',
-                            'bar'       => true,
-                            'color'     => '#ccf',
-                            'values'    => $price
+                            'key' => 'Price',
+                            'bar' => true,
+                            'color' => '#ccf',
+                            'values' => $price
                         )
                     )
                 );
