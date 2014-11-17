@@ -688,3 +688,12 @@ $result = getDatabase() -> execute ("
     /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=1 */;
 ");
 
+
+$result = getDatabase() -> execute ("
+    create or replace view `sales_statistics` as SELECT countries.Name
+    as 'country', SUM(cameras.price) AS TotalAmount, COUNT(sales.id) AS NumberOfSales FROM cameras
+    INNER JOIN sales ON sales.id = cameras.id
+    JOIN customers ON customers.id = sales.customer_id
+    JOIN countries ON countries.id = customers.country_id
+    GROUP BY countries.Name;
+");

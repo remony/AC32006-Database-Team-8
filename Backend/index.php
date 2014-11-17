@@ -17,8 +17,8 @@ Epi::init('route', 'api', 'database');
 
 // type = mysql, database = mysql, host = localhost, user = root, password = [empty]
 //EpiDatabase::employ('mysql','AC32006_Database_Team_10','127.0.0.1','AC32006','Team10IsAwesome'); // Yago Database
-EpiDatabase::employ('mysql','14ac3d55','localhost','root','lemon'); // Stuart Database
-//EpiDatabase::employ('mysql','14ac3d55','silva.computing.dundee.ac.uk','14ac3u55','a1bc23'); // Remote Database
+//EpiDatabase::employ('mysql','14ac3d55','localhost','root','lemon'); // Stuart Database
+EpiDatabase::employ('mysql','14ac3d55','silva.computing.dundee.ac.uk','14ac3u55','a1bc23'); // Remote Database
 
 // creates the database, if it doesn't exist
 include_once 'db_schema.php';
@@ -84,6 +84,7 @@ getApi()->get('/sale',           array('SalesCrud', 'read_sale'),   EpiApi::exte
 getApi()->delete('/sale/(\w+)',  array('SalesCrud', 'delete_sale'), EpiApi::external); // Delete
 
 getApi()->get('/customer/(\w+)/sales', array('SalesCrud', 'read_sales_user'),   EpiApi::external); // Read
+getApi()->get('/sales/statistics/(\w+)', array('SalesCrud', 'numberOfSales'),   EpiApi::external); // Read
 
 // Customer Hobbies
 getApi()->post('/customer/(\w+)/hobby/(\w+)',           array('CustomerCrud', 'add_hobby_to_customer'),      EpiApi::external); // Create

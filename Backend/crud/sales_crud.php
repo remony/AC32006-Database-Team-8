@@ -107,6 +107,33 @@ class SalesCrud {
         }
     }
 
+
+    static public function numberOfSales ($filter) {
+        API :: AddCORSHeaders();
+
+        $error = API :: CheckAuth("read");
+
+        if ($error !== null) {
+            return $error;
+        } else {
+            $query = "";
+            if ($filter === "earnings") {
+                $query = "select `country` 'label', `TotalAmount` 'value' from `sales_statistics` ORDER BY TotalAmount DESC;";
+
+            } else if ($filter === "number") {
+                $query = "select `country` 'label', `NumberOfSales` 'value' from `sales_statistics` ORDER BY NumberOfSales DESC;";
+            }
+
+            $sales = getDatabase()->all($query);
+
+            header("HTTP/1.0 200 Ok.");
+            return array(
+                'status' => 202,
+                'deleted' => $sales
+            );
+        }
+    }
+
     static public function delete_sale ($id) {
         API :: AddCORSHeaders();
 
