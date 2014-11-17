@@ -93,12 +93,6 @@ class SalesCrud {
             return $error;
         } else {
             $sales = getDatabase()->all("select * from `detailed_sales` where customer_id = :customer_id", array( ':customer_id' => $customer ));
-//                SELECT sales.id, date_purchased, camera_id, store_id, customer_id, cameras.brand 'camera_brand', cameras.model_name 'camera_model', stores.name 'store_name', customers.first_name 'customer_first_name', customers.last_name 'customer_last_name' FROM `sales`
-//                LEFT OUTER JOIN `cameras` ON `cameras`.`id` = `sales`.`camera_id`
-//                LEFT OUTER JOIN `stores` ON `stores`.`id` = `sales`.`store_id`
-//                LEFT OUTER JOIN `customers` ON `customers`.`id` = `sales`.`customer_id`
-//                WHERE sales.customer_id IN (:customer_id)
-//            ", array( ':customer_id' => $customer ));
 
             return array(
                 'status' => 200,
@@ -135,11 +129,7 @@ class SalesCrud {
                 );
 
             } else {
-//                $query = getDatabase()->all("select DATE_FORMAT(`date`, '%Y-%m-%d') 'date', `TotalAmount` 'quantity', `NumberOfSales 'sales' from `sales_statistics_dates` order by date;");
-
                 $query = getDatabase()->all("select DATE_FORMAT(`date`, '%Y-%m-%d') as 'date', `total_amount` as 'quantity', `number_of_sales` as 'sales' from `sales_statistics_dates` order by date;");
-//                $quantity = getDatabase()->all("select DATE_FORMAT(`date`, '%Y-%m-%d') 'label', `TotalAmount` 'value' from `sales_statistics_dates` order by date;");
-//                $price = getDatabase()->all("select DATE_FORMAT(`date`, '%Y-%m-%d') 'label', `NumberOfSales` 'value' from `sales_statistics_dates` order by date;");
 
                 $quantity = [];
                 $price = [];
