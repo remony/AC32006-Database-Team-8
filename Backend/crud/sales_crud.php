@@ -128,8 +128,8 @@ class SalesCrud {
 
             header("HTTP/1.0 200 Ok.");
             return array(
-                'status' => 202,
-                'deleted' => $sales
+                'status' => 200,
+                'sales' => $sales
             );
         }
     }
