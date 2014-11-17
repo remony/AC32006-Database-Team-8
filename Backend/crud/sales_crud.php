@@ -116,21 +116,61 @@ class SalesCrud {
         if ($error !== null) {
             return $error;
         } else {
-            $query = "";
-            if ($filter === "earnings") {
-                $query = "select `country` 'label', `TotalAmount` 'value' from `sales_statistics` ORDER BY TotalAmount DESC;";
+            if ($filter !== "date") {
+                $query = "";
+                if ($filter === "earnings") {
+                    $query = "select `country` 'label', `TotalAmount` 'value' from `sales_statistics` ORDER BY TotalAmount DESC;";
 
-            } else if ($filter === "number") {
-                $query = "select `country` 'label', `NumberOfSales` 'value' from `sales_statistics` ORDER BY NumberOfSales DESC;";
+                } else if ($filter === "number") {
+                    $query = "select `country` 'label', `NumberOfSales` 'value' from `sales_statistics` ORDER BY NumberOfSales DESC;";
+                }
+
+                $sales = getDatabase()->all($query);
+
+                header("HTTP/1.0 200 Ok.");
+                return array(
+                    'status' => 200,
+                    'sales' => $sales
+                );
+
+            } else {
+                $quantity = getDatabase()->all("select DATE_FORMAT(STR_TO_DATE(`date`, '%d-%m-%Y'), '%Y-%m-%d') 'label', `TotalAmount` 'value' from `sales_statistics_dates`;");
+                $price = getDatabase()->all("select DATE_FORMAT(STR_TO_DATE(`date`, '%d-%m-%Y'), '%Y-%m-%d') 'label', `NumberOfSales` 'value' from `sales_statistics_dates`;");
+
+                for ($i=0;$i<count($quantity);$i++) {
+                    $quantityArray = [
+                        $quantity[$i]['label'],
+                        intVal($quantity[$i]['value'])
+                    ];
+
+                    $priceArray = [
+                        $price[$i]['label'],
+                        floatVal($price[$i]['value'])
+                    ];
+
+                    $quantity[$i] = $quantityArray;
+                    $price[$i] = $priceArray;
+                }
+
+                header("HTTP/1.0 200 Ok.");
+                return array(
+                    'status' => 200,
+                    'data' => array(
+                        array(
+                            'key'       => 'Quantity',
+                            'bar'       => false,
+                            'color'     => '#333',
+                            'values'    => $quantity
+                        ),
+                        array(
+                            'key'       => 'Price',
+                            'bar'       => true,
+                            'color'     => '#ccf',
+                            'values'    => $price
+                        )
+                    )
+                );
             }
-
-            $sales = getDatabase()->all($query);
-
-            header("HTTP/1.0 200 Ok.");
-            return array(
-                'status' => 200,
-                'sales' => $sales
-            );
         }
     }
 

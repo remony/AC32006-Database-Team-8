@@ -690,10 +690,16 @@ $result = getDatabase() -> execute ("
 
 
 $result = getDatabase() -> execute ("
-    create or replace view `sales_statistics` as SELECT countries.Name
+    create or replace view `sales_statistics_countries` as SELECT countries.Name
     as 'country', SUM(cameras.price) AS TotalAmount, COUNT(sales.id) AS NumberOfSales FROM cameras
     INNER JOIN sales ON sales.id = cameras.id
     JOIN customers ON customers.id = sales.customer_id
     JOIN countries ON countries.id = customers.country_id
     GROUP BY countries.Name;
+
+    create or replace view `sales_statistics_dates` as SELECT sales.`date_purchased`
+    as 'date', SUM(cameras.price) AS TotalAmount, COUNT(sales.id) AS NumberOfSales FROM cameras
+    INNER JOIN sales ON sales.id = cameras.id
+    JOIN customers ON customers.id = sales.customer_id
+    GROUP BY sales.`date_purchased`;
 ");
