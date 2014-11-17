@@ -119,10 +119,10 @@ class SalesCrud {
             if ($filter !== "date") {
                 $query = "";
                 if ($filter === "earnings") {
-                    $query = "select `country` 'label', `TotalAmount` 'value' from `sales_statistics` ORDER BY TotalAmount DESC;";
+                    $query = "select `country` 'label', `TotalAmount` 'value' from `sales_statistics_countries` ORDER BY TotalAmount DESC;";
 
                 } else if ($filter === "number") {
-                    $query = "select `country` 'label', `NumberOfSales` 'value' from `sales_statistics` ORDER BY NumberOfSales DESC;";
+                    $query = "select `country` 'label', `NumberOfSales` 'value' from `sales_statistics_countries` ORDER BY NumberOfSales DESC;";
                 }
 
                 $sales = getDatabase()->all($query);
@@ -134,22 +134,24 @@ class SalesCrud {
                 );
 
             } else {
-                $quantity = getDatabase()->all("select DATE_FORMAT(STR_TO_DATE(`date`, '%d-%m-%Y'), '%Y-%m-%d') 'label', `TotalAmount` 'value' from `sales_statistics_dates`;");
-                $price = getDatabase()->all("select DATE_FORMAT(STR_TO_DATE(`date`, '%d-%m-%Y'), '%Y-%m-%d') 'label', `NumberOfSales` 'value' from `sales_statistics_dates`;");
+//                $query = getDatabase()->all("select DATE_FORMAT(`date`, '%Y-%m-%d') 'date', `TotalAmount` 'quantity', `NumberOfSales 'sales' from `sales_statistics_dates` order by date;");
 
-                for ($i=0;$i<count($quantity);$i++) {
-                    $quantityArray = [
-                        $quantity[$i]['label'],
-                        intVal($quantity[$i]['value'])
+                $query = getDatabase() -> all ("select DATE_FORMAT(`date`, '%Y-%m-%d') as 'date', `total_amount` as 'quantity', `number_of_sales` as 'sales' from `sales_statistics_dates` order by date;");
+//                $quantity = getDatabase()->all("select DATE_FORMAT(`date`, '%Y-%m-%d') 'label', `TotalAmount` 'value' from `sales_statistics_dates` order by date;");
+//                $price = getDatabase()->all("select DATE_FORMAT(`date`, '%Y-%m-%d') 'label', `NumberOfSales` 'value' from `sales_statistics_dates` order by date;");
+
+                $quantity = [];
+                $price = [];
+                for ($i=0;$i<count($query);$i++) {
+                    $quantity[$i] = [
+                        $query[$i]['date'],
+                        intVal($query[$i]['quantity'])
                     ];
 
-                    $priceArray = [
-                        $price[$i]['label'],
-                        floatVal($price[$i]['value'])
+                    $price[$i] = [
+                        $query[$i]['date'],
+                        floatVal($query[$i]['sales'])
                     ];
-
-                    $quantity[$i] = $quantityArray;
-                    $price[$i] = $priceArray;
                 }
 
                 header("HTTP/1.0 200 Ok.");

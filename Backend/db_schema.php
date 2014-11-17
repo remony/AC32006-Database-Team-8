@@ -697,8 +697,9 @@ $result = getDatabase() -> execute ("
     JOIN countries ON countries.id = customers.country_id
     GROUP BY countries.Name;
 
-    create or replace view `sales_statistics_dates` as SELECT sales.`date_purchased`
-    as 'date', SUM(cameras.price) AS TotalAmount, COUNT(sales.id) AS NumberOfSales FROM cameras
+    create or replace view `sales_statistics_dates` as SELECT
+    STR_TO_DATE(sales.`date_purchased`, '%d-%m-%Y')as 'date',
+    SUM(cameras.price) AS total_amount, COUNT(sales.id) AS number_of_sales FROM cameras
     INNER JOIN sales ON sales.id = cameras.id
     JOIN customers ON customers.id = sales.customer_id
     GROUP BY sales.`date_purchased`;
