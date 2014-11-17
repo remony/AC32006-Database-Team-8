@@ -12,7 +12,7 @@ angular.module('app.loginController', [])
       console.log(hash);
       $.ajax({
         type: "POST",
-        url: "http://localhost:8888/backend/login",
+        url: backend + "/login",
         data: JSON.stringify({username: $scope.login.username, password: hash}),
         dataType: "JSON"
         }).done(function(data){

@@ -10,13 +10,13 @@
  */
 angular
   .module('app', [
-
+  // Configuration
+  'app.config',
   //dependencies
   'ngCookies',
   'ngMaterial',
   'ui.bootstrap',
   'app.listDialog',
-  'googlechart',
 
   //Controllers
   'app.indexController',

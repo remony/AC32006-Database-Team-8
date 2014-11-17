@@ -50,4 +50,8 @@ angular.module('app.routes', ['ngRoute',])
       templateUrl: 'app/views/query/stats/stats.html',
       controller: 'earningController'
     })
-})
+    .when('/query/stats/date', {
+      templateUrl: 'app/views/query/stats/stats.html',
+      controller: 'dateController'
+    })
+});
