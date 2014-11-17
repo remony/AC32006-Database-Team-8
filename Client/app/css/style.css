@@ -19,6 +19,11 @@ md-toolbar {
   width:100%;
 }
 
+.chart {
+ width: 500px;
+ height: 500px;
+}
+
 
 aria-label{}
 

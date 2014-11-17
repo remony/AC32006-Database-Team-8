@@ -16,6 +16,7 @@ angular
   'ngMaterial',
   'ui.bootstrap',
   'app.listDialog',
+  'angularCharts',
 
   //Controllers
   'app.indexController',
@@ -27,6 +28,7 @@ angular
   'app.profileController',
   'app.listController',
   'app.queryController',
+  'app.query.statsController',
 
   //Services
   'app.toast',

@@ -42,6 +42,8 @@ angular.module('app.routes', ['ngRoute',])
       templateUrl: 'app/views/query/query.html',
       controller: 'queryController'
     })
-
-
+    .when('/query/stats/number', {
+      templateUrl: 'app/views/query/stats/stats.html',
+      controller: 'numberController'
+    })
 })
