@@ -14,6 +14,7 @@ angular
   //dependencies
   'ngCookies',
   'ngMaterial',
+  'ui.bootstrap',
   'app.listDialog',
 
   //Controllers

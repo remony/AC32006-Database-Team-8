@@ -79,7 +79,9 @@ angular.module('app.indexController', [])
 })
 
 
+
 .controller('RightCtrl', function($scope, $timeout, $mdSidenav) {
+  var showList = false;
   $scope.close = function() {
     $mdSidenav('right').close();
   };

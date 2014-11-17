@@ -2,6 +2,7 @@
     <div class="md-toolbar-tools">
       <div ng-include="'back.html'"></div>
       <span class="md-flex"><h1>{{title}}</h1></span>
+      <div ng-include="'right.html'"></div>
     </div>
 
   </md-toolbar>
@@ -16,7 +17,6 @@
       </md-button>
     </md-card>
   </md-content>
-
 
 
 
@@ -43,13 +43,27 @@
           <div class="md-tile-content" style="htext-align:center">
             <md-card>
               <div ng-show="subject == 'camera'">
-                {{out.brand}} {{out.model_name}} {{out.price}} {{out.battery_type}} {{out.megapixels}} {{out.can_do_video}} {{out.has_flash}} {{out.resolution}} {{out.type_id}} {{out.storage_id}}
+                <h1>Brand Name: <medium>{{out.brand}}</medium></h1>
+                <h2>Model Name: <medium>{{out.model_name}}</medium></h2>
+                <h2>Price: £<medium>{{out.price}}</medium></h2>
+                <h2>Battery type:  <medium>{{battery_type}}</medium></h2>
+                <h2>MegaPixels: <medium>{{out.megapixels}}</medium></h2>
+                <h2>Take video: <medium>{{out.can_do_video}}</medium></h2>
+                <h2>Has flash: <medium>{{out.has_flash}}</medium></h2>
+                <h2>Video resolution: <medium>{{out.resolution}}</medium></h2>
+                <h2>Type id: <medium>{{out.type_id}}</medium></h2>
+                <h2>Storage id: <medium>{{out.storage_id}}</medium></h2>
               </div>
-              <div ng-show="subject == 'profession'  || subject == 'hobby'">
-                Profession: {{out.title}}
+              <div ng-show="subject == 'profession'">
+                Profession: {{out.title}}<br>
+                Salary: {{out.salary}}<br>
+                Years: {{out.years}}
               </div>
               <div ng-show="subject == 'lens'">
-                Profession: {{out.type}}
+                Lens type: {{out.name}}
+              </div>
+              <div ng-show="subject == 'hobby'">
+                Hobby: {{out.name}}
               </div>
               <div ng-show="subject == 'sale'">
                 Date purchased: {{out.date_purchased}}<br>
@@ -58,7 +72,7 @@
                 Customer: {{out.customer_id}}
               </div>
               <div ng-show="subject == 'customer'">
-                Full name: {{out.first_name}} {{out.second_name}}<br>
+                Full name: {{out.first_name}} {{out.last_name}}<br>
                 Date of birth: {{out.date_of_birth}}<br>
                 Gender: {{out.gender}}<br>
                 Country: {{out.country_id}}

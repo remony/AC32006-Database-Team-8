@@ -1,14 +1,67 @@
 angular.module('app.listDialog', ['app.listService'])
 
-
 .controller('listDialog', function($routeParams, $scope, $cookies, $location, $mdDialog, listService, listService) {
 
   $scope.dialogAdd = function(ev) {
-    $mdDialog.show({
-      templateUrl: 'app/components/addNewItem.html',
-      targetEvent: ev,
-      controller: DialogController
-    });
+    switch($routeParams.query){
+        case "camera":
+          $mdDialog.show({
+            templateUrl: 'app/views/list/input/camera.html',
+            targetEvent: ev,
+            controller: DialogController
+          });
+        break;
+        case "customer":
+          $mdDialog.show({
+            templateUrl: 'app/views/list/input/customer.html',
+            targetEvent: ev,
+            controller: DialogController
+          });
+        break;
+        case "hobby":
+          $mdDialog.show({
+            templateUrl: 'app/views/list/input/hobbies.html',
+            targetEvent: ev,
+            controller: DialogController
+          });
+        break;
+        case "lens":
+          $mdDialog.show({
+            templateUrl: 'app/views/list/input/lens.html',
+            targetEvent: ev,
+            controller: DialogController
+          });
+        break;
+        case "profession":
+          $mdDialog.show({
+            templateUrl: 'app/views/list/input/profession.html',
+            targetEvent: ev,
+            controller: DialogController
+          });
+        break;
+        case "sale":
+          $mdDialog.show({
+            templateUrl: 'app/views/list/input/sale.html',
+            targetEvent: ev,
+            controller: DialogController
+          });
+        break;
+        case "storage":
+          $mdDialog.show({
+            templateUrl: 'app/views/list/input/storage.html',
+            targetEvent: ev,
+            controller: DialogController
+          });
+        break;
+        case "type":
+          $mdDialog.show({
+            templateUrl: 'app/views/list/input/type.html',
+            targetEvent: ev,
+            controller: DialogController
+          });
+          //window.location.reload(true);
+        break;
+      }
   };
 
 
@@ -33,35 +86,58 @@ angular.module('app.listDialog', ['app.listService'])
     console.log("user wanted to add something");
     switch($routeParams.query){
         case "camera":
-          listService.addCameras(answer)
+          listService.addCameras(answer);
         break;
         case "countries":
-          listService.addCountries()
+          listService.addCountries(answer);
         break;
         case "customer":
-          listService.addCustomers()
+          console.log(answer);
+          //listService.addCustomers(answer);
         break;
         case "hobby":
-          listService.addHobbies()
+          listService.addHobbies(answer);
         break;
         case "lens":
-          listService.addLens()
+          listService.addLens(answer);
         break;
         case "profession":
-          listService.addProfessions()
+          listService.addProfessions(answer);
         break;
         case "sale":
-          listService.addSales()
+          listService.addSales(answer);
         break;
         case "storage":
-          listService.addStorages()
+          listService.addStorages(answer);
+
         break;
         case "type":
           listService.addTypes(answer);
-          window.location.reload(true);
+
         break;
       }
-
+      //window.location.reload(true);
     }
+  }
+})
+
+
+.controller('TypeaheadCtrl', function(listService, $scope)  {
+  $.ajax({
+    type: "get",
+    url: "/backend/countries",
+    }).done(function(data){
+      //console.log(data);
+        console.log("done");
+    }).fail(function(data){
+    //delete $window.sessionStorage.token;
+    }).success(function(data){
+      $scope.countries = data.countries;
+      //console.log(JSON.stringify(data, null, 5));
+    });
+  $scope.selected = undefined;
+  $scope.submitNewType = function(answer, id)  {
+    console.log(answer + " and " + id);
+    listService.addCustomers(answer, id);
   }
 });

@@ -74,6 +74,51 @@ angular.module('app.listService', ['ngRoute', 'ngCookies', 'ngMaterial'])
         dataType: "JSON"
         });
 
+     },
+     addStorages: function(answer)  {
+       $.ajax({
+        type:"POST",
+        url: "http://localhost/Backend/storage",
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+        data: JSON.stringify({name: answer}),
+        dataType: "JSON"
+        });
+     },
+     addLens: function(answer)  {
+       $.ajax({
+        type:"POST",
+        url: "http://localhost/Backend/lens",
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+        data: JSON.stringify({name: answer}),
+        dataType: "JSON"
+        });
+     },
+     addHobbies: function(answer) {
+       $.ajax({
+        type:"POST",
+        url: "http://localhost/Backend/hobby",
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+        data: JSON.stringify({name: answer}),
+        dataType: "JSON"
+        });
+     },
+     addProfessions: function(answer) {
+       $.ajax({
+        type:"POST",
+        url: "http://localhost/Backend/profession",
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+        data: JSON.stringify({title:answer.title, salary:answer.salary, years:answer.years}),
+        dataType: "JSON"
+        });
+     },
+     addCustomers: function(answer, id) {
+       $.ajax({
+        type:"POST",
+        url: "http://localhost/Backend/customer",
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+        data: JSON.stringify({first_name: answer.first_name, last_name: answer.last_name, date_of_birth: answer.date_of_birth, gender:answer.gender, country_id:id }),
+        dataType: "JSON"
+        });
      }
    }
 });
