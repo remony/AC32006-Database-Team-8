@@ -1,0 +1,30 @@
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+</head>
+<body on-change="update()">
+<md-toolbar md-theme="indigo" onload="update(1, 2)">
+    <div class="md-toolbar-tools">
+      <div ng-include="'back.html'"></div>
+      <span class="md-flex"><h1>{{title}}</h1></span>
+    </div>
+  </md-toolbar>
+<md-card>
+  <md-content class="md-padding">
+      <nvd3 options="options" data="data"></nvd3>
+
+   <md-list>
+     <div id="viz"></div>
+     <md-item ng-repeat="out in data">
+       <md-item-content>
+         <div class="md-tile-content">
+           {{out.label}}: {{out.value}}
+         </div>
+       </md-item-content>
+     </md-item>
+
+   </md-list>
+   <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
+  </md-content>
+</md-card>
+</body>

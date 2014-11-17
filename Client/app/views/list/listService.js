@@ -3,56 +3,56 @@ angular.module('app.listService', ['ngRoute', 'ngCookies', 'ngMaterial'])
 .factory('listService', function($http, $mdToast, $cookies, $location, $rootScope){
   return {
     getCameras: function(callback) {
-      return $http({url:'http://localhost/Backend/camera', method:'GET',dataType:'json', headers: {
+      return $http({url: backend + '/camera', method:'GET',dataType:'json', headers: {
                'Content-Type': 'application/json; charset=utf-8',
                'Authorization': $cookies.monster_cookie
            }}).success(callback);
     },
     getCountries: function(callback) {
-      return $http({url:'http://localhost/Backend/countries', method:'GET',dataType:'json', headers: {
+      return $http({url: backend + '/countries', method:'GET',dataType:'json', headers: {
                'Content-Type': 'application/json; charset=utf-8',
                'Authorization': $cookies.monster_cookie
            }}).success(callback);
     },
     getCustomers: function(callback) {
-      return $http({url:'http://localhost/Backend/customer', method:'GET',dataType:'json', headers: {
+      return $http({url: backend + '/customer', method:'GET',dataType:'json', headers: {
                'Content-Type': 'application/json; charset=utf-8',
                'Authorization': $cookies.monster_cookie
            }}).success(callback);
     },
     getHobbies: function(callback) {
-      return $http({url:'http://localhost/Backend/hobby', method:'GET',dataType:'json', headers: {
+      return $http({url: backend + '/backend/hobby', method:'GET',dataType:'json', headers: {
                'Content-Type': 'application/json; charset=utf-8',
                'Authorization': $cookies.monster_cookie
            }}).success(callback);
     },
     getLens: function(callback) {
-      return $http({url:'http://localhost/Backend/lens', method:'GET',dataType:'json', headers: {
+      return $http({url: backend + '/lens', method:'GET',dataType:'json', headers: {
                'Content-Type': 'application/json; charset=utf-8',
                'Authorization': $cookies.monster_cookie
            }}).success(callback);
     },
     getProfessions: function(callback) {
-      return $http({url:'http://localhost/Backend/profession', method:'GET',dataType:'json', headers: {
+      return $http({url: backend + '/profession', method:'GET',dataType:'json', headers: {
                'Content-Type': 'application/json; charset=utf-8',
                'Authorization': $cookies.monster_cookie
            }}).success(callback);
     },
     getSales: function(callback) {
-      return $http({url:'http://localhost/Backend/sale', method:'GET',dataType:'json', headers: {
+      return $http({url: backend + '/sale', method:'GET',dataType:'json', headers: {
                'Content-Type': 'application/json; charset=utf-8',
                'Authorization': $cookies.monster_cookie
            }}).success(callback);
     },
     getStorages: function(callback) {
-      return $http({url:'http://localhost/Backend/storage', method:'GET',dataType:'json', headers: {
+      return $http({url: backend + '/storage', method:'GET',dataType:'json', headers: {
                'Content-Type': 'application/json; charset=utf-8',
                'Authorization': $cookies.monster_cookie
            }}).success(callback);
     },
 
      getTypes: function(callback) {
-       return $http({url:'http://localhost/Backend/type', method:'GET',dataType:'json', headers: {
+       return $http({url: backend + '/type', method:'GET',dataType:'json', headers: {
                 'Content-Type': 'application/json; charset=utf-8',
                 'Authorization': $cookies.monster_cookie
             }}).success(callback);
@@ -68,7 +68,7 @@ angular.module('app.listService', ['ngRoute', 'ngCookies', 'ngMaterial'])
      addTypes: function(answer) {
        $.ajax({
         type:"POST",
-        url: "http://localhost/Backend/type",
+        url: backend + "/type",
         beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
         data: JSON.stringify({name: answer}),
         dataType: "JSON"
@@ -78,7 +78,7 @@ angular.module('app.listService', ['ngRoute', 'ngCookies', 'ngMaterial'])
      addStorages: function(answer)  {
        $.ajax({
         type:"POST",
-        url: "http://localhost/Backend/storage",
+        url: backend + "/storage",
         beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
         data: JSON.stringify({name: answer}),
         dataType: "JSON"
@@ -87,7 +87,7 @@ angular.module('app.listService', ['ngRoute', 'ngCookies', 'ngMaterial'])
      addLens: function(answer)  {
        $.ajax({
         type:"POST",
-        url: "http://localhost/Backend/lens",
+        url: backend + "/lens",
         beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
         data: JSON.stringify({name: answer}),
         dataType: "JSON"
@@ -96,7 +96,7 @@ angular.module('app.listService', ['ngRoute', 'ngCookies', 'ngMaterial'])
      addHobbies: function(answer) {
        $.ajax({
         type:"POST",
-        url: "http://localhost/Backend/hobby",
+        url: backend + "/hobby",
         beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
         data: JSON.stringify({name: answer}),
         dataType: "JSON"
@@ -105,7 +105,7 @@ angular.module('app.listService', ['ngRoute', 'ngCookies', 'ngMaterial'])
      addProfessions: function(answer) {
        $.ajax({
         type:"POST",
-        url: "http://localhost/Backend/profession",
+        url: backend + "/profession",
         beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
         data: JSON.stringify({title:answer.title, salary:answer.salary, years:answer.years}),
         dataType: "JSON"
@@ -114,7 +114,7 @@ angular.module('app.listService', ['ngRoute', 'ngCookies', 'ngMaterial'])
      addCustomers: function(answer, id) {
        $.ajax({
         type:"POST",
-        url: "http://localhost/Backend/customer",
+        url: backend + "/customer",
         beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
         data: JSON.stringify({first_name: answer.first_name, last_name: answer.last_name, date_of_birth: answer.date_of_birth, gender:answer.gender, country_id:id }),
         dataType: "JSON"

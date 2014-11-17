@@ -1,6 +1,8 @@
 <html ng-app="app">
-  <head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<head>
     <title>Index</title>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <!-- Libraries -->
     <script src="app/bower_components\angular\angular.js"></script>
     <script src="app/bower_components\angular-route\angular-route.js"></script>
@@ -16,6 +18,12 @@
     <script src="app/bower_components\angular-aria\angular-aria.js"></script>
     <script src="app/bower_components\angular-material\angular-material.js"></script>
     <script src="app/bower_components\angular-route-animation-manager\angular-route-animation-manager.js"></script>
+
+  <!-- Angular NVD3 -->
+  <script src="bower_components/d3/d3.js"></script>
+  <script src="bower_components/nvd3/nv.d3.js"></script> <!-- or use another assembly -->
+  <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+  <link rel="stylesheet" href="bower_components/nvd3/nv.d3.css">
 
     <!-- include files -->
     <script src="app/app.js"></script>
@@ -38,11 +46,8 @@
     <script src="app\views\list\listController.js"></script>
 
     <script src="app\views\query\queryController.js"></script>
-    <script src=""></script>
-    <script src=""></script>
-
-    <script src=""></script>
-    <script src=""></script>
+    <script src="app\views\query\stats\statsController.js"></script>
+    <script src="app\config.js"></script>
     <script src=""></script>
 
 
@@ -117,15 +122,10 @@
               <md-button ng-click="showQuery = !showQuery" aria-label="Switch 1">show queries <img src="assets/icons/expandLess.svg" height="100%" width="100%"/>
             </div>
             <div class="check-element" ng-show="showQuery">
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/camera'" ink-ripple>Cameras</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/countries'"   ink-ripple>Countries</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/customer'"  ink-ripple>Customers</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/hobby'" ink-ripple>Hobbies</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/lens'"  ink-ripple>Lens</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/profession'"  ink-ripple>Profession</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/sale'"  ink-ripple>Sales</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/storage'"  ink-ripple>Storage</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/type'"  ink-ripple>Type</button>
+              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/number'" ink-ripple>No. cameras sold in country</button>
+              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/earning'"   ink-ripple>Country earnings</button>
+              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/date'"  ink-ripple>Number of sells/earnings by date</button>
+
             </div>
 
           </div>

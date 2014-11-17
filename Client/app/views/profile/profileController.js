@@ -8,7 +8,7 @@ angular.module('app.profileController', [])
   if(checkAuth($cookies.monster_cookie)) {
     $.ajax({
       type: "get",
-      url: "http:/Backend/profile/userid",
+      url: backend + "/profile/userid",
       beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
       }).done(function(data){
         console.log(data);

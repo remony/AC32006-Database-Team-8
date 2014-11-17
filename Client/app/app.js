@@ -10,7 +10,8 @@
  */
 angular
   .module('app', [
-
+  // Configuration
+  'app.config',
   //dependencies
   'ngCookies',
   'ngMaterial',
@@ -27,6 +28,7 @@ angular
   'app.profileController',
   'app.listController',
   'app.queryController',
+  'app.query.statsController',
 
   //Services
   'app.toast',
