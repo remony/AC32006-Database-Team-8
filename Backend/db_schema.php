@@ -690,6 +690,28 @@ $result = getDatabase() -> execute ("
 
 
 $result = getDatabase() -> execute ("
+    create or replace view `detailed_sales` as SELECT
+       `sales`.`id` AS `id`,
+       `sales`.`date_purchased` AS `date_purchased`,
+       `cameras`.`brand` AS `brand`,
+       `cameras`.`model_name` AS `model_name`,
+       `cameras`.`price` AS `price`,
+       `cameras`.`battery_type` AS `battery_type`,
+       `cameras`.`megapixels` AS `megapixels`,
+       `cameras`.`can_do_video` AS `can_do_video`,
+       `cameras`.`has_flash` AS `has_flash`,
+       `cameras`.`resolution` AS `resolution`,
+       `stores`.`name` AS `name`,
+       `stores`.`brand` AS `store_brand`,
+       `stores`.`size` AS `size`,
+       `customers`.`id` AS `customer_id`,
+       `customers`.`first_name` AS `first_name`,
+       `customers`.`last_name` AS `last_name`,
+       `customers`.`date_of_birth` AS `date_of_birth`,
+       `customers`.`gender` AS `gender`,
+       `countries`.`name` AS `country`
+    FROM ((((`sales` join `cameras` on((`cameras`.`id` = `sales`.`camera_id`))) join `stores` on((`stores`.`id` = `sales`.`store_id`))) join `customers` on((`customers`.`id` = `sales`.`customer_id`))) join `countries` on((`countries`.`id` = `stores`.`country_id`)));
+
     create or replace view `sales_statistics_countries` as SELECT countries.Name
     as 'country', SUM(cameras.price) AS TotalAmount, COUNT(sales.id) AS NumberOfSales FROM cameras
     INNER JOIN sales ON sales.id = cameras.id

@@ -150,13 +150,13 @@ class SalesCrud {
                     'status' => 200,
                     'data' => array(
                         array(
-                            'key' => 'Quantity',
+                            'key' => 'Price',
                             'bar' => false,
                             'color' => '#333',
                             'values' => $quantity
                         ),
                         array(
-                            'key' => 'Price',
+                            'key' => 'Quantity',
                             'bar' => true,
                             'color' => '#ccf',
                             'values' => $price
