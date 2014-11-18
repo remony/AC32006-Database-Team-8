@@ -184,22 +184,42 @@ angular.module('app.query.statsController', ['nvd3'])
   $scope.submitQuery = function(answer)  {
     if (answer != undefined || answer != null)  {
       console.log(answer);
+      /* Chart options */
+      $scope.options = {
+          chart: {
+              type: 'pieChart',
+              height: 500,
+              x: function(d){return d.type;},
+              y: function(d){return d.sales;},
+              showLabels: true,
+              transitionDuration: 500,
+              labelThreshold: 0.01,
+              legend: {
+                  margin: {
+                      top: 5,
+                      right: 35,
+                      bottom: 5,
+                      left: 0
+                  }
+              }
+          }
+      };
+
+      $scope.data = [];
       $.ajax({
-        type: "POST",
-        url: backend + "/sales/statistics/earnings",
+        type: "GET",
+        url: backend + "/type/popular/country/" + answer,
         beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
-        data: JSON.stringify({country_id: answer}),
-        dataType: "JSON"
-        }).done(function(data){
+      }).done(function(data){
           console.log(data);
-        console.log("done");
+          console.log("done");
+
         }).fail(function(data){
           toastService.displayToast("Error contacting database");
         }).success(function(data){
-          console.log(data);
-          $scope.data = data.sales;
+          $scope.data = data.data;
           $scope.$apply();
-      });
+        });
     } else {
       toastService.displayToast("You have entered an invalid query");
     }

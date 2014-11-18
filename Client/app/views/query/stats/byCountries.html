@@ -27,7 +27,12 @@
         <md-button class="md-primary" aria-label="null" ng-click="hide()" type="submit">Get results</md-button>
       </div>
     </form>
-
+<div ng-hide="data">
+  <img src="FkZ8zcY.gif"/>
+</div>
+<div ng-show="data">
+  <nvd3 options="options" data="data"></nvd3>
+</div>
 </div>
 
    <md-list>
@@ -39,9 +44,7 @@
        </md-item-content>
      </md-item>
 
-     <div ng-hide="data">
-        <h3>Please enter a query to show the graph</h3>
-     </div>
+
 
    </md-list>
   </md-content>
