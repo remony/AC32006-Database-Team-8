@@ -201,7 +201,7 @@ angular.module('app.query.statsController', ['nvd3'])
           $scope.$apply();
       });
     } else {
-      toastService.displayToast("You have entered invalid query");
+      toastService.displayToast("You have entered an invalid query");
     }
 
   }
@@ -209,6 +209,6 @@ angular.module('app.query.statsController', ['nvd3'])
 })
 
 .controller('byCountryController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
-  $scope.title = "sup";
+  $scope.title = "Show popular camera types by country";
 
 });

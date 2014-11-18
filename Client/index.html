@@ -98,12 +98,12 @@
 
 
             <div ng-hide="showList">
-              <md-button ng-click="showQuery = !showQuery" aria-label="Switch 1">show queries  <img src="assets/icons/expandMore.svg" height="100%" width="100%"/>
+              <md-button ng-click="showQueryIcon = !showQueryIcon" aria-label="Switch 1">show queries  <img src="assets/icons/expandMore.svg" height="100%" width="100%"/>
             </div>
             <div ng-show="showList">
-              <md-button ng-click="showQuery = !showQuery" aria-label="Switch 1">show queries <img src="assets/icons/expandLess.svg" height="100%" width="100%"/>
+              <md-button ng-click="showQueryIcon = !showQueryIcon" aria-label="Switch 1">show queries <img src="assets/icons/expandLess.svg" height="100%" width="100%"/>
             </div>
-            <div class="check-element" ng-show="showQuery">
+            <div class="check-element" ng-show="showQueryIcon">
 
               <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/popularbycountry/type'" ink-ripple>camera type by popularlity by country</button>
               <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/number'" ink-ripple>No. cameras sold in country</button>
