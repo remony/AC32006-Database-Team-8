@@ -753,4 +753,12 @@ $result = getDatabase() -> execute ("
     inner join `sales` on `sales`.`camera_id` = `cameras`.`id`
     inner join `stores` on `stores`.`id` = `sales`.`store_id`
     group by `camera`;
+
+    create or replace view `brands` as SELECT DISTINCT brand FROM `cameras`;
+    create or replace view `custom_cameras` as SELECT id, price, brand FROM `cameras`;
+    create or replace view `sales_per_brand_per_month` as
+    SELECT str_to_date(`sales`.`date_purchased`, '%d-%m-%Y') 'date', date_format(str_to_date(`sales`.`date_purchased`,'%d-%m-%Y'), '%M') 'month', brands.brand, COUNT(cameras.id) 'sales', SUM(cameras.price) 'earnings' from `sales`
+    INNER JOIN brands
+    LEFT JOIN custom_cameras as cameras ON cameras.id = sales.camera_id AND cameras.brand = brands.brand
+    GROUP BY date, brands.brand;
 ");

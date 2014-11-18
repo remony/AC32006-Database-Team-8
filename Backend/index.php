@@ -75,6 +75,8 @@ getApi()->get('/camera',           array('CameraCrud', 'read_camera'),   EpiApi:
 getApi()->delete('/camera/(\w+)',  array('CameraCrud', 'delete_camera'), EpiApi::external); // Delete
 
 getApi()->get('/camera/popular/country/(\w+)',  array('CameraCrud', 'popular_camera_in_country'), EpiApi::external); // Read
+getApi()->get('/camera/sales/month/brand',  array('CameraCrud', 'cameras_sold_per_month_per_brand'), EpiApi::external); // Read
+
 // Customer
 getApi()->post('/customer',          array('CustomerCrud', 'create_customer'), EpiApi::external); // Create
 getApi()->post('/customer/(\w+)',    array('CustomerCrud', 'update_customer'), EpiApi::external); // Update

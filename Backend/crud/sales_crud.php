@@ -122,6 +122,10 @@ class SalesCrud {
 
                 $sales = getDatabase()->all($query);
 
+                for ($i=0;$i<count($sales);$i++) {
+                    $sales[$i]['value'] = intval($sales[$i]['value']);
+                }
+
                 header("HTTP/1.0 200 Ok.");
                 return array(
                     'status' => 200,

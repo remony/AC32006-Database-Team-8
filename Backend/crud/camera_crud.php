@@ -114,10 +114,57 @@ class CameraCrud {
         } else {
             $cameras = getDatabase() -> all("select `camera` as label, sales as value from `cameras_top` where country = :country;", array(':country' => $country));
 
+            for ($i=0;$i<count($cameras);$i++) {
+                $cameras[$i]['value'] = intval($cameras[$i]['value']);
+            }
+
             header("HTTP/1.0 200 OK");
             return array(
                 'status' => 200,
                 'data' => $cameras
+            );
+        }
+    }
+
+    static public function cameras_sold_per_month_per_brand () {
+        API :: AddCORSHeaders();
+
+        $error = API :: CheckAuth("read");
+
+
+        if ($error !== null) {
+            return $error;
+        } else {
+            $cameras = getDatabase() -> all("select brand, month, sales from sales_per_brand_per_month order by brand, date;");
+
+            $last = $cameras[0]['brand'];
+            $result = array();
+            $section = array();
+            $section['key'] = $last;
+            $section['values'] = [];
+
+            for ($i=0;$i<count($cameras);$i++) {
+                if ($last !== $cameras[$i]['brand']) {
+                    array_push($result, $section);
+
+                    $last = $cameras[$i]['brand'];
+                    $section = array();
+                    $section['key'] = $last;
+                    $section['values'] = [];
+                }
+
+                array_push($section['values'], [
+                    $cameras[$i]['month'],
+                    intval($cameras[$i]['sales'])
+                ]);
+            }
+
+            array_push($result, $section);
+
+            header("HTTP/1.0 200 OK");
+            return array(
+                'status' => 200,
+                'data' => $result
             );
         }
     }

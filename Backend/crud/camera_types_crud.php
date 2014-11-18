@@ -76,6 +76,10 @@ class CameraTypesCrud {
                 select name as 'type', 0 as 'sales' from `type` where name not in (select TypeOfCamera as 'type_name' from `camera_types_top` where country = :country);
             ", array(':country' => $country));
 
+            for ($i=0;$i<count($cameras);$i++) {
+                $cameras[$i]['sales'] = intval($cameras[$i]['sales']);
+            }
+
             header("HTTP/1.0 200 OK");
             return array(
                 'status' => 200,
