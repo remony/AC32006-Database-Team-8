@@ -81,6 +81,29 @@ class ProfessionCrud {
         }
     }
 
+    static public function profession_most_used (   ) {
+        API :: AddCORSHeaders();
+
+        $error = API :: CheckAuth("read");
+
+
+        if ($error !== null) {
+            return $error;
+        } else {
+            $cameras = getDatabase() -> all("select distinct profession, camera, max(sales) 'sales' from `professions_most_used` group by profession;");
+
+            for ($i=0;$i<count($cameras);$i++) {
+                $cameras[$i]['sales'] = intval($cameras[$i]['sales']);
+            }
+
+            header("HTTP/1.0 200 OK");
+            return array(
+                'status' => 200,
+                'data' => $cameras
+            );
+        }
+    }
+
     static public function delete_profession ($id) {
         API :: AddCORSHeaders();
 

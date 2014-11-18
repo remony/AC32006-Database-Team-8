@@ -18,8 +18,8 @@ Epi::init('route', 'api', 'database');
 // type = mysql, database = mysql, host = localhost, user = root, password = [empty]
 //EpiDatabase::employ('mysql','AC32006_Database_Team_10','127.0.0.1','AC32006','Team10IsAwesome'); // Yago Database
 // EpiDatabase::employ('mysql','14ac3d55','127.0.0.1','14ac3u55','a1bc23'); // Yago Database
-EpiDatabase::employ('mysql','14ac3d55','localhost','root','lemon'); // Stuart Database
-//EpiDatabase::employ('mysql','14ac3d55','silva.computing.dundee.ac.uk','14ac3u55','a1bc23'); // Remote Database
+//EpiDatabase::employ('mysql','14ac3d55','localhost','root','lemon'); // Stuart Database
+EpiDatabase::employ('mysql','14ac3d55','silva.computing.dundee.ac.uk','14ac3u55','a1bc23'); // Remote Database
 
 // creates the database, if it doesn't exist
 include_once 'db_schema.php';
@@ -62,11 +62,15 @@ getApi()->post('/hobby/(\w+)',    array('HobbyTypesCrud', 'update_hobby'), EpiAp
 getApi()->get('/hobby',           array('HobbyTypesCrud', 'read_hobby'),   EpiApi::external); // Read
 getApi()->delete('/hobby/(\w+)',  array('HobbyTypesCrud', 'delete_hobby'), EpiApi::external); // Delete
 
+getApi()->get('/hobby/top',       array('HobbyTypesCrud', 'hobby_most_used'),   EpiApi::external); // Read
+
 // Profession
 getApi()->post('/profession',          array('ProfessionCrud', 'create_profession'), EpiApi::external); // Create
 getApi()->post('/profession/(\w+)',    array('ProfessionCrud', 'update_profession'), EpiApi::external); // Update
 getApi()->get('/profession',           array('ProfessionCrud', 'read_profession'),   EpiApi::external); // Read
 getApi()->delete('/profession/(\w+)',  array('ProfessionCrud', 'delete_profession'), EpiApi::external); // Delete
+
+getApi()->get('/profession/top',       array('ProfessionCrud', 'profession_most_used'),   EpiApi::external); // Read
 
 // Camera
 getApi()->post('/camera',          array('CameraCrud', 'create_camera'), EpiApi::external); // Create

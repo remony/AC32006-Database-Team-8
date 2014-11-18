@@ -761,4 +761,34 @@ $result = getDatabase() -> execute ("
     INNER JOIN brands
     LEFT JOIN custom_cameras as cameras ON cameras.id = sales.camera_id AND cameras.brand = brands.brand
     GROUP BY date, brands.brand;
+
+    create or replace view `professions_most_used` as
+    SELECT profession.title as profession, concat(cameras.brand, ' ', cameras.model_name) AS camera, COUNT(sales.id) AS sales
+    FROM cameras
+    INNER
+        JOIN sales
+         ON sales.camera_id = cameras.id
+        JOIN customers
+         ON customers.id = sales.customer_id
+        JOIN customer_has_profession
+         ON customer_has_profession.customer_id = customers.id
+        JOIN profession
+         ON profession.id = customer_has_profession.profession_id
+    GROUP BY concat(cameras.brand, ' ', cameras.model_name)
+    ORDER BY profession DESC;
+
+    create or replace view `hobbies_most_used` as
+    SELECT hobby.name as hobby, concat(cameras.brand, ' ', cameras.model_name) AS camera, COUNT(sales.id) AS sales
+    FROM cameras
+    INNER
+        JOIN sales
+         ON sales.camera_id = cameras.id
+        JOIN customers
+         ON customers.id = sales.customer_id
+        JOIN customer_has_hobby
+         ON customer_has_hobby.customer_id = customers.id
+        JOIN hobby
+         ON hobby.id = customer_has_hobby.hobby_id
+    GROUP BY concat(cameras.brand, ' ', cameras.model_name)
+    ORDER BY hobby DESC;
 ");
