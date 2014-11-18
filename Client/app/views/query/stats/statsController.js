@@ -391,4 +391,126 @@ angular.module('app.query.statsController', ['nvd3'])
         });
 
 
+})
+
+///hobby/top
+///profession/top
+
+.controller('topHobbyController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
+  $scope.title = "Most used cameras";
+  $scope.data = {
+      selectedIndex : 0,
+      secondLocked : false,
+      secondLabel : "Graph"
+    };
+
+    $scope.next = function() {
+      $scope.data.selectedIndex = Math.min($scope.data.selectedIndex + 1, 2) ;
+    };
+
+    $scope.previous = function() {
+      $scope.data.selectedIndex = Math.max($scope.data.selectedIndex - 1, 0);
+    };
+
+    $scope.options = {
+        chart: {
+            type: 'pieChart',
+              height: 500,
+              donut: true,
+              x: function(d){return d.camera;},
+              y: function(d){return d.sales;},
+              showLabels: true,
+
+              pie: {
+                  startAngle: function(d) { return d.startAngle},
+                  endAngle: function(d) { return d.endAngle }
+              },
+              transitionDuration: 300,
+              legend: {
+                  margin: {
+                      top: 5,
+                      right: 70,
+                      bottom: 5,
+                      left: 0
+                  }
+              }
+        }
+    };
+
+    $scope.graph = [];
+    $.ajax({
+      type: "GET",
+      url: backend + "/hobby/top",
+      beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+    }).done(function(data){
+        console.log(data);
+        console.log("done");
+
+      }).fail(function(data){
+        toastService.displayToast("Error contacting database");
+      }).success(function(data){
+        $scope.graph = data.data;
+        $scope.$apply();
+      });
+
+
+})
+
+.controller('topProfessionController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
+  $scope.title = "Most used cameras";
+  $scope.data = {
+    selectedIndex : 0,
+    secondLocked : false,
+    secondLabel : "Graph"
+  };
+
+  $scope.next = function() {
+    $scope.data.selectedIndex = Math.min($scope.data.selectedIndex + 1, 2) ;
+  };
+
+  $scope.previous = function() {
+    $scope.data.selectedIndex = Math.max($scope.data.selectedIndex - 1, 0);
+  };
+      $scope.options = {
+          chart: {
+              type: 'pieChart',
+                height: 300,
+                donut: true,
+                x: function(d){return d.camera;},
+                y: function(d){return d.sales;},
+                showLabels: true,
+
+                pie: {
+                    startAngle: function(d) { return d.startAngle},
+                    endAngle: function(d) { return d.endAngle }
+                },
+                transitionDuration: 500,
+                legend: {
+                    margin: {
+                        top: 5,
+                        right: 70,
+                        bottom: 5,
+                        left: 0
+                    }
+                }
+          }
+      };
+
+      $scope.graph = [];
+      $.ajax({
+        type: "GET",
+        url: backend + "/profession/top",
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+      }).done(function(data){
+          console.log(data);
+          console.log("done");
+
+        }).fail(function(data){
+          toastService.displayToast("Error contacting database");
+        }).success(function(data){
+          $scope.graph = data.data;
+          $scope.$apply();
+        });
+
+
 });
