@@ -167,6 +167,11 @@ angular.module('app.query.statsController', ['nvd3'])
 })
 
 .controller('TypeaheadCtrl', function(listService, $scope, $cookies, toastService)  {
+
+})
+
+.controller('byCountryController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
+  $scope.title = "Show popular camera types by country";
   $.ajax({
     type: "get",
     url: "/backend/countries",
@@ -208,7 +213,7 @@ angular.module('app.query.statsController', ['nvd3'])
       $scope.data = [];
       $.ajax({
         type: "GET",
-        url: backend + "/type/popular/country/" + answer,
+        url: backend + "/type/popular/country/" + answer.id,
         beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
       }).done(function(data){
           console.log(data);
@@ -218,6 +223,7 @@ angular.module('app.query.statsController', ['nvd3'])
           toastService.displayToast("Error contacting database");
         }).success(function(data){
           $scope.data = data.data;
+          $scope.countryName = answer.name;
           $scope.$apply();
         });
     } else {
@@ -225,10 +231,71 @@ angular.module('app.query.statsController', ['nvd3'])
     }
 
   }
-
 })
-
-.controller('byCountryController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
+.controller('popularCameraByCountryController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
   $scope.title = "Show popular camera types by country";
+  $.ajax({
+    type: "get",
+    url: "/backend/countries",
+    }).done(function(data){
+      //console.log(data);
+        console.log("done");
+    }).fail(function(data){
+    //delete $window.sessionStorage.token;
+    }).success(function(data){
+      $scope.countries = data.countries;
+      //console.log(JSON.stringify(data, null, 5));
+    });
 
+  $scope.selected = undefined;
+  $scope.submitQuery = function(answer)  {
+    if (answer != undefined || answer != null)  {
+      console.log(answer);
+      /* Chart options */
+      $scope.options = {
+          chart: {
+              type: 'pieChart',
+                height: 500,
+                donut: true,
+                x: function(d){return d.label;},
+                y: function(d){return d.value;},
+                showLabels: true,
+
+                pie: {
+                    startAngle: function(d) { return d.startAngle},
+                    endAngle: function(d) { return d.endAngle }
+                },
+                transitionDuration: 500,
+                legend: {
+                    margin: {
+                        top: 5,
+                        right: 70,
+                        bottom: 5,
+                        left: 0
+                    }
+                }
+          }
+      };
+
+      $scope.data = [];
+      $.ajax({
+        type: "GET",
+        url: backend + "/camera/popular/country/" + answer.id,
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+      }).done(function(data){
+          console.log(data);
+          console.log("done");
+
+        }).fail(function(data){
+          toastService.displayToast("Error contacting database");
+        }).success(function(data){
+          $scope.data = data.data;
+          $scope.countryName = answer.name;
+          $scope.$apply();
+        });
+    } else {
+      toastService.displayToast("You have entered an invalid query");
+    }
+
+  }
 });
