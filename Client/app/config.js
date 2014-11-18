@@ -3,7 +3,7 @@
       Exclude http:// and do not add / at the end
 */
 
-var domain = 'localhost';
+var domain = 'https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=';
 
 
 
@@ -12,7 +12,7 @@ var domain = 'localhost';
         Do not touch unless developers
 */
 
-var backend = 'http://' + domain + "/backend";
+var backend = domain;
 angular.module('app.config', [])
 
     .factory('Configuration', function() {

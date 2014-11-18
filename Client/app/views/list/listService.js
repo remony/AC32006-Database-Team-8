@@ -21,7 +21,7 @@ angular.module('app.listService', ['ngRoute', 'ngCookies', 'ngMaterial'])
            }}).success(callback);
     },
     getHobbies: function(callback) {
-      return $http({url: backend + '/backend/hobby', method:'GET',dataType:'json', headers: {
+      return $http({url: config.backend +'/hobby', method:'GET',dataType:'json', headers: {
                'Content-Type': 'application/json; charset=utf-8',
                'Authorization': $cookies.monster_cookie
            }}).success(callback);

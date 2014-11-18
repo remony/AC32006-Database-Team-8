@@ -174,7 +174,7 @@ angular.module('app.query.statsController', ['nvd3'])
   $scope.title = "Show popular camera types by country";
   $.ajax({
     type: "get",
-    url: "/backend/countries",
+    url: config+"/countries",
     }).done(function(data){
       //console.log(data);
         console.log("done");
@@ -236,7 +236,7 @@ angular.module('app.query.statsController', ['nvd3'])
   $scope.title = "Show popular camera types by country";
   $.ajax({
     type: "get",
-    url: "/backend/countries",
+    url: config+"/countries",
     }).done(function(data){
       //console.log(data);
         console.log("done");

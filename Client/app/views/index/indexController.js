@@ -7,7 +7,7 @@ angular.module('app.indexController', [])
         $scope.isLoggedIn = true;
         $.ajax({
           type: "get",
-          url: "http:/Backend/profile/userid",
+          url: backend + "/profile/userid",
           beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
           }).done(function(data){
             //something

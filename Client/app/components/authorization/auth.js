@@ -8,7 +8,7 @@ angular.module('app.auth', ['ngRoute', 'ngCookies', 'ngMaterial'])
        console.log(cookie);
        $.ajax({
          type: "get",
-         url: "http:/Backend/profile/userid",
+         url: backend + "/profile/userid",
          beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", cookie)},
          }).done(function(data){
            //something
