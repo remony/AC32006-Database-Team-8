@@ -103,6 +103,25 @@ class CameraCrud {
         }
     }
 
+    static public function popular_camera_in_country ($country) {
+        API :: AddCORSHeaders();
+
+        $error = API :: CheckAuth("read");
+
+
+        if ($error !== null) {
+            return $error;
+        } else {
+            $cameras = getDatabase() -> all("select `camera` as label, sales as value from `cameras_top` where country = :country;", array(':country' => $country));
+
+            header("HTTP/1.0 200 OK");
+            return array(
+                'status' => 200,
+                'data' => $cameras
+            );
+        }
+    }
+
     static public function delete_camera ($id) {
         API :: AddCORSHeaders();
 

@@ -705,7 +705,7 @@ $result = getDatabase() -> execute ("
     GROUP BY sales.`date_purchased`;
 
     create or replace view `camera_types_top` AS
-    SELECT `type`.`name` AS `TypeOfCamera`,
+    SELECT type.id 'type_id', `type`.`name` AS `TypeOfCamera`,
     sum(`cameras`.`price`) AS `TotalAmount`,
     count(`sales`.`id`) AS `NumberOfsales`,
     `stores`.`country_id` AS `country`
@@ -714,11 +714,21 @@ $result = getDatabase() -> execute ("
     join `type` on((`type`.`id` = `cameras`.`type_id`)))
     join `stores` on((`stores`.`id` = `sales`.`store_id`)))
     group by `type`.`name`
-    having COUNT(sales.id) NOT LIKE 0 UNION SELECT `type`.Name as TypeOfCamera, null AS TotalAmount, COUNT(sales.id) AS NumberOfsales, `stores`.`country_id` AS `country`
+    having COUNT(sales.id) NOT LIKE 0
+
+    UNION
+
+    SELECT type.id 'type_id', `type`.Name as TypeOfCamera, null AS TotalAmount, COUNT(sales.id) AS NumberOfsales, `stores`.`country_id` AS `country`
     FROM type
     LEFT OUTER JOIN cameras ON cameras.type_id = `type`.id
     LEFT OUTER JOIN `sales` ON sales.camera_id = cameras.id
     LEFT OUTER JOIN stores ON stores.id = sales.store_id
     GROUP BY `type`.Name
     having COUNT(sales.id) LIKE 0;
+
+    create or replace view `cameras_top` AS
+    select concat(`cameras`.`brand`, ' ', `cameras`.`model_name`) 'camera', sum(`cameras`.`price`) 'earnings', count(`sales`.`id`) 'sales', `stores`.`country_id` 'country' from `cameras`
+    inner join `sales` on `sales`.`camera_id` = `cameras`.`id`
+    inner join `stores` on `stores`.`id` = `sales`.`store_id`
+    group by `camera`;
 ");
