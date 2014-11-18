@@ -135,7 +135,7 @@ class CameraCrud {
         if ($error !== null) {
             return $error;
         } else {
-            $cameras = getDatabase() -> all("select brand, month, sales from sales_per_brand_per_month order by brand, date;");
+            $cameras = getDatabase() -> all("select brand, date as 'month', sales from sales_per_brand_per_month order by brand, date;");
 
             $last = $cameras[0]['brand'];
             $result = array();
