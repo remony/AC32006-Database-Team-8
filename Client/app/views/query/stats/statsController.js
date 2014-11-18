@@ -1,5 +1,7 @@
 angular.module('app.query.statsController', ['nvd3'])
-
+/*
+    This controller shows the amount of cameras sold by each camera
+*/
 
 .controller('numberController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
   if ($scope.isLoggedIn){
@@ -52,6 +54,12 @@ angular.module('app.query.statsController', ['nvd3'])
 
 })
 
+/*
+      This controller shows the earning of each country
+
+
+*/
+
 .controller('earningController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
   if ($scope.isLoggedIn)  {
     $scope.title = "Stats";
@@ -103,6 +111,11 @@ angular.module('app.query.statsController', ['nvd3'])
 
 })
 
+
+/*
+    This controller displays the amount sold by date
+
+*/
 .controller('dateController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
   if ($scope.isLoggedIn)  {
     $scope.title = "Stats";
@@ -166,9 +179,12 @@ angular.module('app.query.statsController', ['nvd3'])
     }
 })
 
-.controller('TypeaheadCtrl', function(listService, $scope, $cookies, toastService)  {
+/*
 
-})
+    This controller hows the the popular computer types in the defined country
+    this could be goPro, compact, etc.
+
+*/
 
 .controller('byCountryController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
   $scope.title = "Show popular camera types by country";
@@ -232,6 +248,13 @@ angular.module('app.query.statsController', ['nvd3'])
 
   }
 })
+
+/*
+      This controller shows the most sold camera in the defined country
+
+*/
+
+
 .controller('popularCameraByCountryController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
   $scope.title = "Show popular camera types by country";
   $.ajax({
@@ -298,4 +321,74 @@ angular.module('app.query.statsController', ['nvd3'])
     }
 
   }
+})
+
+/*
+
+    This controller displays the monthly sales of all the brands in the database
+
+*/
+
+
+.controller('monthlySalesByBrandController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
+  $scope.title = "Monthly sales by brand";
+
+      /* Chart options */
+                //x: function(d){return d[0];},
+                //y: function(d){return d[1];},
+      $scope.options = {
+          chart: {
+                type: 'cumulativeLineChart',
+                height: 450,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 60,
+                    left: 65
+                },
+                x: function(d){ return new Date(d[0]); },
+                y: function(d){ return d[1]; },
+                average: function(d) { return d.mean/100; },
+
+                color: d3.scale.category10().range(),
+                transitionDuration: 300,
+                useInteractiveGuideline: true,
+                clipVoronoi: false,
+
+                xAxis: {
+                    axisLabel: 'X Axis',
+                    tickFormat: function(d) {
+                        return d3.time.format('%m/%d/%y')(new Date(d))
+                    },
+                    showMaxMin: false,
+                    staggerLabels: true
+                },
+
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    tickFormat: function(d){
+                        return d3.format(',.1%')(d);
+                    },
+                    axisLabelDistance: 20
+                }
+            }
+      };
+
+      $scope.data = [];
+      $.ajax({
+        type: "GET",
+        url: backend + "/camera/sales/month/brand",
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+      }).done(function(data){
+          console.log(data);
+          console.log("done");
+
+        }).fail(function(data){
+          toastService.displayToast("Error contacting database");
+        }).success(function(data){
+          $scope.data = data.data;
+          $scope.$apply();
+        });
+
+
 });
