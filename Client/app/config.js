@@ -3,7 +3,7 @@
       Exclude http:// and do not add / at the end
 */
 
-var domain = 'https://zeno.computing.dundee.ac.uk/2014-ac32006/yagocarballo/?__route__=';
+var domain = 'http://localhost/Backend';
 
 
 

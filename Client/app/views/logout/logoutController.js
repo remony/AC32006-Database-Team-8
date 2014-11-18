@@ -7,6 +7,7 @@ angular.module('app.logoutController', [])
   if($cookies.monster_cookie != null) {
     document.cookie = 'monster_cookie' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     $rootScope.isLoggedIn = false;
+    $scope.isLoggedIn = false;
 
     $location.path("/login");
     toastService.displayToast("You have logged out");

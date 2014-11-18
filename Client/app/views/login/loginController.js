@@ -16,7 +16,7 @@ angular.module('app.loginController', [])
         data: JSON.stringify({username: $scope.login.username, password: hash}),
         dataType: "JSON"
         }).done(function(data){
-          
+
         $scope.status=data.status;
         $scope.access_token = data.access_token;
         console.log(JSON.stringify(data, null, 5));
