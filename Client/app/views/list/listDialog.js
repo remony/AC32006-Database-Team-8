@@ -1,7 +1,7 @@
 angular.module('app.listDialog', ['app.listService'])
 
-.controller('listDialog', function($routeParams, $scope, $cookies, $location, $mdDialog, listService, listService) {
-  if ($scope.isLoggedin)  {
+.controller('listDialog', function($routeParams, $scope, $cookies, $location, $mdDialog, listService, listService, toastService, $rootScope) {
+  if ($cookies.monster_cookie != null)  {
     $scope.dialogAdd = function(ev) {
       switch($routeParams.query){
           case "camera":
@@ -122,7 +122,7 @@ angular.module('app.listDialog', ['app.listService'])
 } else {
     $scope.title="You must be logged in";
     toastService.displayToast("You must be logged in to access in");
-    $location.path("/login");
-    $rootScope.$Apply();
+    //$location.path("/login");
+  //  $rootScope.$Apply();
   }
 })
