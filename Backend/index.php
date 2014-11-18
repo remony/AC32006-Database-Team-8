@@ -48,6 +48,8 @@ getApi()->post('/type/(\w+)',       array('CameraTypesCrud', 'update_type'), Epi
 getApi()->get('/type',              array('CameraTypesCrud', 'read_type'),   EpiApi::external); // Read
 getApi()->delete('/type/(\w+)',     array('CameraTypesCrud', 'delete_type'), EpiApi::external); // Delete
 
+getApi()->get('/type/popular/country/(\w+)',  array('CameraTypesCrud', 'popular_type_camera_in_country'), EpiApi::external); // Read
+
 // Lens
 getApi()->post('/lens',          array('LensTypesCrud', 'create_lens'), EpiApi::external); // Create
 getApi()->post('/lens/(\w+)',    array('LensTypesCrud', 'update_lens'), EpiApi::external); // Update

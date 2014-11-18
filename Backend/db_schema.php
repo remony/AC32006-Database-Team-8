@@ -693,8 +693,8 @@ $result = getDatabase() -> execute ("
     create or replace view `sales_statistics_countries` as SELECT countries.Name
     as 'country', SUM(cameras.price) AS TotalAmount, COUNT(sales.id) AS NumberOfSales FROM cameras
     INNER JOIN sales ON sales.id = cameras.id
-    JOIN customers ON customers.id = sales.customer_id
-    JOIN countries ON countries.id = customers.country_id
+    JOIN stores ON stores.id = sales.store_id
+    JOIN countries ON countries.id = stores.country_id
     GROUP BY countries.Name;
 
     create or replace view `sales_statistics_dates` as SELECT
@@ -703,4 +703,22 @@ $result = getDatabase() -> execute ("
     INNER JOIN sales ON sales.id = cameras.id
     JOIN customers ON customers.id = sales.customer_id
     GROUP BY sales.`date_purchased`;
+
+    create or replace view `camera_types_top` AS
+    SELECT `type`.`name` AS `TypeOfCamera`,
+    sum(`cameras`.`price`) AS `TotalAmount`,
+    count(`sales`.`id`) AS `NumberOfsales`,
+    `stores`.`country_id` AS `country`
+    FROM (((`sales`
+    join `cameras` on((`cameras`.`id` = `sales`.`camera_id`)))
+    join `type` on((`type`.`id` = `cameras`.`type_id`)))
+    join `stores` on((`stores`.`id` = `sales`.`store_id`)))
+    group by `type`.`name`
+    having COUNT(sales.id) NOT LIKE 0 UNION SELECT `type`.Name as TypeOfCamera, null AS TotalAmount, COUNT(sales.id) AS NumberOfsales, `stores`.`country_id` AS `country`
+    FROM type
+    LEFT OUTER JOIN cameras ON cameras.type_id = `type`.id
+    LEFT OUTER JOIN `sales` ON sales.camera_id = cameras.id
+    LEFT OUTER JOIN stores ON stores.id = sales.store_id
+    GROUP BY `type`.Name
+    having COUNT(sales.id) LIKE 0;
 ");
