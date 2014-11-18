@@ -60,6 +60,30 @@ class CameraTypesCrud {
         }
     }
 
+
+    static public function popular_type_camera_in_country ($country) {
+        API :: AddCORSHeaders();
+
+        $error = API :: CheckAuth("read");
+
+
+        if ($error !== null) {
+            return $error;
+        } else {
+            $cameras = getDatabase() -> all("
+                select TypeOfCamera as 'type', NumberOfSales as 'sales' from `camera_types_top` where country = :country
+                union
+                select name as 'type', 0 as 'sales' from `type` where name not in (select TypeOfCamera as 'type_name' from `camera_types_top` where country = :country);
+            ", array(':country' => $country));
+
+            header("HTTP/1.0 200 OK");
+            return array(
+                'status' => 200,
+                'data' => $cameras
+            );
+        }
+    }
+
     /**
      * Gets the list of available type types
      * @return json
