@@ -4,6 +4,7 @@ angular.module('app.indexController', [])
       var isLoggedIn;
       if ($cookies.monster_cookie != null)  {
         console.log("yay");
+        $scope.isLoggedIn = true;
         $.ajax({
           type: "get",
           url: "http:/Backend/profile/userid",

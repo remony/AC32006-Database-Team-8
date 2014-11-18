@@ -126,24 +126,3 @@ angular.module('app.listDialog', ['app.listService'])
     $rootScope.$Apply();
   }
 })
-
-
-.controller('TypeaheadCtrl', function(listService, $scope)  {
-  $.ajax({
-    type: "get",
-    url: "/backend/countries",
-    }).done(function(data){
-      //console.log(data);
-        console.log("done");
-    }).fail(function(data){
-    //delete $window.sessionStorage.token;
-    }).success(function(data){
-      $scope.countries = data.countries;
-      //console.log(JSON.stringify(data, null, 5));
-    });
-  $scope.selected = undefined;
-  $scope.submitNewType = function(answer, id)  {
-    console.log(answer + " and " + id);
-    listService.addCustomers(answer, id);
-  }
-});

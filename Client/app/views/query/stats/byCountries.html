@@ -1,0 +1,48 @@
+
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+<md-toolbar md-theme="indigo">
+    <div class="md-toolbar-tools">
+      <div ng-include="'back.html'"></div>
+      <span class="md-flex"><h1>{{title}}</h1></span>
+    </div>
+
+  </md-toolbar>
+
+
+
+
+<md-card>
+  <md-content class="md-padding">
+
+    <h1>{{stats}}</h1>
+      <nvd3 options="options" data="data"></nvd3>
+
+<div class='container-fluid' ng-controller="TypeaheadCtrl">
+
+    <form class="type-form" name="typeForm" ng-submit="submitQuery(selected.id)">
+      <h2>Popular camera types in country ......</h2>
+      <input type="text" ng-model="selected" typeahead="country as country.name for country in countries | filter:$viewValue | limitTo:8" class="form-control" placeholder="Enter a country">
+      <div class="md-actions" layout="horizontal" layout-align="end">
+        <md-button class="md-primary" aria-label="null" ng-click="hide()" type="submit">Get results</md-button>
+      </div>
+    </form>
+
+</div>
+
+   <md-list>
+     <md-item ng-repeat="out in data">
+       <md-item-content>
+         <div class="md-tile-content">
+           {{out.label}}: {{out.value}}
+         </div>
+       </md-item-content>
+     </md-item>
+
+     <div ng-hide="data">
+        <img src="http://blog.corbis.com/wp-content/uploads/2012/03/42-311623701.jpg" width="100%"/>
+     </div>
+
+   </md-list>
+  </md-content>
+</md-card>

@@ -1,7 +1,7 @@
 angular.module('app.listController', ['app.listService'])
 
 
-.controller('listController', function($routeParams, $scope, $rootScope, $cookies, $location, $mdDialog, toastService, listService, listService) {
+.controller('listController', function($routeParams, $scope, $rootScope, $cookies, $location, $mdDialog, toastService , listService) {
   $scope.title = "List";
   $scope.subject = $routeParams.query;
   if ($scope.isLoggedIn)  {

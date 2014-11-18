@@ -13,7 +13,12 @@
 <md-card>
   <md-content class="md-padding">
     <h1>{{stats}}</h1>
+    <div ng-hide="data">
+      <img src="FkZ8zcY.gif"/>
+    </div>
+    <div ng-show="data">
       <nvd3 options="options" data="data"></nvd3>
+    </div>
 
    <md-list>
      <md-item ng-repeat="out in data">

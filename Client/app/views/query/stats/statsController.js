@@ -164,4 +164,51 @@ angular.module('app.query.statsController', ['nvd3'])
       $location.path("/login");
       $rootScope.$Apply();
     }
+})
+
+.controller('TypeaheadCtrl', function(listService, $scope, $cookies, toastService)  {
+  $.ajax({
+    type: "get",
+    url: "/backend/countries",
+    }).done(function(data){
+      //console.log(data);
+        console.log("done");
+    }).fail(function(data){
+    //delete $window.sessionStorage.token;
+    }).success(function(data){
+      $scope.countries = data.countries;
+      //console.log(JSON.stringify(data, null, 5));
+    });
+
+  $scope.selected = undefined;
+  $scope.submitQuery = function(answer)  {
+    if (answer != undefined || answer != null)  {
+      console.log(answer);
+      $.ajax({
+        type: "POST",
+        url: backend + "/sales/statistics/earnings",
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+        data: JSON.stringify({country_id: answer}),
+        dataType: "JSON"
+        }).done(function(data){
+          console.log(data);
+        console.log("done");
+        }).fail(function(data){
+          toastService.displayToast("Error contacting database");
+        }).success(function(data){
+          console.log(data);
+          $scope.data = data.sales;
+          $scope.$apply();
+      });
+    } else {
+      toastService.displayToast("You have entered invalid query");
+    }
+
+  }
+
+})
+
+.controller('byCountryController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
+  $scope.title = "sup";
+
 });

@@ -95,25 +95,7 @@
           <button class="menu-item menu-title" onClick="parent.location='#/about'" ink-ripple>About</button>
           <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/profile'"  ink-ripple>Profile</button>
           <div ng-show="isLoggedIn">
-            <div ng-hide="showList">
-              <md-button ng-click="showList = !showList" aria-label="Switch 1"> Show entries  <img src="assets/icons/expandMore.svg" height="100%" width="100%"/>
-            </div>
-            <div ng-show="showList">
-              <md-button ng-click="showList = !showList" aria-label="Switch 1"> Show entries <img src="assets/icons/expandLess.svg" height="100%" width="100%"/>
-            </div>
 
-                        <!--       Link to list where you get all entries in each option         -->
-            <div class="check-element" ng-show="showList" >
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/camera'" ink-ripple>Cameras</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/countries'"   ink-ripple>Countries</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/customer'"  ink-ripple>Customers</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/hobby'" ink-ripple>Hobbies</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/lens'"  ink-ripple>Lens</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/profession'"  ink-ripple>Profession</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/sale'"  ink-ripple>Sales</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/storage'"  ink-ripple>Storage</button>
-              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/list/type'"  ink-ripple>Type</button>
-            </div>
 
             <div ng-hide="showList">
               <md-button ng-click="showQuery = !showQuery" aria-label="Switch 1">show queries  <img src="assets/icons/expandMore.svg" height="100%" width="100%"/>
@@ -122,6 +104,8 @@
               <md-button ng-click="showQuery = !showQuery" aria-label="Switch 1">show queries <img src="assets/icons/expandLess.svg" height="100%" width="100%"/>
             </div>
             <div class="check-element" ng-show="showQuery">
+
+              <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/popularbycountry/type'" ink-ripple>camera type by popularlity by country</button>
               <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/number'" ink-ripple>No. cameras sold in country</button>
               <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/earning'"   ink-ripple>Country earnings</button>
               <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/date'"  ink-ripple>Number of sells/earnings by date</button>
