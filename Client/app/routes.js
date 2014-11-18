@@ -62,6 +62,10 @@ angular.module('app.routes', ['ngRoute',])
       templateUrl: 'app/views/query/stats/byCountries.html',
       controller: 'popularCameraByCountryController'
     })
+    .when('/query/stats/monthlysales', {
+      templateUrl: 'app/views/query/stats/stats.html',
+      controller: 'monthlySalesByBrandController'
+    })
 
 
 });
