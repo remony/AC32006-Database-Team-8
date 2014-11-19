@@ -714,7 +714,7 @@ $result = getDatabase() -> execute ("
 
     create or replace view `sales_statistics_countries` as SELECT countries.Name
     as 'country', SUM(cameras.price) AS TotalAmount, COUNT(sales.id) AS NumberOfSales FROM cameras
-    INNER JOIN sales ON sales.id = cameras.id
+    INNER JOIN sales ON sales.camera_id = cameras.id
     JOIN stores ON stores.id = sales.store_id
     JOIN countries ON countries.id = stores.country_id
     GROUP BY countries.Name;
