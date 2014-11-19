@@ -17,6 +17,7 @@ angular
   'ngMaterial',
   'ui.bootstrap',
   'app.listDialog',
+  'ngAnimate',
 
   //Controllers
   'app.indexController',
