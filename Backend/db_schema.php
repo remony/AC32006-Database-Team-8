@@ -791,4 +791,62 @@ $result = getDatabase() -> execute ("
          ON hobby.id = customer_has_hobby.hobby_id
     GROUP BY concat(cameras.brand, ' ', cameras.model_name)
     ORDER BY hobby DESC;
+
+    create or replace view `detailed_cameras` as
+    select `cameras`.`brand` 'brand', `cameras`.`model_name` 'model', `cameras`.`price`, `cameras`.`battery_type` 'battery', `cameras`.`megapixels`, `cameras`.`can_do_video` 'video', `cameras`.`has_flash` 'flash', `cameras`.`resolution`, `type`.`name` 'type', `storage`.`name` 'storage', (select count(`id`) from `sales` where `camera_id` = `cameras`.`id`) as 'sales' from `cameras`
+    inner join `type` on `type`.`id` = `cameras`.`type_id`
+    inner join `storage` on `storage`.`id` = `cameras`.`storage_id`
+    order by sales desc;
+
+    // Popular Features View
+    create or replace view `popular_features` as select
+    avg(cameras.price) 'average_price',
+    min(cameras.price) 'min_price',
+    max(cameras.price) 'max_price',
+
+    (SELECT type.`name` FROM cameras
+    INNER JOIN sales ON sales.camera_id = cameras.id
+    INNER JOIN type ON cameras.`type_id` = type.`id`
+    group by cameras.`type_id`
+    order by count(cameras.id) desc
+    limit 1) 'type',
+
+    (SELECT cameras.`megapixels` FROM cameras
+    INNER JOIN sales ON sales.camera_id = cameras.id
+    group by cameras.`megapixels`
+    order by count(cameras.id) desc
+    limit 1) 'megapixels',
+
+    (SELECT cameras.`resolution` FROM cameras
+    INNER JOIN sales ON sales.camera_id = cameras.id
+    group by cameras.`resolution`
+    order by count(cameras.id) desc
+    limit 1) 'resolution',
+
+    (SELECT cameras.`has_flash` FROM cameras
+    INNER JOIN sales ON sales.camera_id = cameras.id
+    group by cameras.`has_flash`
+    order by count(cameras.id) desc
+    limit 1) 'flash',
+
+    (SELECT cameras.`can_do_video` FROM cameras
+    INNER JOIN sales ON sales.camera_id = cameras.id
+    group by cameras.`can_do_video`
+    order by count(cameras.id) desc
+    limit 1) 'video',
+
+    (SELECT cameras.battery_type FROM cameras
+    INNER JOIN sales ON sales.camera_id = cameras.id
+    group by battery_type
+    order by count(cameras.id) desc
+    limit 1) 'battery',
+
+    (SELECT cameras.brand FROM cameras
+    INNER JOIN sales ON sales.camera_id = cameras.id
+    group by brand
+    order by count(cameras.id) desc
+    limit 1) 'brand'
+
+    from sales
+    inner join cameras on cameras.id = sales.camera_id;
 ");
