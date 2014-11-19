@@ -44,10 +44,17 @@
     <script src="app/views/profile/profileController.js"></script>
     <script src="app/views/list/listController.js"></script>
 
+<<<<<<< HEAD
+    <script src="app\views\query\queryController.js"></script>
+    <script src="app\views\query\stats\statsController.js"></script>
+    <script src="app\config.js"></script>
+    <script src=""></script>
+=======
     <script src="app/views/query/queryController.js"></script>
     <script src="app/views/query/stats/statsController.js"></script>
     <script src="app/config.js"></script>
     <script src="app/bower_components/at-table/dist/angular-table.js"></script>
+>>>>>>> more pretty stuff
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>

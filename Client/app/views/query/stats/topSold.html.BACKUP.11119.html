@@ -1,0 +1,27 @@
+
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+<md-toolbar md-theme="indigo" onload="update(1, 2)">
+    <div class="md-toolbar-tools">
+      <div ng-include="'back.html'"></div>
+      <span class="md-flex"><h1>{{title}}</h1></span>
+    </div>
+  </md-toolbar>
+  <md-tabs selected="data.selectedIndex" md-theme="indigo">
+    <md-tab id="tab1" aria-controls="tab1-content">
+      Graph
+    </md-tab>
+    <md-tab id="tab2" aria-controls="tab2-content" ng-disabled="data.secondLocked">
+      Data
+    </md-tab>
+    <md-tab id="tab3" aria-controls="tab3-content">
+      Bar Graph
+    </md-tab>
+  </md-tabs>
+<md-content class="md-padding">
+
+
+    <div ng-include="'app/views/query/stats/topHobby.html'"></div>
+    <div ng-include="'app/views/query/stats/topProfession.html'"></div>
+
+</md-content>
