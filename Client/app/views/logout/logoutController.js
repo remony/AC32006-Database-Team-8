@@ -16,6 +16,7 @@ angular.module('app.logoutController', [])
       $scope.$apply();
     }
 
+
   } else { //Looks like the user was not even logged in, better let them know
     $location.path("/");
     toastService.displayToast("You are already logged out");

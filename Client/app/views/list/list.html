@@ -1,87 +1,94 @@
-<md-toolbar md-theme="green">
+<md-toolbar>
     <div class="md-toolbar-tools">
       <div ng-include="'back.html'"></div>
       <span class="md-flex"><h1>{{title}}</h1></span>
-      <div ng-include="'right.html'"></div>
     </div>
 
   </md-toolbar>
-<md-button ng-click="toggleRight()" aria-label="oh" class="md-primary" md-theme="pink">
-  Choose options
-</md-button>
-  <md-content class="md-padding">
-    <md-card  ng-hide="subject">
-      Please select an option from the menu.
-      <md-button ng-click="toggleRight()" aria-label="oh" class="md-primary" md-theme="pink">
-        Choose options
-      </md-button>
-    </md-card>
-  </md-content>
 
 
 
-
-<md-content md-hide="subject == 'undefined'" class="md-padding" >
-  <md-content md-theme="indigo" >
+<div md-show="isLoggedIn">
+<md-card md-hide="subject == 'undefined'" class="md-padding" >
+  <md-content >
     <h1>{{output.length}} Results for {{subject}}</h1>
-    <form style="padding: 20px;">
-      <div class="row">
-        <md-text-float label="Filter" ng-model="query" type="text"
-          placeholder="Filter by" autofocus></md-text-float>
 
-      </div>
-    </form>
     <md-button class="md-fab md-primary" ng-hide="subject == 'countries'" md-theme="green" ng-controller="listDialog"  ng-click="dialogAdd($event, subject)" aria-label="Profile">
-      <md-icon icon="" style="width: 24px; height: 24px;" ></md-icon>
+      <md-icon icon="" style="width: 24px; height: 24px;" >add</md-icon>
     </md-button>
   </md-content>
 
   <md-content class="md-padding">
-    <md-list>
-      <md-item ng-repeat="out in output | filter:query" class="ng-cloak">
-        <md-item-content>
-          <div class="md-tile-content" style="htext-align:center">
-            <md-card>
-              <div ng-show="subject == 'camera'">
-                <h1>Brand Name: <medium>{{out.brand}}</medium></h1>
-                <h2>Model Name: <medium>{{out.model_name}}</medium></h2>
-                <h2>Price: £<medium>{{out.price}}</medium></h2>
-                <h2>Battery type:  <medium>{{battery_type}}</medium></h2>
-                <h2>MegaPixels: <medium>{{out.megapixels}}</medium></h2>
-                <h2>Take video: <medium>{{out.can_do_video}}</medium></h2>
-                <h2>Has flash: <medium>{{out.has_flash}}</medium></h2>
-                <h2>Video resolution: <medium>{{out.resolution}}</medium></h2>
-                <h2>Type id: <medium>{{out.type_id}}</medium></h2>
-                <h2>Storage id: <medium>{{out.storage_id}}</medium></h2>
+    <div ng-show="subject == 'camera'">
+    <table at-table at-list="output" class="table table-striped">
+      <thead></thead>
+      <tbody>
+        <tr>
+          <td at-implicit at-attribute="brand" at-sortable at-initial-sorting="asc"></td>
+          <td at-implicit at-attribute="model_name" ></td>
+          <td at-implicit at-attribute="battery_type" at-sortable ></td>
+          <td at-implicit at-attribute="megapixels" at-sortable ></td>
+          <td at-implicit at-attribute="can_do_video" at-sortable ></td>
+          <td at-implicit at-attribute="has_flash" at-sortable ></td>
+          <td at-implicit at-attribute="resolution" at-sortable ></td>
+          <td at-implicit at-attribute="type_id" at-sortable ></td>
+          <td at-implicit at-attribute="storage_id" at-sortable ></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+              <div ng-show="subject == 'type' || subject == 'countries' || subject == 'storage' || subject == 'hobby' || subject == 'lens'">
+                <table at-table at-list="output" class="table table-striped">
+                  <thead></thead>
+                  <tbody>
+                    <tr>
+                      <td at-implicit at-attribute="name" at-sortable at-initial-sorting="asc"></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
+
               <div ng-show="subject == 'profession'">
-                Profession: {{out.title}}<br>
-                Salary: {{out.salary}}<br>
-                Years: {{out.years}}
+                <table at-table at-list="output" class="table table-striped">
+                  <thead></thead>
+                  <tbody>
+                    <tr>
+                      <td at-implicit at-attribute="title" at-sortable at-initial-sorting="asc"></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <div ng-show="subject == 'lens'">
-                Lens type: {{out.name}}
-              </div>
-              <div ng-show="subject == 'hobby'">
-                Hobby: {{out.name}}
-              </div>
+
               <div ng-show="subject == 'sale'">
-                Date purchased: {{out.date_purchased}}<br>
-                Camera: {{out.camera_id}}<br>
-                Store: {{out.store_id}}<br>
-                Customer: {{out.customer_id}}
+                <table at-table at-list="output" class="table table-striped">
+                  <thead></thead>
+                  <tbody>
+                    <tr>
+                      <td at-implicit at-attribute="camera_id" at-sortable at-initial-sorting="asc"></td>
+                      <td at-implicit at-attribute="store_id" at-sortable at-initial-sorting="asc"></td>
+                      <td at-implicit at-attribute="date_purchased" at-sortable at-initial-sorting="asc"></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               <div ng-show="subject == 'customer'">
-                Full name: {{out.first_name}} {{out.last_name}}<br>
-                Date of birth: {{out.date_of_birth}}<br>
-                Gender: {{out.gender}}<br>
-                Country: {{out.country_id}}
+                <table at-table at-list="output" class="table table-striped">
+                  <thead></thead>
+                  <tbody>
+                    <tr>
+                      <td at-implicit at-attribute="first_name" at-sortable at-initial-sorting="asc"></td>
+                      <td at-implicit at-attribute="last_name" at-sortable at-initial-sorting="asc"></td>
+                      <td at-implicit at-attribute="date_of_birth" at-sortable at-initial-sorting="asc"></td>
+                      <td at-implicit at-attribute="gender" at-sortable at-initial-sorting="asc"></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
 
 
-              <div ng-show="subject == 'type' || subject == 'countries' || subject == 'storage'">
-                <h2>{{out.name}}</h2>
-              </div>
+
               <md-button ng-hide="subject" class="md-raised md-warn" aria-label="oh" ng-click="dialogBasic($event, out)">Delete</md-button>
             </md-card>
           </div>
@@ -89,4 +96,5 @@
       </md-item>
     </md-list>
   </md-content>
-</md-content>
+</md-card>
+</div>

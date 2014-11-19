@@ -51,7 +51,7 @@ angular.module('app.routes', ['ngRoute',])
       controller: 'earningController'
     })
     .when('/query/stats/date', {
-      templateUrl: 'app/views/query/stats/stats.html',
+      templateUrl: 'app/views/query/stats/date.html',
       controller: 'dateController'
     })
     .when('/query/stats/popularbycountry/type', {
@@ -74,7 +74,9 @@ angular.module('app.routes', ['ngRoute',])
       templateUrl: 'app/views/query/stats/topfeatures.html',
       controller: 'topFeaturesController'
     })
-
+    .otherwise({
+      templateUrl: 'app/views/404.html'
+    })
 
 
 

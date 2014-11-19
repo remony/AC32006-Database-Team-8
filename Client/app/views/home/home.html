@@ -1,43 +1,35 @@
-<md-toolbar md-theme="indigo">
+<md-toolbar>
     <div class="md-toolbar-tools">
       <div ng-include="'back.html'"></div>
       <span class="md-flex"><h1>{{title}}</h1></span>
     </div>
   </md-toolbar>
 
-<md-content class="md-padding">
+
   <md-card>
+
+    <div ng-hide="online" style="text-align:center">
+      <h1>Loading data</h1>
+      <img src="assets/icons/loading.gif"/>
+      <p>If this takes long please check your connection.</p>
+    </div>
+
+
     <div ng-show="online">
-      <md-toolbar md-theme="indigo">
+      <md-toolbar>
         <div class="md-toolbar-tools">
           <span class="md-flex">Welcome</span>
         </div>
       </md-toolbar>
-    </div>
-    <div ng-hide="online">
-      <md-toolbar md-theme="red">
-        <div class="md-toolbar-tools">
-          <span class="md-flex">Looks like we are offline...</span>
-        </div>
-      </md-toolbar>
-    </div>
-  <md-content class="md-padding" style="height: 600px;">
-    Hello
+
+  <md-content class="md-padding" style="text-align:center">
+    <h1>CamStats</h1>
+    <p>The perfect tool for planning your next camera or researching the trends.</p>
+    <img src="assets/icons/logo_grey.png"/>
     <div ng-controller="aboutController">
-      <h2>Module: {{ data.module }}</h2>
-      <h3>Team: {{data.team}}</h3>
-      <h4>Members</h4>
-      <md-list>
-        <md-item ng-repeat="member in data.members">
-          <md-item-content>
-            <div class="md-tile-content">
-              {{member}}
-            </div>
-          </md-item-content>
-        </md-item>
-      </md-list>
+      <h2><b>Module:</b> {{ data.module }}</h2>
+      <h3><b>Team:</b> {{data.team}}</h3>
     </div>
   </md-content>
-
+</div>
 </md-card>
-</md-content>

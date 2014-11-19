@@ -180,6 +180,7 @@ angular.module('app.query.statsController', ['nvd3'])
         }
 
         $scope.table = parsed_data;
+
         $scope.$apply();
       });
   } else {
@@ -209,6 +210,8 @@ angular.module('app.query.statsController', ['nvd3'])
     //delete $window.sessionStorage.token;
     }).success(function(data){
       $scope.countries = data.countries;
+      $scope.countriesSuccess = true;
+      $scope.$apply();
       //console.log(JSON.stringify(data, null, 5));
     });
 
@@ -302,18 +305,18 @@ angular.module('app.query.statsController', ['nvd3'])
 
 
 .controller('popularCameraByCountryController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
-  $scope.title = "Show popular camera types by country";
+  $scope.title = "Show popular cameras by country";
   $.ajax({
     type: "get",
     url: backend + "/countries"
     }).done(function(data){
-      //console.log(data);
-        console.log("done");
+
     }).fail(function(data){
     //delete $window.sessionStorage.token;
     }).success(function(data){
+      $scope.countriesSuccess = true;
       $scope.countries = data.countries;
-      //console.log(JSON.stringify(data, null, 5));
+      $scope.$apply();
     });
 
   $scope.selected = undefined;
@@ -391,7 +394,6 @@ angular.module('app.query.statsController', ['nvd3'])
               key : 'Popular in Country',
               values : data.data
           }];
-
           $scope.isCamera = true;
           $scope.countryName = answer.name;
           $scope.$apply();
@@ -467,6 +469,7 @@ angular.module('app.query.statsController', ['nvd3'])
           toastService.displayToast("Error contacting database");
         }).success(function(data){
           $scope.data = data.data;
+          $scope.isDate = true;
           $scope.$apply();
         });
 
@@ -530,6 +533,7 @@ angular.module('app.query.statsController', ['nvd3'])
         toastService.displayToast("Error contacting database");
       }).success(function(data){
         $scope.graph = data.data;
+        $scope.graphHobbyReady = true;
         $scope.$apply();
       });
 
@@ -554,9 +558,9 @@ angular.module('app.query.statsController', ['nvd3'])
       $scope.options = {
           chart: {
               type: 'pieChart',
-                height: 300,
+                height: 500,
                 donut: true,
-                x: function(d){return d.profession;},
+                x: function(d){return d.camera;},
                 y: function(d){return d.sales;},
                 showLabels: true,
 
@@ -589,6 +593,7 @@ angular.module('app.query.statsController', ['nvd3'])
           toastService.displayToast("Error contacting database");
         }).success(function(data){
           $scope.graphProfession = data.data;
+          $scope.graphProfessionReady = true;
           $scope.$apply();
         });
 
@@ -669,7 +674,7 @@ angular.module('app.query.statsController', ['nvd3'])
           'key' : 'professions',
           'values' : data.data
         }];
-
+        $scope.graphProfessionReady2 = true;
         $scope.$apply();
     });
 
@@ -688,7 +693,7 @@ angular.module('app.query.statsController', ['nvd3'])
             'key' : 'hobbies',
             'values' : data.data
         }];
-
+        $scope.graphHobbyReady2 = true;
         $scope.$apply();
     });
 

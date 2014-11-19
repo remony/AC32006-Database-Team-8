@@ -1,7 +1,7 @@
 
   <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 
-<md-toolbar md-theme="indigo" onload="update(1, 2)">
+<md-toolbar onload="update(1, 2)">
     <div class="md-toolbar-tools">
       <div ng-include="'back.html'"></div>
       <span class="md-flex"><h1>{{title}}</h1></span>
@@ -11,23 +11,30 @@
 
 
 <md-card>
-  <md-content class="md-padding">
-    <h1>{{stats}}</h1>
-    <div ng-hide="data">
-      <img src="FkZ8zcY.gif"/>
-    </div>
-    <div ng-show="data">
-      <nvd3 options="options" data="data"></nvd3>
-    </div>
-<table at-table at-list="data" class="table table-striped">
-  <thead></thead>
-  <tbody>
-    <tr>
-      <td at-implicit at-attribute="label" at-sortable at-initial-sorting="desc"></td>
-      <td at-implicit at-attribute="value" at-sortable at-initial-sorting="desc"></td>
-    </tr>
-  </tbody>
-</table>
-   
-  </md-content>
+  <div ng-hide="data" style="text-align:center">
+    <p>Loading input data...</p>
+    <img src="assets/icons/loading.gif"/>
+  </div>
+  <div ng-show="data">
+    <md-content class="md-padding">
+      <h1>{{stats}}</h1>
+      <div ng-hide="data">
+        <img src="FkZ8zcY.gif"/>
+      </div>
+      <div ng-show="data">
+        <nvd3 options="options" data="data"></nvd3>
+      </div>
+      <div ng-hide="isDate">
+        <table at-table at-list="data" class="table table-striped">
+          <thead></thead>
+          <tbody>
+            <tr>
+              <td at-implicit at-attribute="label" at-sortable at-initial-sorting="desc"></td>
+              <td at-implicit at-attribute="value" at-sortable at-initial-sorting="desc"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </md-content>
+  </div>
 </md-card>

@@ -2,6 +2,23 @@
 
 <h2>Hobby</h2>
 
+<div layout="row" layout-padding>
+
+    <div flex="50" offset="0">
+      <nvd3 options="options" data="graph"></nvd3>
+    </div>
+    <div flex="50" offset="0">
+      <nvd3 options="options" data="graph"></nvd3>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
 <ng-switch on="data.selectedIndex" class="tabpanel-container">
     <div role="tabpanel" id="tab1-content" aria-labelledby="tab1" ng-switch-when="0" md-swipe-left="next()" md-swipe-right="previous()">
         <nvd3 options="options" data="graph"></nvd3>

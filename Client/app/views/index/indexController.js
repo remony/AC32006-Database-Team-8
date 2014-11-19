@@ -16,13 +16,18 @@ angular.module('app.indexController', [])
             false;
           }).success(function(data){
               if ($cookies.monster_cookie == data.access_token)  {
-                console.log("valid user");
+                //console.log("valid user");
+                if (data.group_name == "admins"){
+                  $scope.isAdmin = true;
+                  //console.log("is admin");
+                  $scope.$apply();
+                }
                 $scope.isLoggedIn = true;
                 isLoggedIn = true;
 
                 $scope.$apply();
               } else {
-                console.log("Invalid user");
+                //console.log("Invalid user");
                 isLoggedIn = false;
               }
           });
