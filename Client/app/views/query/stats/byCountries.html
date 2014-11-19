@@ -8,16 +8,21 @@
     </div>
 
   </md-toolbar>
-<md-content class="md-padding" style="min-height:600px" >
-  <form class="type-form" name="typeForm" ng-submit="submitQuery(selected)" md-theme="light-blue-dark">
+  <md-card>
+  <form class="type-form formmy" name="typeForm" ng-submit="submitQuery(selected)" >
     <h2>{{summary}}</h2>
-
-    <label>Please enter a country.</label><input type="text" ng-model="selected" typeahead="country as country.name for country in countries | filter:$viewValue | limitTo:8" class="form-control" placeholder="Enter a country">
-    <div class="md-actions" layout="horizontal" layout-align="end">
-      <md-button class="md-primary" aria-label="null" ng-click="hide()" type="submit">Get results</md-button>
+    <div ng-hide="countriesSuccess" style="text-align:center">
+      <p>Loading input data...</p>
+       <img src="assets/icons/loading.gif"/>
+    </div>
+    <div ng-show="countriesSuccess">
+      <label>Please enter a country.</label><input type="text" ng-model="selected" typeahead="country as country.name for country in countries | filter:$viewValue | limitTo:8" class="form-control" placeholder="Enter a country">
+      <div class="md-actions" layout="horizontal" layout-align="end">
+        <md-button class="md-primary" aria-label="null" ng-click="hide()" type="submit">Get results</md-button>
+      </div>
     </div>
   </form>
-
+</md-card>
 
 
 
@@ -25,12 +30,17 @@
     <h1>{{stats}}</h1>
 
 
-<div class='container-fluid' >
 
+<md-card>
+<div ng-hide="data" class="fadeIn" style="text-align:center">
+    <h1>Results</h1>
 
+    <p>You should expect your results to appear here.</p>
+    <br>
+</div>
 
 <div ng-show="data" class="fadeIn">
-  <md-card>
+
   <h1 ng-show="countryName">Showing results for {{countryName}}</h1>
   <nvd3 options="options" data="data"></nvd3>
   <br />
@@ -42,8 +52,8 @@
     <thead></thead>
     <tbody>
       <tr>
-        <td at-implicit at-attribute="type" ng-hide="isCamera" at-sortable at-initial-sorting="desc"></td>
-        <td at-implicit at-attribute="sales" ng-hide="isCamera" at-sortable at-initial-sorting="desc"></td>
+        <td at-implicit at-attribute="label" at-sortable at-initial-sorting="desc"></td>
+        <td at-implicit at-attribute="value" at-sortable at-initial-sorting="desc"></td>
       </tr>
     </tbody>
   </table>
@@ -54,15 +64,12 @@
     <thead></thead>
     <tbody>
       <tr>
-        <td at-implicit at-attribute="type" ng-hide="isCamera" at-sortable at-initial-sorting="desc"></td>
-        <td at-implicit at-attribute="label" at-sortable at-initial-sorting="desc"></td>
-        <td at-implicit at-attribute="value" at-sortable at-initial-sorting="desc"></td>
-        <td at-implicit at-attribute="sales" ng-hide="isCamera" at-sortable at-initial-sorting="desc"></td>
+        <td at-implicit at-attribute="type" at-sortable at-initial-sorting="desc"></td>
+        <td at-implicit at-attribute="sales" at-sortable at-initial-sorting="desc"></td>
       </tr>
     </tbody>
   </table>
   </div>
   </md-content>
 </md-card>
-</div>
 </div>

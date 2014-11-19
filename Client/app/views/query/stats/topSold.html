@@ -1,27 +1,55 @@
 
   <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 
-<md-toolbar md-theme="indigo" onload="update(1, 2)">
+<md-toolbar onload="update(1, 2)">
     <div class="md-toolbar-tools">
       <div ng-include="'back.html'"></div>
       <span class="md-flex"><h1>{{title}}</h1></span>
     </div>
   </md-toolbar>
-  <md-tabs selected="data.selectedIndex" md-theme="indigo">
-    <md-tab id="tab1" aria-controls="tab1-content">
-      Graph
-    </md-tab>
-    <md-tab id="tab2" aria-controls="tab2-content" ng-disabled="data.secondLocked">
-      Data
-    </md-tab>
-    <md-tab id="tab3" aria-controls="tab3-content">
-      Bar Graph
-    </md-tab>
-  </md-tabs>
-<md-content class="md-padding">
 
 
-    <div ng-include="'app/views/query/stats/topHobby.html'"></div>
-    <div ng-include="'app/views/query/stats/topProfession.html'"></div>
 
-</md-content>
+  <md-card>
+    <div ng-hide="graphHobbyReady" style="text-align:center">
+      <p>Loading input data...</p>
+      <img src="assets/icons/loading.gif"/>
+    </div>
+    <div ng-show="graph">
+    <h1>Top cameras bought by...</h1>
+    <div layout="row" layout-padding>
+      <div flex="50" offset="0">
+        <div ng-controller="topProfessionController">
+          <h2>Profession</h2>
+          <nvd3 options="options" data="graphProfession"></nvd3>
+          <table at-table at-list="graphProfession" class="table table-striped">
+            <thead></thead>
+            <tbody>
+              <tr>
+                <td at-implicit at-attribute="profession" at-sortable at-initial-sorting="desc"></td>
+                <td at-implicit at-attribute="camera" at-sortable at-initial-sorting="desc"></td>
+                <td at-implicit at-attribute="sales" at-sortable at-initial-sorting="desc"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+        <div flex="50" offset="0">
+          <h2>Hobby</h2>
+          <nvd3 options="options" data="graph"></nvd3>
+          <table at-table at-list="graph" class="table table-striped">
+            <thead></thead>
+            <tbody>
+              <tr>
+                <td at-implicit at-attribute="hobby" at-sortable at-initial-sorting="desc"></td>
+                <td at-implicit at-attribute="camera" at-sortable at-initial-sorting="desc"></td>
+                <td at-implicit at-attribute="sales" at-sortable at-initial-sorting="desc"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+</div>
+
+
+      </div>
+  </md-card>

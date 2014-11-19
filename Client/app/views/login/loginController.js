@@ -28,18 +28,51 @@ angular.module('app.loginController', [])
         }).success(function(data){
         if(data.status == "200"){
           authService.checkLoggedIn();
-         cookie = data.user.access_token;
+          cookie = data.user.access_token;
           $cookies.monster_cookie = cookie;
           $rootScope.isLoggedIn = true;
           $location.path("/");
-          if(!$rootScope.$$phase) {
-            $rootScope.$apply();
-          }
+
         } else if(data.status == "403") {
           console.log("incorrect login");
         }
+
+        $.ajax({
+          type: "get",
+          url: backend + "/profile/userid",
+          beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+          }).done(function(data){
+            //something
+          }).fail(function(data){
+            console.log("service says boo");
+            false;
+          }).success(function(data){
+              if ($cookies.monster_cookie == data.access_token)  {
+                //console.log("valid user");
+                if (data.group_name == "admins"){
+                  $rootScope.isAdmin = true;
+                  //console.log("is admin");
+
+                } else {
+                  $rootScope.isAdmin = false;
+                }
+                $scope.isLoggedIn = true;
+                isLoggedIn = true;
+                $rootScope.$apply();
+
+                $scope.$apply();
+              } else {
+                //console.log("Invalid user");
+                isLoggedIn = false;
+              }
+          });
+
+
           toastService.displayToast(data.message);
         $scope.$apply();
+        if(!$rootScope.$$phase) {
+          $rootScope.$apply();
+        }
       });
     }
 

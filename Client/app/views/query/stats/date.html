@@ -11,17 +11,18 @@
   <md-content class="md-padding">
     <h1>{{stats}}</h1>
     <div ng-hide="data">
-      <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+      <img src="assets/icons/loading.gif"/>
     </div>
     <div ng-show="data">
       <nvd3 options="options" data="data"></nvd3>
     </div>
-<table at-table at-list="data" class="table table-striped">
+<table at-table at-list="table" class="table table-striped">
   <thead></thead>
   <tbody>
     <tr>
-      <td at-implicit at-attribute="label" at-sortable at-initial-sorting="desc"></td>
-      <td at-implicit at-attribute="values" at-sortable at-initial-sorting="desc"></td>
+      <td at-implicit at-attribute="date" at-sortable at-initial-sorting="asc"></td>
+      <td at-implicit at-attribute="price" ></td>
+      <td at-implicit at-attribute="quantity" at-sortable ></td>
     </tr>
   </tbody>
 </table>
