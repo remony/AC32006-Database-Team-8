@@ -1,17 +1,132 @@
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 
-<md-toolbar md-theme="indigo" onload="update(1, 2)">
-    <div class="md-toolbar-tools">
-      <div ng-include="'back.html'"></div>
-      <span class="md-flex"><h1>{{title}}</h1></span>
+<md-toolbar  onload="update(1, 2)">
+  <div class="md-toolbar-tools">
+    <div ng-include="'back.html'"></div>
+    <span class="md-flex"><h1>{{title}}</h1></span>
+  </div>
+</md-toolbar>
+
+
+<div ng-hide="cameraAll">
+  <md-card>
+    <h1>Loading data...</h1>
+    <img src="FkZ8zcY.gif"/>
+    <h4>Taking long....? refresh</h4>
+    </md-card>
+</div>
+
+<div ng-show="cameraAll">
+  <md-card>
+
+    <div ng-hide="cameraTopFeature">
+      <img src="FkZ8zcY.gif" width="100%"/>
     </div>
-  </md-toolbar>
-  
-<md-content class="md-padding">
 
+    <div ng-show="cameraTopFeature">
+      <md-toolbar >
+        <h1 class="md-toolbar-tools" >
+          <span>Most sold features found in cameras</span>
+        </h1>
+      </md-toolbar>
 
-    <table at-table at-list="graph" class="table table-striped">
-        <thead></thead>
+    <md-content>
+      <md-list>
+        <md-item>
+          <md-item-content>
+            <div class="md-tile-content">
+              <h3><b>Average price:</b> £{{cameraTopFeature.average_price}}</h3>
+            </div>
+          </md-item-content>
+          <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+        <md-item>
+          <md-item-content>
+            <div class="md-tile-content">
+              <h3><b>Minimum | Maxiumum cost:</b> £{{cameraTopFeature.min_price}} |  £{{cameraTopFeature.max_price}}</h3>
+            </div>
+          </md-item-content>
+          <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+        <md-item>
+          <md-item-content>
+            <div class="md-tile-content">
+              <h3><b>Camera Type:</b> {{cameraTopFeature.type}}</h3>
+            </div>
+          </md-item-content>
+          <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+        <md-item>
+          <md-item-content>
+            <div class="md-tile-content">
+              <h3><b>Camera Type:</b> {{cameraTopFeature.type}}</h3>
+            </div>
+          </md-item-content>
+          <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+        <md-item>
+          <md-item-content>
+            <div class="md-tile-content">
+              <h3><b>Megapixels:</b> {{cameraTopFeature.megapixels}}</h3>
+            </div>
+          </md-item-content>
+          <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+        <md-item>
+          <md-item-content>
+            <div class="md-tile-content">
+              <h3><b>Resolution:</b>  {{cameraTopFeature.resolution}}</h3>
+            </div>
+          </md-item-content>
+          <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+        <md-item>
+          <md-item-content>
+            <div class="md-tile-content">
+              <h3><b>Has flash:</b> {{cameraTopFeature.flash}}</h3>
+            </div>
+          </md-item-content>
+          <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+        <md-item>
+          <md-item-content>
+            <div class="md-tile-content">
+              <h3><b>Can take video:</b> {{cameraTopFeature.video}}</h3>
+            </div>
+          </md-item-content>
+          <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+        <md-item>
+          <md-item-content>
+            <div class="md-tile-content">
+              <h3><b>Type of battery:</b> {{cameraTopFeature.battery}}</h3>
+            </div>
+          </md-item-content>
+          <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+        <md-item>
+          <md-item-content>
+            <div class="md-tile-content">
+              <h3><b>Top Brand:</b> {{cameraTopFeature.brand}}</h3>
+            </div>
+          </md-item-content>
+          <md-divider ng-if="!$last"></md-divider>
+        </md-list>
+      </md-content>
+    </div>
+
+    <br>
+    <br>
+    <br>
+
+    <div ng-show="cameraAllSuccess">
+      <md-toolbar >
+        <h1 class="md-toolbar-tools">
+          <span>Raw Data</span>
+        </h1>
+      </md-toolbar>
+    <table at-table at-list="cameraAll" class="table table-striped">
+      <thead></thead>
         <tbody>
           <tr>
             <td at-implicit at-attribute="brand" at-sortable at-initial-sorting="desc"></td>
@@ -28,5 +143,7 @@
           </tr>
         </tbody>
       </table>
-
-</md-content>
+    </div>
+    </md-card>
+  </div>
+</md-card>
