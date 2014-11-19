@@ -240,6 +240,7 @@ angular.module('app.query.statsController', ['nvd3'])
         }).success(function(data){
           $scope.data = data.data;
           $scope.countryName = answer.name;
+          $scope.isType = true;
           $scope.$apply();
         });
     } else {
@@ -313,6 +314,7 @@ angular.module('app.query.statsController', ['nvd3'])
           toastService.displayToast("Error contacting database");
         }).success(function(data){
           $scope.data = data.data;
+          $scope.isCamera = true;
           $scope.countryName = answer.name;
           $scope.$apply();
         });
