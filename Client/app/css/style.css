@@ -7,7 +7,14 @@
   display:none !important;
 }
 
+.fadeIn {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+}
 
+.fadeIn.ng-hide {
+  opacity:0;
+}
 
 .wrapper {
   width:100%;

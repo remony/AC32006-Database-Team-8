@@ -24,11 +24,11 @@
   <md-content class="md-padding" style="height: 600px;">
     Hello
     <div ng-controller="aboutController">
-      <h2>Module: {{ module }}</h2>
-      <h3>Team: {{team}}</h3>
+      <h2>Module: {{ data.module }}</h2>
+      <h3>Team: {{data.team}}</h3>
       <h4>Members</h4>
       <md-list>
-        <md-item ng-repeat="member in members">
+        <md-item ng-repeat="member in data.members">
           <md-item-content>
             <div class="md-tile-content">
               {{member}}
