@@ -126,6 +126,63 @@ class CameraCrud {
         }
     }
 
+    static public function all_cameras () {
+        API :: AddCORSHeaders();
+
+        $error = API :: CheckAuth("read");
+
+
+        if ($error !== null) {
+            return $error;
+        } else {
+            $cameras = getDatabase() -> all("select * from `detailed_cameras`;");
+
+            for ($i=0;$i<count($cameras);$i++) {
+                $cameras[$i]['price']       = floatval($cameras[$i]['price']);
+                $cameras[$i]['megapixels']  = intval($cameras[$i]['megapixels']);
+                $cameras[$i]['video']       = (intval($cameras[$i]['video']) === 1);
+                $cameras[$i]['flash']       = (intval($cameras[$i]['flash']) === 1);
+                $cameras[$i]['resolution']  = intval($cameras[$i]['resolution']);
+                $cameras[$i]['sales']       = intval($cameras[$i]['sales']);
+            }
+
+            header("HTTP/1.0 200 OK");
+            return array(
+                'status' => 200,
+                'data' => $cameras
+            );
+        }
+    }
+
+    static public function popular_features () {
+        API :: AddCORSHeaders();
+
+        $error = API :: CheckAuth("read");
+
+
+        if ($error !== null) {
+            return $error;
+        } else {
+            $cameras = getDatabase() -> all("select * from `popular_features`;");
+
+            for ($i=0;$i<count($cameras);$i++) {
+                $cameras[$i]['average_price']   = floatval($cameras[$i]['average_price']);
+                $cameras[$i]['min_price']       = floatval($cameras[$i]['min_price']);
+                $cameras[$i]['max_price']       = floatval($cameras[$i]['max_price']);
+                $cameras[$i]['megapixels']      = intval($cameras[$i]['megapixels']);
+                $cameras[$i]['resolution']      = intval($cameras[$i]['resolution']);
+                $cameras[$i]['video']           = (intval($cameras[$i]['video']) === 1);
+                $cameras[$i]['flash']           = (intval($cameras[$i]['flash']) === 1);
+            }
+
+            header("HTTP/1.0 200 OK");
+            return array(
+                'status' => 200,
+                'data' => $cameras
+            );
+        }
+    }
+
     static public function cameras_sold_per_month_per_brand () {
         API :: AddCORSHeaders();
 
