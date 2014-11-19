@@ -17,6 +17,7 @@ angular
   'ngMaterial',
   'ui.bootstrap',
   'app.listDialog',
+  'ngAnimate',
 
   //Controllers
   'app.indexController',
@@ -29,6 +30,7 @@ angular
   'app.listController',
   'app.queryController',
   'app.query.statsController',
+  'app.query.statsFeaturesController',
 
   //Services
   'app.toast',

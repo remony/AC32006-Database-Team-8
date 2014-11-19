@@ -4,7 +4,40 @@
       <span class="md-flex"><h1>{{title}}</h1></span>
     </div>
   </md-toolbar>
-<md-content class="md-padding" style="height: 600px;">
-  <h1>Homepage</h1>
-  {{errorReply}}
+
+<md-content class="md-padding">
+  <md-card>
+    <div ng-show="online">
+      <md-toolbar md-theme="indigo">
+        <div class="md-toolbar-tools">
+          <span class="md-flex">Welcome</span>
+        </div>
+      </md-toolbar>
+    </div>
+    <div ng-hide="online">
+      <md-toolbar md-theme="red">
+        <div class="md-toolbar-tools">
+          <span class="md-flex">Looks like we are offline...</span>
+        </div>
+      </md-toolbar>
+    </div>
+  <md-content class="md-padding" style="height: 600px;">
+    Hello
+    <div ng-controller="aboutController">
+      <h2>Module: {{ data.module }}</h2>
+      <h3>Team: {{data.team}}</h3>
+      <h4>Members</h4>
+      <md-list>
+        <md-item ng-repeat="member in data.members">
+          <md-item-content>
+            <div class="md-tile-content">
+              {{member}}
+            </div>
+          </md-item-content>
+        </md-item>
+      </md-list>
+    </div>
+  </md-content>
+
+</md-card>
 </md-content>

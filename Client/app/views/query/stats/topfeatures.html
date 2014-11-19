@@ -1,0 +1,32 @@
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+<md-toolbar md-theme="indigo" onload="update(1, 2)">
+    <div class="md-toolbar-tools">
+      <div ng-include="'back.html'"></div>
+      <span class="md-flex"><h1>{{title}}</h1></span>
+    </div>
+  </md-toolbar>
+  
+<md-content class="md-padding">
+
+
+    <table at-table at-list="graph" class="table table-striped">
+        <thead></thead>
+        <tbody>
+          <tr>
+            <td at-implicit at-attribute="brand" at-sortable at-initial-sorting="desc"></td>
+            <td at-implicit at-attribute="model" at-sortable at-initial-sorting="desc"></td>
+            <td at-implicit at-attribute="price" at-sortable at-initial-sorting="desc"></td>
+            <td at-implicit at-attribute="battery" at-sortable at-initial-sorting="desc"></td>
+            <td at-implicit at-attribute="megapixels" at-sortable at-initial-sorting="desc"></td>
+            <td at-implicit at-attribute="video" at-sortable at-initial-sorting="desc"></td>
+            <td at-implicit at-attribute="flash" at-sortable at-initial-sorting="desc"></td>
+            <td at-implicit at-attribute="resolution" at-sortable at-initial-sorting="desc"></td>
+            <td at-implicit at-attribute="type" at-sortable at-initial-sorting="desc"></td>
+            <td at-implicit at-attribute="storage" at-sortable at-initial-sorting="desc"></td>
+            <td at-implicit at-attribute="sales" at-sortable at-initial-sorting="desc"></td>
+          </tr>
+        </tbody>
+      </table>
+
+</md-content>
