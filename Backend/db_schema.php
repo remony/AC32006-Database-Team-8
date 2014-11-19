@@ -748,19 +748,29 @@ $result = getDatabase() -> execute ("
     GROUP BY `type`.Name
     having COUNT(sales.id) LIKE 0;
 
-    create or replace view `cameras_top` AS
-    select concat(`cameras`.`brand`, ' ', `cameras`.`model_name`) 'camera', sum(`cameras`.`price`) 'earnings', count(`sales`.`id`) 'sales', `stores`.`country_id` 'country' from `cameras`
-    inner join `sales` on `sales`.`camera_id` = `cameras`.`id`
-    inner join `stores` on `stores`.`id` = `sales`.`store_id`
-    group by `camera`;
+    create or replace view `cameras_top` AS select
+    concat(cameras.brand, ' ', cameras.model_name) 'camera',
+    sum(`cameras`.`price`) 'earnings',
+    count(sales.id) 'sales',
+    countries.name 'country' from countries
+    inner join stores on stores.`country_id` = countries.id
+    inner join sales on sales.store_id = stores.id
+    inner join cameras on cameras.id = sales.camera_id
+    group by country, camera
+    order by country, sales desc;
 
     create or replace view `brands` as SELECT DISTINCT brand FROM `cameras`;
     create or replace view `custom_cameras` as SELECT id, price, brand FROM `cameras`;
-    create or replace view `sales_per_brand_per_month` as
-    SELECT str_to_date(`sales`.`date_purchased`, '%d-%m-%Y') 'date', date_format(str_to_date(`sales`.`date_purchased`,'%d-%m-%Y'), '%M') 'month', brands.brand, COUNT(cameras.id) 'sales', SUM(cameras.price) 'earnings' from `sales`
-    INNER JOIN brands
-    LEFT JOIN custom_cameras as cameras ON cameras.id = sales.camera_id AND cameras.brand = brands.brand
-    GROUP BY date, brands.brand;
+    create or replace view `sales_per_brand_per_month` as select
+    str_to_date(`sales`.`date_purchased`,'%d-%m-%Y') 'date',
+    date_format(str_to_date(`sales`.`date_purchased`,'%d-%m-%Y'),'%M') AS `month`,
+    `brands`.`brand` AS `brand`,
+    count(`cameras`.`id`) AS `sales`,
+    sum(`cameras`.`price`) AS `earnings`
+	FROM ((`sales` join `brands`)
+	left join `custom_cameras` `cameras` on(((`cameras`.`id` = `sales`.`camera_id`)
+	and (`cameras`.`brand` = `brands`.`brand`))))
+	group by `month`,`brands`.`brand`;
 
     create or replace view `professions_most_used` as
     SELECT profession.title as profession, concat(cameras.brand, ' ', cameras.model_name) AS camera, COUNT(sales.id) AS sales
