@@ -30,6 +30,7 @@ angular
   'app.listController',
   'app.queryController',
   'app.query.statsController',
+  'app.query.statsFeaturesController',
 
   //Services
   'app.toast',
