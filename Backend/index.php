@@ -18,8 +18,8 @@ Epi::init('route', 'api', 'database');
 // type = mysql, database = mysql, host = localhost, user = root, password = [empty]
 //EpiDatabase::employ('mysql','AC32006_Database_Team_10','127.0.0.1','AC32006','Team10IsAwesome'); // Yago Database
 // EpiDatabase::employ('mysql','14ac3d55','127.0.0.1','14ac3u55','a1bc23'); // Yago Database
-//EpiDatabase::employ('mysql','14ac3d55','localhost','root','lemon'); // Stuart Database
-EpiDatabase::employ('mysql','14ac3d55','silva.computing.dundee.ac.uk','14ac3u55','a1bc23'); // Remote Database
+EpiDatabase::employ('mysql','14ac3d55','localhost','root','lemon'); // Stuart Database
+//EpiDatabase::employ('mysql','14ac3d55','silva.computing.dundee.ac.uk','14ac3u55','a1bc23'); // Remote Database
 
 // creates the database, if it doesn't exist
 include_once 'db_schema.php';
@@ -80,8 +80,6 @@ getApi()->delete('/camera/(\w+)',  array('CameraCrud', 'delete_camera'), EpiApi:
 
 getApi()->get('/camera/popular/country/(\w+)',  array('CameraCrud', 'popular_camera_in_country'), EpiApi::external); // Read
 getApi()->get('/camera/sales/month/brand',  array('CameraCrud', 'cameras_sold_per_month_per_brand'), EpiApi::external); // Read
-getApi()->get('/camera/all',  array('CameraCrud', 'all_cameras'), EpiApi::external); // Read
-getApi()->get('/camera/features/popular',  array('CameraCrud', 'popular_features'), EpiApi::external); // Read
 
 // Customer
 getApi()->post('/customer',          array('CustomerCrud', 'create_customer'), EpiApi::external); // Create

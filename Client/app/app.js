@@ -16,6 +16,7 @@ angular
   'ngCookies',
   'ngMaterial',
   'ui.bootstrap',
+  'angular-table',
   'app.listDialog',
   'ngAnimate',
 
