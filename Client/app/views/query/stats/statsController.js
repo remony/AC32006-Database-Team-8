@@ -237,11 +237,39 @@ angular.module('app.query.statsController', ['nvd3'])
           }
       };
 
+        $scope.options_bar = {
+            chart: {
+                type: 'discreteBarChart',
+                height: 450,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 60,
+                    left: 55
+                },
+                x: function(d){return d.type;},
+                y: function(d){return d.sales;},
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format('')(d);
+                },
+                transitionDuration: 500,
+                xAxis: {
+                    axisLabel: 'X Axis'
+                },
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    axisLabelDistance: 30
+                }
+            }
+        };
+
       $scope.data = [];
+    $scope.data_bar = [];
       $.ajax({
         type: "GET",
         url: backend + "/type/popular/country/" + answer.id,
-        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)}
       }).done(function(data){
           console.log(data);
           console.log("done");
@@ -250,6 +278,12 @@ angular.module('app.query.statsController', ['nvd3'])
           toastService.displayToast("Error contacting database");
         }).success(function(data){
           $scope.data = data.data;
+
+          $scope.data_bar = [{
+              key : 'Popular in Country',
+              values : data.data
+          }];
+
           $scope.countryName = answer.name;
           $scope.isType = true;
           $scope.$apply();
@@ -312,6 +346,33 @@ angular.module('app.query.statsController', ['nvd3'])
           }
       };
 
+        $scope.options_bar = {
+            chart: {
+                type: 'discreteBarChart',
+                height: 450,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 60,
+                    left: 55
+                },
+                x: function(d){return d.label;},
+                y: function(d){return d.value;},
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format('')(d);
+                },
+                transitionDuration: 500,
+                xAxis: {
+                    axisLabel: 'X Axis'
+                },
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    axisLabelDistance: 30
+                }
+            }
+        };
+
       $scope.data = [];
       $.ajax({
         type: "GET",
@@ -325,6 +386,12 @@ angular.module('app.query.statsController', ['nvd3'])
           toastService.displayToast("Error contacting database");
         }).success(function(data){
           $scope.data = data.data;
+
+          $scope.data_bar = [{
+              key : 'Popular in Country',
+              values : data.data
+          }];
+
           $scope.isCamera = true;
           $scope.countryName = answer.name;
           $scope.$apply();
