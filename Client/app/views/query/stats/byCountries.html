@@ -35,15 +35,31 @@
   <nvd3 options="options" data="data"></nvd3>
 
 
+  <div ng-show="isCamera">
+     <table at-table at-list="data" class="table table-striped" ng-show="data">
+    <thead></thead>
+    <tbody>
+      <tr>
+        <td at-implicit at-attribute="type" ng-hide="isCamera" at-sortable at-initial-sorting="desc"></td>
+        <td at-implicit at-attribute="sales" ng-hide="isCamera" at-sortable at-initial-sorting="desc"></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+<div ng-show="isType">
   <table at-table at-list="data" class="table table-striped" ng-show="data">
     <thead></thead>
     <tbody>
       <tr>
-        <td at-implicit at-attribute="type" at-sortable at-initial-sorting="desc"></td>
-        <td at-implicit at-attribute="sales" at-sortable at-initial-sorting="desc"></td>
+        <td at-implicit at-attribute="type" ng-hide="isCamera" at-sortable at-initial-sorting="desc"></td>
+        <td at-implicit at-attribute="label" at-sortable at-initial-sorting="desc"></td>
+        <td at-implicit at-attribute="value" at-sortable at-initial-sorting="desc"></td>
+        <td at-implicit at-attribute="sales" ng-hide="isCamera" at-sortable at-initial-sorting="desc"></td>
       </tr>
     </tbody>
   </table>
+  </div>
   </md-content>
 </md-card>
 </div>
