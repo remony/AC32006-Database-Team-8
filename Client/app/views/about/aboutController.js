@@ -5,7 +5,7 @@ angular.module('app.aboutController', [])
   $scope.title = "About";
   $.ajax({
     type: "get",
-    url: backend
+    url: backend + '/'
     }).done(function(data){
 
     }).fail(function(data){
