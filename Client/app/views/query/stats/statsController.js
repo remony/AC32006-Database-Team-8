@@ -351,7 +351,7 @@ angular.module('app.query.statsController', ['nvd3'])
                 average: function(d) { return d.mean/100; },
 
                 color: d3.scale.category10().range(),
-                transitionDuration: 300,
+                transitionDuration: 600,
                 useInteractiveGuideline: true,
                 clipVoronoi: false,
 
@@ -511,6 +511,69 @@ angular.module('app.query.statsController', ['nvd3'])
           $scope.graph = data.data;
           $scope.$apply();
         });
+
+
+})
+
+.controller('topSalesBarController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
+
+      $scope.options2 = {
+            chart: {
+                type: 'discreteBarChart',
+                height: 450,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 60,
+                    left: 55
+                },
+                x: function(d){return d.label;},
+                y: function(d){return d.value;},
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format(',.4f')(d);
+                },
+                transitionDuration: 500,
+                xAxis: {
+                    axisLabel: 'X Axis'
+                },
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    axisLabelDistance: 30
+                }
+            }
+        };
+
+      $scope.graph = [];
+      $.ajax({
+        type: "GET",
+        url: backend + "/profession/top",
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+      }).done(function(data){
+          console.log(data);
+          console.log("done");
+
+        }).fail(function(data){
+          toastService.displayToast("Error contacting database");
+        }).success(function(data){
+          $scope.graphHobby = data.data;
+          $scope.$apply();
+        });
+
+        $.ajax({
+          type: "GET",
+          url: backend + "/hobby/top",
+          beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+        }).done(function(data){
+            console.log(data);
+            console.log("done");
+
+          }).fail(function(data){
+            toastService.displayToast("Error contacting database");
+          }).success(function(data){
+            $scope.graphProfession = data.data;
+            $scope.$apply();
+          });
 
 
 });

@@ -18,6 +18,7 @@ angular
   'ui.bootstrap',
   'angular-table',
   'app.listDialog',
+  'ngAnimate',
 
   //Controllers
   'app.indexController',

@@ -19,7 +19,9 @@
       </table>
     </div>
     <div role="tabpanel" id="tab3-content" aria-labelledby="tab3" ng-switch-when="2" md-swipe-left="next()" md-swipe-right="previous()">
-        View for Item #3<br/>
-        data.selectedIndex = 2
+        <div ng-controller="topSalesBarController">
+          <nvd3 options="options2" data="graphHobby"></nvd3>
+          <nvd3 options="options2" data="graphProfession"></nvd3>
+        </div>
     </div>
 </ng-switch>

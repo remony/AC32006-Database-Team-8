@@ -8,45 +8,43 @@
     </div>
 
   </md-toolbar>
+<md-content class="md-padding" style="min-height:600px" >
+  <form class="type-form" name="typeForm" ng-submit="submitQuery(selected)" md-theme="light-blue-dark">
+    <h2>{{summary}}</h2>
+
+    <label>Please enter a country.</label><input type="text" ng-model="selected" typeahead="country as country.name for country in countries | filter:$viewValue | limitTo:8" class="form-control" placeholder="Enter a country">
+    <div class="md-actions" layout="horizontal" layout-align="end">
+      <md-button class="md-primary" aria-label="null" ng-click="hide()" type="submit">Get results</md-button>
+    </div>
+  </form>
 
 
 
 
-<md-card>
-  <md-content class="md-padding">
 
     <h1>{{stats}}</h1>
 
 
 <div class='container-fluid' >
 
-    <form class="type-form" name="typeForm" ng-submit="submitQuery(selected)">
-      <h2>Popular camera types in country ......</h2>
-      <input type="text" ng-model="selected" typeahead="country as country.name for country in countries | filter:$viewValue | limitTo:8" class="form-control" placeholder="Enter a country">
-      <div class="md-actions" layout="horizontal" layout-align="end">
-        <md-button class="md-primary" aria-label="null" ng-click="hide()" type="submit">Get results</md-button>
-      </div>
-    </form>
-<div ng-hide="data">
-  <img src="FkZ8zcY.gif"/>
-</div>
-<div ng-show="data">
-  <h3 ng-show="countryName">Showing results for {{countryName}}</h3>
+
+
+<div ng-show="data" class="fadeIn">
+  <md-card>
+  <h1 ng-show="countryName">Showing results for {{countryName}}</h1>
   <nvd3 options="options" data="data"></nvd3>
-</div>
-</div>
-
-   <md-list>
-     <md-item ng-repeat="out in data">
-       <md-item-content>
-         <div class="md-tile-content">
-           {{out.label}}: {{out.value}}
-         </div>
-       </md-item-content>
-     </md-item>
 
 
-
-   </md-list>
+  <table at-table at-list="data" class="table table-striped" ng-show="data">
+    <thead></thead>
+    <tbody>
+      <tr>
+        <td at-implicit at-attribute="type" at-sortable at-initial-sorting="desc"></td>
+        <td at-implicit at-attribute="sales" at-sortable at-initial-sorting="desc"></td>
+      </tr>
+    </tbody>
+  </table>
   </md-content>
 </md-card>
+</div>
+</div>
