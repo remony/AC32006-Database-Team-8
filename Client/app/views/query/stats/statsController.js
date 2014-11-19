@@ -160,7 +160,7 @@ angular.module('app.query.statsController', ['nvd3'])
     $.ajax({
       type: "GET",
       url: backend + "/sales/statistics/date",
-      beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+      beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)}
       }).done(function(data){
         console.log(data);
         console.log("done");
@@ -169,6 +169,17 @@ angular.module('app.query.statsController', ['nvd3'])
         toastService.displayToast("Error contacting database");
       }).success(function(data){
         $scope.data = data.data;
+
+        var parsed_data = [];
+        for (var i=0;i<data.data[0].values.length;i+=1) {
+            parsed_data.push({
+                'date' : data.data[0].values[i][0],
+                'price' : data.data[0].values[i][1],
+                'quantity' : data.data[1].values[i][1]
+            });
+        }
+
+        $scope.table = parsed_data;
         $scope.$apply();
       });
   } else {
@@ -190,7 +201,7 @@ angular.module('app.query.statsController', ['nvd3'])
   $scope.title = "Show popular camera types by country";
   $.ajax({
     type: "get",
-    url: backend + "/countries",
+    url: backend + "/countries"
     }).done(function(data){
       //console.log(data);
         console.log("done");
@@ -226,11 +237,39 @@ angular.module('app.query.statsController', ['nvd3'])
           }
       };
 
+        $scope.options_bar = {
+            chart: {
+                type: 'discreteBarChart',
+                height: 450,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 60,
+                    left: 55
+                },
+                x: function(d){return d.type;},
+                y: function(d){return d.sales;},
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format('')(d);
+                },
+                transitionDuration: 500,
+                xAxis: {
+                    axisLabel: 'X Axis'
+                },
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    axisLabelDistance: 30
+                }
+            }
+        };
+
       $scope.data = [];
+    $scope.data_bar = [];
       $.ajax({
         type: "GET",
         url: backend + "/type/popular/country/" + answer.id,
-        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)}
       }).done(function(data){
           console.log(data);
           console.log("done");
@@ -239,6 +278,12 @@ angular.module('app.query.statsController', ['nvd3'])
           toastService.displayToast("Error contacting database");
         }).success(function(data){
           $scope.data = data.data;
+
+          $scope.data_bar = [{
+              key : 'Popular in Country',
+              values : data.data
+          }];
+
           $scope.countryName = answer.name;
           $scope.isType = true;
           $scope.$apply();
@@ -260,7 +305,7 @@ angular.module('app.query.statsController', ['nvd3'])
   $scope.title = "Show popular camera types by country";
   $.ajax({
     type: "get",
-    url: backend + "/countries",
+    url: backend + "/countries"
     }).done(function(data){
       //console.log(data);
         console.log("done");
@@ -301,6 +346,33 @@ angular.module('app.query.statsController', ['nvd3'])
           }
       };
 
+        $scope.options_bar = {
+            chart: {
+                type: 'discreteBarChart',
+                height: 450,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 60,
+                    left: 55
+                },
+                x: function(d){return d.label;},
+                y: function(d){return d.value;},
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format('')(d);
+                },
+                transitionDuration: 500,
+                xAxis: {
+                    axisLabel: 'X Axis'
+                },
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    axisLabelDistance: 30
+                }
+            }
+        };
+
       $scope.data = [];
       $.ajax({
         type: "GET",
@@ -314,6 +386,12 @@ angular.module('app.query.statsController', ['nvd3'])
           toastService.displayToast("Error contacting database");
         }).success(function(data){
           $scope.data = data.data;
+
+          $scope.data_bar = [{
+              key : 'Popular in Country',
+              values : data.data
+          }];
+
           $scope.isCamera = true;
           $scope.countryName = answer.name;
           $scope.$apply();
@@ -478,7 +556,7 @@ angular.module('app.query.statsController', ['nvd3'])
               type: 'pieChart',
                 height: 300,
                 donut: true,
-                x: function(d){return d.camera;},
+                x: function(d){return d.profession;},
                 y: function(d){return d.sales;},
                 showLabels: true,
 
@@ -510,7 +588,7 @@ angular.module('app.query.statsController', ['nvd3'])
         }).fail(function(data){
           toastService.displayToast("Error contacting database");
         }).success(function(data){
-          $scope.graph = data.data;
+          $scope.graphProfession = data.data;
           $scope.$apply();
         });
 
@@ -518,8 +596,7 @@ angular.module('app.query.statsController', ['nvd3'])
 })
 
 .controller('topSalesBarController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
-
-      $scope.options2 = {
+        $scope.hobby_options = {
             chart: {
                 type: 'discreteBarChart',
                 height: 450,
@@ -529,11 +606,11 @@ angular.module('app.query.statsController', ['nvd3'])
                     bottom: 60,
                     left: 55
                 },
-                x: function(d){return d.label;},
-                y: function(d){return d.value;},
+                x:  function(d){return d.hobby;},
+                y: function(d){ return d.sales; },
                 showValues: true,
                 valueFormat: function(d){
-                    return d3.format(',.4f')(d);
+                    return d3.format('')(d);
                 },
                 transitionDuration: 500,
                 xAxis: {
@@ -546,36 +623,74 @@ angular.module('app.query.statsController', ['nvd3'])
             }
         };
 
+        $scope.options = {
+            chart: {
+                type: 'discreteBarChart',
+                height: 450,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 60,
+                    left: 55
+                },
+                x: function(d){return d.profession;},
+                y: function(d){return d.sales;},
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format('')(d);
+                },
+                transitionDuration: 500,
+                xAxis: {
+                    axisLabel: 'X Axis'
+                },
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    axisLabelDistance: 30
+                }
+            }
+        };
+
+
+
+
       $scope.graph = [];
-      $.ajax({
+    $.ajax({
         type: "GET",
         url: backend + "/profession/top",
-        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
-      }).done(function(data){
-          console.log(data);
-          console.log("done");
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)}
+    }).done(function(data){
+        console.log(data);
 
-        }).fail(function(data){
-          toastService.displayToast("Error contacting database");
-        }).success(function(data){
-          $scope.graphHobby = data.data;
-          $scope.$apply();
-        });
+    }).fail(function(data){
+        toastService.displayToast("Error contacting database");
 
-        $.ajax({
-          type: "GET",
-          url: backend + "/hobby/top",
-          beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
-        }).done(function(data){
-            console.log(data);
-            console.log("done");
+    }).success(function (data) {
+        $scope.graphProfession = [{
+          'key' : 'professions',
+          'values' : data.data
+        }];
 
-          }).fail(function(data){
-            toastService.displayToast("Error contacting database");
-          }).success(function(data){
-            $scope.graphProfession = data.data;
-            $scope.$apply();
-          });
+        $scope.$apply();
+    });
+
+    $.ajax({
+        type: "GET",
+        url: backend + "/hobby/top",
+        beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)}
+    }).done(function(data){
+        console.log(data);
+
+    }).fail(function(data){
+        toastService.displayToast("Error contacting database");
+
+    }).success(function(data){
+        $scope.graphHobby = [{
+            'key' : 'hobbies',
+            'values' : data.data
+        }];
+
+        $scope.$apply();
+    });
 
 
 });

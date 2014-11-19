@@ -20,8 +20,8 @@
     </div>
     <div role="tabpanel" id="tab3-content" aria-labelledby="tab3" ng-switch-when="2" md-swipe-left="next()" md-swipe-right="previous()">
         <div ng-controller="topSalesBarController">
-          <nvd3 options="options2" data="graphHobby"></nvd3>
-          <nvd3 options="options2" data="graphProfession"></nvd3>
+          <nvd3 options="hobby_options" data="graphHobby"></nvd3>
+          <nvd3 options="options" data="graphProfession"></nvd3>
         </div>
     </div>
 </ng-switch>

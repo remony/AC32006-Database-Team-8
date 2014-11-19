@@ -12,7 +12,7 @@ angular.module('app.registerController', ['ngRoute', 'ngCookies'])
    var hash = CryptoJS.SHA512(password).toString();
    $.ajax({
      type:"POST",
-     url: config.backend+"/register",
+     url: backend+"/register",
      //beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
      data: JSON.stringify({username: $scope.form.username, password: hash}),
      success: console.log(JSON.stringify({username: $scope.form.username, password: hash})),//$scope.status = data.status,
