@@ -139,7 +139,7 @@ angular.module('app.query.statsController', ['nvd3'])
             showMaxMin: false,
             tickFormat: function(d) {
                 var dx = $scope.data[0].values[d] && $scope.data[0].values[d][0] || 0;
-                return dx ? d3.time.format('%d/%m/%y')(new Date(dx)) : '';
+                return dx ? d3.time.format('%M')(new Date(dx)) : '';
             },
             staggerLabels: true
         },
@@ -173,7 +173,7 @@ angular.module('app.query.statsController', ['nvd3'])
         var parsed_data = [];
         for (var i=0;i<data.data[0].values.length;i+=1) {
             parsed_data.push({
-                'date' : data.data[0].values[i][0],
+                'month' : data.data[0].values[i][2],
                 'price' : data.data[0].values[i][1],
                 'quantity' : data.data[1].values[i][1]
             });
