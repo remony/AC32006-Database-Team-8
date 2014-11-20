@@ -140,14 +140,14 @@ class SalesCrud {
                 for ($i = 0; $i < count($query); $i++) {
                     $quantity[$i] = [
                         $query[$i]['date'],
-                        intVal($query[$i]['quantity'],
-                            $query[$i]['month'])
+                        intVal($query[$i]['quantity']),
+                        $query[$i]['month']
                     ];
 
                     $price[$i] = [
                         $query[$i]['date'],
-                        floatVal($query[$i]['sales'],
-                            $query[$i]['month'])
+                        floatVal($query[$i]['sales']),
+                        $query[$i]['month']
                     ];
                 }
 
