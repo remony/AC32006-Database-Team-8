@@ -458,6 +458,36 @@ angular.module('app.query.statsController', ['nvd3'])
             }
       };
 
+      $scope.options2 = {
+                  chart: {
+                      type: 'stackedAreaChart',
+                      height: 450,
+                      margin : {
+                          top: 20,
+                          right: 20,
+                          bottom: 60,
+                          left: 40
+                      },
+                      x: function(d){return new Date(d[0]);},
+                      y: function(d){return d[1];},
+                      useVoronoi: false,
+                      clipEdge: true,
+                      transitionDuration: 500,
+                      useInteractiveGuideline: true,
+                      xAxis: {
+                          showMaxMin: false,
+                          tickFormat: function(d) {
+                              return d3.time.format('%x')(new Date(d))
+                          }
+                      },
+                      yAxis: {
+                          tickFormat: function(d){
+                              return d3.format(',.2f')(d);
+                          }
+                      }
+                  }
+              };
+
       $scope.data = [];
       $.ajax({
         type: "GET",
@@ -471,6 +501,17 @@ angular.module('app.query.statsController', ['nvd3'])
           toastService.displayToast("Error contacting database");
         }).success(function(data){
           $scope.data = data.data;
+
+          var parsed_data = [];
+          for (var i=0;i<data.data[0].values.length;i+=1) {
+              parsed_data.push({
+                  'values' : data.data[0].values[i][0],
+                  'sales' : data.data[0].values[i][1]
+              });
+          }
+          $scope.table = parsed_data;
+
+
           $scope.isDate = true;
           $scope.$apply();
         });
