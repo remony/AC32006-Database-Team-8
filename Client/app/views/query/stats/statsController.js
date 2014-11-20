@@ -116,7 +116,7 @@ angular.module('app.query.statsController', ['nvd3'])
     This controller displays the amount sold by date
 
 */
-.controller('dateController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
+.controller('dateController', function($scope, $cookies, $location, toastService, $rootScope, $filter, listService) {
   if ($scope.isLoggedIn)  {
     $scope.title = "Stats";
     $scope.stats = "Earning and number sold by date";
@@ -135,20 +135,22 @@ angular.module('app.query.statsController', ['nvd3'])
         color: d3.scale.category10().range(),
         transitionDuration: 250,
         xAxis: {
-            axisLabel: 'X Axis',
+            axisLabel: '',
             showMaxMin: false,
             tickFormat: function(d) {
                 var dx = $scope.data[0].values[d] && $scope.data[0].values[d][0] || 0;
-                return dx ? d3.time.format('%M')(new Date(dx)) : '';
+                date_format = d3.time.format("%d-%m-%Y");
+                console.log(date_format.parse(dx));
+                return dx ? d3.time.format('%B')(date_format.parse(dx)) : '';
             },
             staggerLabels: true
         },
         y1Axis: {
-            axisLabel: 'Y1 Axis',
+            axisLabel: '',
             tickFormat: function(d){return d3.format(',f')(d)}
         },
         y2Axis: {
-            axisLabel: 'Y2 Axis',
+            axisLabel: '',
             tickFormat: function(d) { return '$' + d3.format(',.2f')(d);}
         }
     }
@@ -173,7 +175,7 @@ angular.module('app.query.statsController', ['nvd3'])
         var parsed_data = [];
         for (var i=0;i<data.data[0].values.length;i+=1) {
             parsed_data.push({
-                'month' : data.data[0].values[i][2],
+                'date' : data.data[0].values[i][2],
                 'price' : data.data[0].values[i][1],
                 'quantity' : data.data[1].values[i][1]
             });
