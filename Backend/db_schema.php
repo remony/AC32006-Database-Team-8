@@ -752,7 +752,7 @@ $result = getDatabase() -> execute ("
     concat(cameras.brand, ' ', cameras.model_name) 'camera',
     sum(`cameras`.`price`) 'earnings',
     count(sales.id) 'sales',
-    countries.name 'country' from countries
+    countries.id 'country' from countries
     inner join stores on stores.`country_id` = countries.id
     inner join sales on sales.store_id = stores.id
     inner join cameras on cameras.id = sales.camera_id
