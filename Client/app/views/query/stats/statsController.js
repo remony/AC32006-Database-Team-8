@@ -430,8 +430,8 @@ angular.module('app.query.statsController', ['nvd3'])
                     bottom: 60,
                     left: 65
                 },
-                x: function(d){ return new Date (d[0]) ; },
-                y: function(d){ console.log(d);return d; },
+                x: function(d){ return new Date (d.values) ; },
+                y: function(d){ console.log(d);return d.sales; },
 
                 color: d3.scale.category10().range(),
                 transitionDuration: 500,
