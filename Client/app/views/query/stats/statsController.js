@@ -414,7 +414,7 @@ angular.module('app.query.statsController', ['nvd3'])
 */
 
 
-.controller('monthlySalesByBrandController', function($scope, $cookies, $location, toastService, $rootScope, listService) {
+.controller('monthlySalesByBrandController', function($scope, $cookies, $location, toastService, $rootScope, listService, $filter) {
   $scope.title = "Monthly sales by brand";
 
       /* Chart options */
@@ -430,8 +430,8 @@ angular.module('app.query.statsController', ['nvd3'])
                     bottom: 60,
                     left: 65
                 },
-                x: function(d){ return new Date (d.values) ; },
-                y: function(d){ console.log(d);return d.sales; },
+                x: function(d){ return new Date (d[0]) ; },
+                y: function(d){ console.log(d);return d[1]; },
 
                 color: d3.scale.category10().range(),
                 transitionDuration: 500,
@@ -442,7 +442,7 @@ angular.module('app.query.statsController', ['nvd3'])
                     axisLabel: 'X Axis',
                     tickFormat: function(d) {
                     //  console.log(d);
-                        return d3.time.format('%x')(new Date(d))
+                        return $filter('date')(d, "MMM-yyyy");
                     },
                     showMaxMin: true,
                     staggerLabels: true
