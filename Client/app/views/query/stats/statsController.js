@@ -430,7 +430,7 @@ angular.module('app.query.statsController', ['nvd3'])
                 },
                 x: function(d){ return new Date(d[0]); },
                 y: function(d){ return d[1]; },
-                average: function(d) { return d.mean/100; },
+                average: function(d) { return d.mean; },
 
                 color: d3.scale.category10().range(),
                 transitionDuration: 600,
@@ -449,7 +449,7 @@ angular.module('app.query.statsController', ['nvd3'])
                 yAxis: {
                     axisLabel: 'Y Axis',
                     tickFormat: function(d){
-                        return d3.format(',.1%')(d);
+                        return d3.format(',.0%')(d);
                     },
                     axisLabelDistance: 20
                 }

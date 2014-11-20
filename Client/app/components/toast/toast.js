@@ -5,7 +5,7 @@ angular.module('app.toast', ['ngRoute', 'ngCookies', 'ngMaterial'])
      displayToast: function(message) {
        $mdToast.show({
          template: '<md-toast>' + message + '</md-toast>',
-         hideDelay: 3000,
+         hideDelay: 6000,
          position: 'bottom left'
        });
      }

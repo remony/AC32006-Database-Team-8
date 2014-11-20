@@ -59,7 +59,7 @@
         <md-item>
           <md-item-content>
             <div class="md-tile-content">
-              <h3><b>Camera Type:</b> {{cameraTopFeature.type}}</h3>
+              <h3><b>Megapixels:</b> {{cameraTopFeature.megapixels}}megapixels</h3>
             </div>
           </md-item-content>
           <md-divider ng-if="!$last"></md-divider>
@@ -67,15 +67,7 @@
         <md-item>
           <md-item-content>
             <div class="md-tile-content">
-              <h3><b>Megapixels:</b> {{cameraTopFeature.megapixels}}</h3>
-            </div>
-          </md-item-content>
-          <md-divider ng-if="!$last"></md-divider>
-        </md-item>
-        <md-item>
-          <md-item-content>
-            <div class="md-tile-content">
-              <h3><b>Resolution:</b>  {{cameraTopFeature.resolution}}</h3>
+              <h3><b>Resolution:</b>  {{cameraTopFeature.resolution}}p</h3>
             </div>
           </md-item-content>
           <md-divider ng-if="!$last"></md-divider>
