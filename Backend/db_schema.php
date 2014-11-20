@@ -729,27 +729,19 @@ $result = getDatabase() -> execute ("
             INNER JOIN `cameras` on `sales`.`camera_id` = `cameras`.`id`
     GROUP BY `month`;
 
-    create or replace view `camera_types_top` AS
-    SELECT type.id 'type_id', `type`.`name` AS `TypeOfCamera`,
-    sum(`cameras`.`price`) AS `TotalAmount`,
-    count(`sales`.`id`) AS `NumberOfsales`,
-    `stores`.`country_id` AS `country`
-    FROM (((`sales`
-    join `cameras` on((`cameras`.`id` = `sales`.`camera_id`)))
-    join `type` on((`type`.`id` = `cameras`.`type_id`)))
-    join `stores` on((`stores`.`id` = `sales`.`store_id`)))
-    group by `type`.`name`
-    having COUNT(sales.id) NOT LIKE 0
-
-    UNION
-
-    SELECT type.id 'type_id', `type`.Name as TypeOfCamera, null AS TotalAmount, COUNT(sales.id) AS NumberOfsales, `stores`.`country_id` AS `country`
-    FROM type
-    LEFT OUTER JOIN cameras ON cameras.type_id = `type`.id
-    LEFT OUTER JOIN `sales` ON sales.camera_id = cameras.id
-    LEFT OUTER JOIN stores ON stores.id = sales.store_id
-    GROUP BY `type`.Name
-    having COUNT(sales.id) LIKE 0;
+    create or replace view `camera_types_top` AS select
+    `cameras`.`type_id`,
+    `type`.`name` 'TypeOfCamera',
+    sum(`cameras`.`price`) 'TotalAmount',
+    count(sales.id) 'NumberOfSales',
+    countries.id 'country'
+    from `countries`
+    inner join stores on stores.`country_id` = countries.id
+    inner join sales on sales.store_id = stores.id
+    inner join cameras on cameras.id = sales.camera_id
+    inner join type on cameras.type_id = type.id
+    group by country, type.id
+    order by country;
 
     create or replace view `cameras_top` AS select
     concat(cameras.brand, ' ', cameras.model_name) 'camera',
