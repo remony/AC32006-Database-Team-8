@@ -421,7 +421,7 @@ angular.module('app.query.statsController', ['nvd3'])
                 //x: function(d){return d[0];},
                 //y: function(d){return d[1];},
       $scope.options = {
-          chart: {
+           chart: {
                 type: 'cumulativeLineChart',
                 height: 450,
                 margin : {
@@ -430,28 +430,28 @@ angular.module('app.query.statsController', ['nvd3'])
                     bottom: 60,
                     left: 65
                 },
-                x: function(d){ return new Date(d[0]); },
-                y: function(d){ return d[1]; },
-                average: function(d) { return d.mean; },
+                x: function(d){ return new Date (d[0]) ; },
+                y: function(d){ console.log(d);return d; },
 
                 color: d3.scale.category10().range(),
-                transitionDuration: 600,
-                useInteractiveGuideline: true,
+                transitionDuration: 500,
+                useInteractiveGuideline: false,
                 clipVoronoi: false,
 
                 xAxis: {
                     axisLabel: 'X Axis',
                     tickFormat: function(d) {
-                        return d3.time.format('%m/%d/%y')(new Date(d))
+                    //  console.log(d);
+                        return d3.time.format('%x')(new Date(d))
                     },
-                    showMaxMin: false,
+                    showMaxMin: true,
                     staggerLabels: true
                 },
 
                 yAxis: {
                     axisLabel: 'Y Axis',
                     tickFormat: function(d){
-                        return d3.format(',.0%')(d);
+                        return d3.format(',.2f')(d);
                     },
                     axisLabelDistance: 20
                 }
@@ -470,7 +470,7 @@ angular.module('app.query.statsController', ['nvd3'])
                       },
                       x: function(d){return new Date(d[0]);},
                       y: function(d){return d[1];},
-                      useVoronoi: false,
+                      useVoronoi: true,
                       clipEdge: true,
                       transitionDuration: 500,
                       useInteractiveGuideline: true,
@@ -487,6 +487,42 @@ angular.module('app.query.statsController', ['nvd3'])
                       }
                   }
               };
+
+                 $scope.options3 = {
+            chart: {
+                type: 'historicalBarChart',
+                height: 450,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 60,
+                    left: 50
+                },
+                x: function(d){return new Date(d[0]);},
+                y: function(d){return d[1]/100000;},
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format(',.1f')(d);
+                },
+                transitionDuration: 500,
+                xAxis: {
+                    axisLabel: 'X Axis',
+                    tickFormat: function(d) {
+                        return d3.time.format('%x')(new Date(d))
+                    },
+                    rotateLabels: 50,
+                    showMaxMin: false
+                },
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    axisLabelDistance: 35,
+                    tickFormat: function(d){
+                        return d3.format(',.1f')(d);
+                    }
+                }
+            }
+        };
+
 
       $scope.data = [];
       $.ajax({

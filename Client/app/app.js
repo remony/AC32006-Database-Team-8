@@ -19,6 +19,7 @@ angular
   'angular-table',
   'app.listDialog',
   'ngAnimate',
+  'nvd3ChartDirectives',
 
   //Controllers
   'app.indexController',
