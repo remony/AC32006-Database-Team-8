@@ -720,11 +720,14 @@ $result = getDatabase() -> execute ("
     GROUP BY countries.Name;
 
     create or replace view `sales_statistics_dates` as SELECT
-    STR_TO_DATE(sales.`date_purchased`, '%d-%m-%Y')as 'date',
-    SUM(cameras.price) AS total_amount, COUNT(sales.id) AS number_of_sales FROM cameras
-    INNER JOIN sales ON sales.id = cameras.id
-    JOIN customers ON customers.id = sales.customer_id
-    GROUP BY sales.`date_purchased`;
+        date_format(str_to_date(`sales`.`date_purchased`, '%d-%m-%Y'), '%m-%Y') AS `date`,
+        date_format(str_to_date(`sales`.`date_purchased`,'%d-%m-%Y'),'%M') AS `month`,
+        sum(`cameras`.`price`) AS `total_amount`,
+        count(`sales`.`id`) AS `number_of_sales`
+    FROM
+        `sales`
+            INNER JOIN `cameras` on `sales`.`camera_id` = `cameras`.`id`
+    GROUP BY `month`;
 
     create or replace view `camera_types_top` AS
     SELECT type.id 'type_id', `type`.`name` AS `TypeOfCamera`,

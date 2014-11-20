@@ -133,19 +133,21 @@ class SalesCrud {
                 );
 
             } else {
-                $query = getDatabase()->all("select DATE_FORMAT(`date`, '%Y-%m-%d') as 'date', `total_amount` as 'quantity', `number_of_sales` as 'sales' from `sales_statistics_dates` order by date;");
+                $query = getDatabase()->all("select DATE_FORMAT(str_to_date(`date`, '%m-%Y'), '01-%m-%Y') as 'date', `month`, `total_amount` as 'quantity', `number_of_sales` as 'sales' from `sales_statistics_dates` order by date;");
 
                 $quantity = [];
                 $price = [];
                 for ($i = 0; $i < count($query); $i++) {
                     $quantity[$i] = [
                         $query[$i]['date'],
-                        intVal($query[$i]['quantity'])
+                        intVal($query[$i]['quantity'],
+                            $query[$i]['month'])
                     ];
 
                     $price[$i] = [
                         $query[$i]['date'],
-                        floatVal($query[$i]['sales'])
+                        floatVal($query[$i]['sales'],
+                            $query[$i]['month'])
                     ];
                 }
 
