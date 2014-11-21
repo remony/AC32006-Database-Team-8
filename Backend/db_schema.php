@@ -767,35 +767,40 @@ $result = getDatabase() -> execute ("
 	and (`cameras`.`brand` = `brands`.`brand`))))
 	group by `month`,`brands`.`brand`;
 
+    create or replace view `top_professions` as
+    select
+	profession.title 'profession',
+	count(sales.id) 'sales',
+	concat(cameras.brand, ' ', cameras.model_name) AS camera
+	from cameras
+	inner join sales on sales.camera_id = cameras.id
+	inner join customers on sales.customer_id = customers.id
+	inner join customer_has_profession on customer_has_profession.customer_id = customers.id
+	inner join profession on profession.id = customer_has_profession.profession_id
+	group by camera, profession.id
+	order by profession.title, sales desc;
+
     create or replace view `professions_most_used` as
-    SELECT profession.title as profession, concat(cameras.brand, ' ', cameras.model_name) AS camera, COUNT(sales.id) AS sales
-    FROM cameras
-    INNER
-        JOIN sales
-         ON sales.camera_id = cameras.id
-        JOIN customers
-         ON customers.id = sales.customer_id
-        JOIN customer_has_profession
-         ON customer_has_profession.customer_id = customers.id
-        JOIN profession
-         ON profession.id = customer_has_profession.profession_id
-    GROUP BY concat(cameras.brand, ' ', cameras.model_name)
-    ORDER BY profession DESC;
+    select profession, camera, max(sales) 'sales' from top_professions
+    group by profession
+    order by sales desc;
+
+    create or replace view `top_hobbies` as
+    select
+	hobby.name 'hobby',
+	count(sales.id) 'sales',
+	concat(cameras.brand, ' ', cameras.model_name) AS camera
+	from cameras
+	inner join sales on sales.camera_id = cameras.id
+	inner join customers on sales.customer_id = customers.id
+	inner join customer_has_hobby on customer_has_hobby.customer_id = customers.id
+	inner join hobby on hobby.id = customer_has_hobby.hobby_id
+	group by camera, hobby.id
+	order by hobby.name, sales desc;
 
     create or replace view `hobbies_most_used` as
-    SELECT hobby.name as hobby, concat(cameras.brand, ' ', cameras.model_name) AS camera, COUNT(sales.id) AS sales
-    FROM cameras
-    INNER
-        JOIN sales
-         ON sales.camera_id = cameras.id
-        JOIN customers
-         ON customers.id = sales.customer_id
-        JOIN customer_has_hobby
-         ON customer_has_hobby.customer_id = customers.id
-        JOIN hobby
-         ON hobby.id = customer_has_hobby.hobby_id
-    GROUP BY concat(cameras.brand, ' ', cameras.model_name)
-    ORDER BY hobby DESC;
+	select hobby, camera, max(sales) 'sales' from top_hobbies
+	group by hobby;
 
     create or replace view `detailed_cameras` as
     select `cameras`.`brand` 'brand', `cameras`.`model_name` 'model', `cameras`.`price`, `cameras`.`battery_type` 'battery', `cameras`.`megapixels`, `cameras`.`can_do_video` 'video', `cameras`.`has_flash` 'flash', `cameras`.`resolution`, `type`.`name` 'type', `storage`.`name` 'storage', (select count(`id`) from `sales` where `camera_id` = `cameras`.`id`) as 'sales' from `cameras`
