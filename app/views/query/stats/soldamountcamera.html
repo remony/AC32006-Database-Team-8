@@ -23,28 +23,17 @@
         <nvd3 options="options2" data="data"></nvd3>
         <nvd3 options="options" data="data"></nvd3>
       </div>
-      <div ng-show="isDate">
-        <table at-table at-list="table" class="table table-striped">
-          <thead></thead>
-          <tbody>
-            <tr>
-              <td at-implicit at-attribute="values" at-sortable at-initial-sorting="desc"></td>
-              <td at-implicit at-attribute="sales" at-sortable at-initial-sorting="desc"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div ng-show="isEarning">
-        <table at-table at-list="table" class="table table-striped">
+
+        <table at-table at-list="data" class="table table-striped">
           <thead></thead>
           <tbody>
             <tr>
               <td at-implicit at-attribute="label" at-sortable at-initial-sorting="desc"></td>
-              <td at-implicit at-attribute="values" at-sortable at-initial-sorting="desc"></td>
+              <td at-implicit at-attribute="value" at-sortable at-initial-sorting="desc"></td>
             </tr>
           </tbody>
         </table>
-      </div>
+
     </md-content>
   </div>
 </md-card>

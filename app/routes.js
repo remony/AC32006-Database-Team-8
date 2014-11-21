@@ -43,11 +43,11 @@ angular.module('app.routes', ['ngRoute',])
       controller: 'queryController'
     })
     .when('/query/stats/number', {
-      templateUrl: 'app/views/query/stats/stats.html',
+      templateUrl: 'app/views/query/stats/soldamountcamera.html',
       controller: 'numberController'
     })
     .when('/query/stats/earning', {
-      templateUrl: 'app/views/query/stats/stats.html',
+      templateUrl: 'app/views/query/stats/earning.html',
       controller: 'earningController'
     })
     .when('/query/stats/date', {
