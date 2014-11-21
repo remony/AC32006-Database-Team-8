@@ -579,8 +579,8 @@ angular.module('app.query.statsController', ['nvd3'])
         chart: {
             type: 'pieChart',
               height: 500,
-              donut: true,
-              x: function(d){return d.camera;},
+              donut: false,
+              x: function(d){return d.hobby;},
               y: function(d){return d.sales;},
               showLabels: true,
 
@@ -659,8 +659,8 @@ angular.module('app.query.statsController', ['nvd3'])
           chart: {
               type: 'pieChart',
                 height: 500,
-                donut: true,
-                x: function(d){return d.camera;},
+                donut: false,
+                x: function(d){return d.profession;},
                 y: function(d){return d.sales;},
                 showLabels: true,
 
